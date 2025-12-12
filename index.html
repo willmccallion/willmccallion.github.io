@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- --- SEO & SOCIAL PREVIEWS --- -->
+    <title>willmccallion@dev: ~</title>
+    <meta name="description" content="Systems Engineer specializing in Rust, Emulation, and Compilers.">
+    
+    <!-- LinkedIn / Discord Preview -->
+    <meta property="og:title" content="Will McCallion :: Systems Engineer">
+    <meta property="og:description" content="Interactive Terminal Portfolio. Rust, RISC-V, and Low-Level Engineering.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://willmccallion.github.io/"> <!-- Change this to your actual URL -->
+    
+    <!-- Favicon: A terminal prompt -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22grey%22>_</text></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Default: Matrix Green */
+            --bg-color: #0d1117;
+            --text-main: #c9d1d9;
+            --text-dim: #6e7681;
+            --border-color: #30363d;
+            --primary-color: #39ff14; 
+            --secondary-color: #58a6ff; 
+            --highlight-color: #f778ba; 
+            --alert-color: #ff7b72;     
+            --font-stack: 'Fira Code', monospace;
+            --glow: 0 0 5px rgba(57, 255, 20, 0.2);
+            --cursor-color: var(--primary-color);
+            --scrollbar-thumb: #30363d;
+            --scrollbar-hover: #6e7681;
+        }
+
+        [data-theme="amber"] {
+            --bg-color: #100f0f;
+            --text-main: #ffcc80;
+            --text-dim: #8d7b68;
+            --primary-color: #ffb000;
+            --secondary-color: #ffd700;
+            --highlight-color: #ffca28;
+            --alert-color: #ff3333;
+            --glow: 0 0 5px rgba(255, 176, 0, 0.2);
+            --scrollbar-thumb: #8d7b68;
+            --scrollbar-hover: #ffb000;
+        }
+        
+        [data-theme="cyan"] {
+            --bg-color: #050a14;
+            --text-main: #d4f0f0;
+            --text-dim: #546e7a;
+            --primary-color: #00ffff;
+            --secondary-color: #00b7eb;
+            --highlight-color: #ff00ff;
+            --alert-color: #ff3333;
+            --glow: 0 0 5px rgba(0, 255, 255, 0.2);
+            --scrollbar-thumb: #546e7a;
+            --scrollbar-hover: #00ffff;
+        }
+
+        [data-theme="gruvbox"] {
+            --bg-color: #282828;
+            --text-main: #ebdbb2;
+            --text-dim: #928374;
+            --border-color: #3c3836;
+            --primary-color: #b8bb26;
+            --secondary-color: #83a598;
+            --highlight-color: #fe8019;
+            --alert-color: #fb4934;
+            --glow: none;
+            --cursor-color: #ebdbb2;
+            --scrollbar-thumb: #928374;
+            --scrollbar-hover: #ebdbb2;
+        }
+
+        /* --- GLOBAL & SCROLLBAR --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; border: 2px solid var(--bg-color); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
+        ::selection { background: var(--primary-color); color: var(--bg-color); }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-stack);
+            font-size: 14px;
+            line-height: 1.6;
+            height: 100vh;
+            height: 100dvh; /* Mobile fix */
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- NAV BAR --- */
+        #nav-bar {
+            height: 40px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 12px;
+            flex-shrink: 0;
+            z-index: 20;
+            user-select: none;
+        }
+
+        .nav-group { display: flex; gap: 15px; align-items: center; position: relative; }
+        
+        .nav-item {
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: 0.2s;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .nav-item:hover { color: var(--primary-color); text-shadow: var(--glow); }
+
+        /* --- DROPDOWN MENU --- */
+        .dropdown-container { position: relative; }
+        .dropdown-btn { 
+            border: 1px solid var(--text-dim); 
+            padding: 2px 8px; 
+            border-radius: 4px; 
+            font-size: 10px; 
+            cursor: pointer;
+            color: var(--text-dim);
+        }
+        .dropdown-btn:hover, .dropdown-btn.active { 
+            border-color: var(--primary-color); 
+            color: var(--primary-color); 
+        }
+
+        #theme-menu {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            list-style: none;
+            padding: 5px 0;
+            display: none; /* Hidden by default */
+            width: 120px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        #theme-menu.show { display: block; }
+
+        .theme-option {
+            padding: 5px 10px;
+            cursor: pointer;
+            color: var(--text-dim);
+            font-size: 11px;
+        }
+        .theme-option:hover {
+            background: var(--border-color);
+            color: var(--primary-color);
+        }
+
+        /* --- SCREEN --- */
+        #screen {
+            flex: 1;
+            position: relative;
+            padding: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            scrollbar-gutter: stable;
+        }
+
+        .content-layer {
+            white-space: pre-wrap;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+
+        /* Typography */
+        .primary { color: var(--primary-color); text-shadow: var(--glow); }
+        .secondary { color: var(--secondary-color); }
+        .highlight { color: var(--highlight-color); }
+        .dim { color: var(--text-dim); }
+        .alert { color: var(--alert-color); }
+        .bold { font-weight: 700; }
+        
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--secondary-color);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        a:hover { background: var(--secondary-color); color: var(--bg-color); }
+
+        .cmd-link {
+            cursor: pointer;
+            color: var(--highlight-color);
+            font-weight: bold;
+            display: inline-block;
+            transition: 0.2s;
+        }
+        .cmd-link:hover {
+            color: var(--bg-color);
+            background-color: var(--highlight-color);
+            padding: 0 4px;
+            margin: 0 -4px;
+            border-radius: 2px;
+        }
+
+        /* --- INPUT --- */
+        #input-container {
+            height: 50px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            flex-shrink: 0;
+            z-index: 20;
+            transition: background-color 0.3s ease;
+        }
+
+        #visual-input { display: inline; outline: none; border: none; white-space: pre; }
+        
+        /* Ghost Input for Fish-like autocomplete */
+        #ghost-input {
+            display: inline;
+            color: var(--text-dim);
+            opacity: 0.5;
+            pointer-events: none;
+            white-space: pre;
+        }
+        
+        #real-input { 
+            position: absolute; opacity: 0; top: -1000px; 
+            /* Critical for mobile to not zoom in */
+            font-size: 16px; 
+        }
+
+        .cursor-block {
+            display: inline-block;
+            width: 1ch;
+            height: 1.2em;
+            background-color: var(--cursor-color);
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+            box-shadow: var(--glow);
+        }
+
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 50%);
+            background-size: 100% 4px;
+            pointer-events: none; z-index: 10;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0); opacity: 0.9; }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); opacity: 1; }
+        }
+        .glitch-active { animation: glitch-anim 0.2s cubic-bezier(.25, .46, .45, .94) both; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        @media (max-width: 600px) {
+            .ascii-logo { font-size: 6px; line-height: 6px; }
+            .nav-item { display: none; } 
+            #input-container { padding: 0 10px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+
+    <div id="nav-bar">
+        <div class="nav-group">
+            <span class="primary bold">● SYSTEM_READY</span>
+            
+            <!-- Custom Dropdown Menu -->
+            <div class="dropdown-container">
+                <div class="dropdown-btn" id="theme-btn" onclick="toggleThemeMenu(event)">THEME ▾</div>
+                <ul id="theme-menu">
+                    <li class="theme-option" onclick="setTheme('green')">Matrix (Def)</li>
+                    <li class="theme-option" onclick="setTheme('amber')">Retro Amber</li>
+                    <li class="theme-option" onclick="setTheme('cyan')">Cyberpunk</li>
+                    <li class="theme-option" onclick="setTheme('gruvbox')">Gruvbox</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="nav-group">
+            <span class="nav-item" onclick="exec('home')">HOME</span>
+            <span class="nav-item" onclick="exec('projects')">PROJECTS</span>
+            <span class="nav-item" onclick="exec('skills')">SKILLS</span>
+            <span class="nav-item" onclick="exec('about')">ABOUT</span>
+            <span class="nav-item" onclick="exec('contact')">CONTACT</span>
+        </div>
+
+        <div class="nav-group">
+            <span id="clock" class="dim">00:00</span>
+        </div>
+    </div>
+
+    <div id="screen" onclick="handleScreenClick()">
+        <div id="display-area" class="content-layer"></div>
+    </div>
+
+    <div id="input-container" onclick="handleScreenClick()">
+        <span style="margin-right: 10px; white-space: nowrap;">
+            <span class="primary">visitor</span><span class="dim">@</span><span class="highlight">willdev</span><span class="dim">:</span><span id="path" class="secondary">~</span><span class="dim">$</span>
+        </span>
+        <div id="visual-input"></div><div id="ghost-input"></div>
+        <div class="cursor-block"></div>
+        <!-- IMPORTANT: No Autocorrect/Autocapitalize for code commands -->
+        <input type="text" id="real-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
+    </div>
+
+    <script>
+        const config = {
+            github: "willmccallion",
+            email: "wcmccallion@gmail.com",
+            linkedin: "willmccallion"
+        };
+
+        const displayArea = document.getElementById('display-area');
+        const realInput = document.getElementById('real-input');
+        const visualInput = document.getElementById('visual-input');
+        const ghostInput = document.getElementById('ghost-input');
+        const pathSpan = document.getElementById('path');
+        const clock = document.getElementById('clock');
+        const screen = document.getElementById('screen');
+        const themeMenu = document.getElementById('theme-menu');
+
+        let currentPath = "~";
+        let commandHistory = [];
+        let historyIndex = -1;
+        let isBooting = true;
+
+        const headerArt = `
+<span class="highlight" style="font-size: 10px; line-height: 10px;">
+ __      __.__.__  .__   
+/  \\    /  \\__|  | |  |  
+\\   \\/\\/   /  |  | |  |  
+ \\        /|  |  |_|  |__
+  \\__/\\__/ |__|____/____/
+</span>`;
+
+        const pages = {
+            'home': `
+${headerArt}
+<span class="bold secondary">SYSTEM v2.5.0 :: WELCOME VISITOR</span>
+=======================================
+
+I am a <span class="bold primary">Systems Engineer</span> specializing in Rust, low-level performance, 
+emulation, and compiler infrastructure.
+
+<span class="dim">AVAILABLE COMMANDS:</span>
+
+  > <span class="cmd-link" onclick="exec('projects')">projects</span>   ::  View engineering portfolio
+  > <span class="cmd-link" onclick="exec('skills')">skills</span>     ::  Technical stack & Tools
+  > <span class="cmd-link" onclick="exec('about')">about</span>      ::  Background & Education
+  > <span class="cmd-link" onclick="exec('resume')">resume</span>     ::  Download PDF Resume
+  > <span class="cmd-link" onclick="exec('contact')">contact</span>    ::  Connect via Email/Socials
+  
+<span class="dim">Tip: Use <span class="highlight">TAB</span> to autocomplete.</span>
+`,
+            'skills': `
+<span class="secondary bold">>> SYSTEM / TOOLCHAIN</span>
+========================
+
+<span class="highlight bold">LANGUAGES:</span>
+  ├── <span class="primary bold">Rust</span> (Advanced, Systems Focus)
+  ├── <span class="primary bold">C / C++</span> (Microkernels, Embedded)
+  └── <span class="dim">RISC-V Assembly, Python, Bash</span>
+
+<span class="highlight bold">DOMAINS & TOOLS:</span>
+  ├── <span class="primary">Architecture:</span> Pipelining, Caching, Branch Prediction
+  ├── <span class="primary">Systems:</span> OS Development, Drivers, MMU Simulation
+  ├── <span class="primary">Algorithms:</span> Alpha-Beta Pruning, Monte Carlo Integration
+  └── <span class="primary">Tools:</span> QEMU, GDB, Docker, Git, Rayon
+`,
+
+            'projects': `
+<span class="secondary bold">>> HOME / PROJECTS_DIRECTORY</span>
+============================
+<span class="dim">.</span>
+├── <span class="primary bold">chess_engine</span> <span class="dim">[Rust]</span>
+│   ├── <span class="dim">type:</span> UCI-compliant engine
+│   ├── <span class="dim">tech:</span> Alpha-Beta, Magic Bitboards, NNUE
+│   └── <a href="https://github.com/${config.github}/chess" target="_blank">[source_code]</a>
+│
+├── <span class="primary bold">riscv_emulator</span> <span class="dim">[Rust]</span>
+│   ├── <span class="dim">type:</span> RV64IM Cycle-Accurate Simulator
+│   ├── <span class="dim">tech:</span> 5-stage pipeline, GShare BP, VFS, Shell
+│   └── <a href="https://github.com/${config.github}/riscv-cpu-sim" target="_blank">[source_code]</a>
+│
+├── <span class="primary bold">systems_compiler</span> <span class="dim">[Rust]</span>
+│   ├── <span class="dim">type:</span> C-Subset to RISC-V ASM
+│   ├── <span class="dim">tech:</span> AST generation, Stack-machine codegen
+│   └── <a href="https://github.com/uofa-systems/compiler" target="_blank">[source_code]</a>
+│
+└── <span class="primary bold">ray_tracer</span> <span class="dim">[Rust]</span>
+    ├── <span class="dim">type:</span> Multithreaded PBR Renderer
+    ├── <span class="dim">tech:</span> Monte Carlo, Rayon, BVH
+    └── <a href="https://github.com/${config.github}/ray-tracer" target="_blank">[source_code]</a>
+`,
+
+            'about': `
+<span class="secondary bold">>> SYSTEM / USER_PROFILE</span>
+========================
+
+<span class="dim">NAME:</span>     Will McCallion
+<span class="dim">LOCATION:</span> Canada
+<span class="dim">FOCUS:</span>    Performance Engineering & Systems Architecture
+
+<span class="primary bold">EDUCATION:</span>
+Honors Computer Science
+<span class="dim">University of Alberta (Expected 2027)</span>
+
+<span class="dim">"I build things that run close to the metal. I enjoy optimizing 
+critical paths and understanding how hardware executes software."</span>
+`,
+
+            'contact': `
+<span class="secondary bold">>> HOME / CONTACT_UPLINK</span>
+========================
+
+<span class="highlight">Email:</span>    <a href="mailto:${config.email}">${config.email}</a>
+<span class="highlight">GitHub:</span>   <a href="https://github.com/${config.github}" target="_blank">github.com/${config.github}</a>
+<span class="highlight">LinkedIn:</span> <a href="https://linkedin.com/in/${config.linkedin}" target="_blank">linkedin.com/in/${config.linkedin}</a>
+`,
+
+            'resume': `
+<span class="highlight bold">>> INITIATING DOWNLOAD...</span>
+=========================
+
+<span class="primary">SUCCESS:</span> resume.pdf retrieved.
+
+<a href="./resume.pdf" class="bold" target="_blank" style="font-size: 1.2em; border-bottom: 2px solid;">[ DOWNLOAD PDF ]</a>
+`
+        };
+
+        // --- FUNCTIONALITY ---
+
+        function handleScreenClick() {
+            // Only focus input if user isn't highlighting text
+            const selection = window.getSelection();
+            if (selection.type !== 'Range') {
+                realInput.focus();
+            }
+        }
+
+        // Theme Dropdown Logic
+        function toggleThemeMenu(e) {
+            e.stopPropagation();
+            themeMenu.classList.toggle('show');
+        }
+
+        function setTheme(theme) {
+            if (theme === 'green') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+            themeMenu.classList.remove('show');
+            realInput.focus();
+        }
+
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', () => {
+            themeMenu.classList.remove('show');
+        });
+
+        // Command Execution
+        window.exec = function(cmd) {
+            if (isBooting) return;
+            
+            const cleanCmd = cmd.toLowerCase().trim();
+            const baseCmd = cleanCmd.split(' ').pop(); 
+
+            if (pages[baseCmd]) {
+                displayArea.classList.remove('glitch-active');
+                void displayArea.offsetWidth; 
+                displayArea.classList.add('glitch-active');
+                displayArea.innerHTML = pages[baseCmd];
+                
+                if (baseCmd === 'home') currentPath = '~';
+                else currentPath = `~/${baseCmd}`;
+                pathSpan.innerText = currentPath;
+
+            } else if (cleanCmd === 'clear') {
+                displayArea.innerHTML = '';
+            } else if (cleanCmd === 'sudo') {
+                 displayArea.innerHTML = `<span class="alert">Permission denied:</span> User 'visitor' is not in the sudoers file. This incident will be reported.`;
+            } else if (cleanCmd === 'exit') {
+                 displayArea.innerHTML = `<span class="dim">There is no escape.</span>`;
+            } else if (cleanCmd.startsWith('rm -rf')) {
+                 displayArea.innerHTML = `<span class="alert">Why would you want to do that...</span>`;
+            } else if (cleanCmd === 'ls' || cleanCmd === 'dir' || cleanCmd === 'help') {
+                displayArea.innerHTML = `<span class="dim">Available commands:</span><br><span class="highlight">projects  skills  about  resume  contact  home</span>`;
+            } else if (cleanCmd !== '') {
+                displayArea.innerHTML = `<span class="alert">bash: ${cleanCmd}: command not found</span><br><span class="dim">Type 'home' for menu.</span>`;
+            }
+
+            realInput.value = '';
+            visualInput.textContent = '';
+            ghostInput.textContent = ''; // Clear ghost
+            screen.scrollTop = 0; 
+            realInput.focus();
+        };
+
+        // Key Listeners
+        realInput.addEventListener('input', () => {
+            const val = realInput.value;
+            visualInput.textContent = val;
+            
+            // Fish-style Autocomplete Logic
+            ghostInput.textContent = ''; // Reset
+            if (val.length > 0) {
+                const availableCmds = Object.keys(pages);
+                // Find command that starts with input
+                const match = availableCmds.find(cmd => cmd.startsWith(val.toLowerCase()));
+                if (match) {
+                    // Display only the remaining part of the command
+                    const suffix = match.slice(val.length);
+                    ghostInput.textContent = suffix;
+                }
+            }
+        });
+
+        realInput.addEventListener('keydown', (e) => {
+            // Handle Tab or Right Arrow to accept Autocomplete
+            if (e.key === 'Tab' || (e.key === 'ArrowRight' && realInput.selectionStart === realInput.value.length)) {
+                if (ghostInput.textContent !== '') {
+                    e.preventDefault();
+                    realInput.value += ghostInput.textContent;
+                    visualInput.textContent = realInput.value;
+                    ghostInput.textContent = '';
+                    return;
+                }
+                if (e.key === 'Tab') e.preventDefault(); // Prevent focus loss if no match
+            }
+
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    realInput.value = commandHistory[historyIndex];
+                    visualInput.textContent = realInput.value;
+                    ghostInput.textContent = '';
+                }
+                return;
+            }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    realInput.value = commandHistory[historyIndex];
+                    visualInput.textContent = realInput.value;
+                    ghostInput.textContent = '';
+                } else {
+                    historyIndex = commandHistory.length;
+                    realInput.value = '';
+                    visualInput.textContent = '';
+                    ghostInput.textContent = '';
+                }
+                return;
+            }
+
+            if (e.key === 'Enter') {
+                const val = realInput.value.trim();
+                if (val) {
+                    commandHistory.push(val);
+                    historyIndex = commandHistory.length;
+                    exec(val);
+                }
+            }
+        });
+
+        // Boot Logic (Session Storage to run only once)
+        const bootLines = [
+            "Initializing Kernel...",
+            "Loading Modules...",
+            "Access Granted."
+        ];
+
+        async function runBoot() {
+            if (sessionStorage.getItem('booted')) {
+                isBooting = false;
+                exec('home');
+                return;
+            }
+
+            for (let line of bootLines) {
+                displayArea.innerHTML += `<div class="dim">${line}</div>`;
+                await new Promise(r => setTimeout(r, 150));
+            }
+            await new Promise(r => setTimeout(r, 300));
+            displayArea.innerHTML = '';
+            isBooting = false;
+            sessionStorage.setItem('booted', 'true');
+            exec('home');
+        }
+
+        setInterval(() => {
+            const now = new Date();
+            clock.innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }, 1000);
+
+        runBoot();
+    </script>
+</body>
+</html>
