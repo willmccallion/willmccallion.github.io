@@ -10,7 +10,7 @@
     <meta property="og:title" content="Will McCallion :: Systems Engineer">
     <meta property="og:description" content="Interactive Terminal Portfolio. Rust, RISC-V, and Low-Level Engineering.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://willmccallion.github.io/"> <!-- Change this to your actual URL -->
+    <meta property="og:url" content="https://willmccallion.github.io/"> 
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22grey%22>_</text></svg>">
     
@@ -171,6 +171,13 @@
             scrollbar-gutter: stable;
         }
 
+        /* Crash Overlay */
+        #panic-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: black; z-index: 999; display: none;
+            padding: 50px; color: var(--alert-color); font-family: var(--font-stack);
+        }
+
         .content-layer {
             white-space: pre-wrap;
             max-width: 900px;
@@ -275,6 +282,7 @@
 <body>
 
     <div class="scanlines"></div>
+    <div id="panic-overlay"></div>
 
     <div id="nav-bar">
         <div class="nav-group">
@@ -333,11 +341,37 @@
         const clock = document.getElementById('clock');
         const screen = document.getElementById('screen');
         const themeMenu = document.getElementById('theme-menu');
+        const panicOverlay = document.getElementById('panic-overlay');
 
         let currentPath = "~";
         let commandHistory = [];
         let historyIndex = -1;
         let isBooting = true;
+        let isMuted = false;
+        
+        // --- AUDIO ENGINE ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTypingSound() {
+            if (isMuted || audioCtx.state === 'suspended') {
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+                if(isMuted) return;
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            // Filtered noise click simulation
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.03);
+            
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
+        }
 
         const headerArt = `
 <span class="highlight" style="font-size: 10px; line-height: 10px;">
@@ -347,6 +381,61 @@
  \\        /|  |  |_|  |__
   \\__/\\__/ |__|____/____/
 </span>`;
+
+        // Virtual File System for 'cat' command
+        // Keys now exactly match github repo names (slugs)
+        const fileSystem = {
+            "chess": `
+<span class="primary bold">FILE: chess/README.md</span>
+====================
+<span class="dim">Project:</span> UCI Chess Engine
+<span class="dim">Language:</span> Rust
+<span class="dim">Description:</span>
+A high-performance chess engine compliant with the Universal Chess Interface (UCI).
+Features:
+- Magic Bitboard move generation
+- Alpha-Beta pruning with Principal Variation Search
+- Transposition Tables
+- NNUE Evaluation (ported)
+`,
+            "riscv-cpu-sim": `
+<span class="primary bold">FILE: riscv-cpu-sim/README.md</span>
+====================
+<span class="dim">Project:</span> RISC-V 64IM Emulator
+<span class="dim">Language:</span> Rust
+<span class="dim">Description:</span>
+Cycle-accurate simulator for the RISC-V 64-bit integer + multiply ISA.
+Includes:
+- 5-stage pipeline simulation
+- GShare Branch Prediction visualization
+- Virtual File System mapping
+- Supports running ELF binaries
+`,
+            "compiler": `
+<span class="primary bold">FILE: compiler/README.md</span>
+====================
+<span class="dim">Project:</span> C Subset Compiler
+<span class="dim">Target:</span> RISC-V Assembly
+<span class="dim">Description:</span>
+A recursive descent compiler for a subset of C.
+Generates non-optimized RISC-V assembly.
+Handles:
+- Pointers and Memory allocation
+- Function calls and stack frames
+- Control flow (if/while/for)
+`,
+            "ray-tracer": `
+<span class="primary bold">FILE: ray-tracer/README.md</span>
+====================
+<span class="dim">Project:</span> PBR Ray Tracer
+<span class="dim">Libs:</span> Rayon (Parallelism)
+<span class="dim">Description:</span>
+A path tracer implementing 'Ray Tracing in One Weekend' + advanced features.
+- BVH (Bounding Volume Hierarchy) for O(log n) intersections
+- Monte Carlo Integration
+- Multithreading via Rayon
+`
+        };
 
         const pages = {
             'home': `
@@ -365,7 +454,7 @@ emulation, and compiler infrastructure.
   > <span class="cmd-link" onclick="exec('resume')">resume</span>     ::  Download PDF Resume
   > <span class="cmd-link" onclick="exec('contact')">contact</span>    ::  Connect via Email/Socials
   
-<span class="dim">Tip: Use <span class="highlight">TAB</span> to autocomplete.</span>
+<span class="dim">Tip: Type <span class="highlight">help</span> for all commands.</span>
 `,
             'skills': `
 <span class="secondary bold">>> SYSTEM / TOOLCHAIN</span>
@@ -386,25 +475,22 @@ emulation, and compiler infrastructure.
             'projects': `
 <span class="secondary bold">>> HOME / PROJECTS_DIRECTORY</span>
 ============================
+<span class="dim">Tip: Use '<span class="highlight">cat [name]</span>' to read project details (e.g., 'cat chess')</span>
 <span class="dim">.</span>
-├── <span class="primary bold">chess_engine</span> <span class="dim">[Rust]</span>
+├── <span class="primary bold">chess</span> <span class="dim">[Rust]</span>
 │   ├── <span class="dim">type:</span> UCI-compliant engine
-│   ├── <span class="dim">tech:</span> Alpha-Beta, Magic Bitboards, NNUE
 │   └── <a href="https://github.com/${config.github}/chess" target="_blank">[source_code]</a>
 │
-├── <span class="primary bold">riscv_emulator</span> <span class="dim">[Rust]</span>
+├── <span class="primary bold">riscv-cpu-sim</span> <span class="dim">[Rust]</span>
 │   ├── <span class="dim">type:</span> RV64IM Cycle-Accurate Simulator
-│   ├── <span class="dim">tech:</span> 5-stage pipeline, GShare BP, VFS, Shell
 │   └── <a href="https://github.com/${config.github}/riscv-cpu-sim" target="_blank">[source_code]</a>
 │
-├── <span class="primary bold">systems_compiler</span> <span class="dim">[Rust]</span>
+├── <span class="primary bold">compiler</span> <span class="dim">[Rust]</span>
 │   ├── <span class="dim">type:</span> C-Subset to RISC-V ASM
-│   ├── <span class="dim">tech:</span> AST generation, Stack-machine codegen
 │   └── <a href="https://github.com/uofa-systems/compiler" target="_blank">[source_code]</a>
 │
-└── <span class="primary bold">ray_tracer</span> <span class="dim">[Rust]</span>
+└── <span class="primary bold">ray-tracer</span> <span class="dim">[Rust]</span>
     ├── <span class="dim">type:</span> Multithreaded PBR Renderer
-    ├── <span class="dim">tech:</span> Monte Carlo, Rayon, BVH
     └── <a href="https://github.com/${config.github}/ray-tracer" target="_blank">[source_code]</a>
 `,
 
@@ -458,6 +544,10 @@ Honors Computer Science
             if (selection.type !== 'Range') {
                 realInput.focus();
             }
+            // Init audio context if suspended
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
 
         function toggleThemeMenu(e) {
@@ -479,50 +569,120 @@ Honors Computer Science
             themeMenu.classList.remove('show');
         });
 
+        // --- COMMAND EXECUTION ---
         window.exec = function(cmd) {
             if (isBooting) return;
             
-            const cleanCmd = cmd.toLowerCase().trim();
-            const baseCmd = cleanCmd.split(' ').pop(); 
+            const rawCmd = cmd.trim();
+            const cleanCmd = rawCmd.toLowerCase();
+            const parts = cleanCmd.split(' ');
+            const baseCmd = parts[0];
+            const arg = parts[1];
+
+            // Sudo Crash Logic
+            if (cleanCmd === "sudo rm -rf /") {
+                triggerPanic();
+                return;
+            }
+
+            let output = "";
 
             if (pages[baseCmd]) {
-                displayArea.classList.remove('glitch-active');
-                void displayArea.offsetWidth; 
-                displayArea.classList.add('glitch-active');
-                displayArea.innerHTML = pages[baseCmd];
-                
+                output = pages[baseCmd];
                 if (baseCmd === 'home') currentPath = '~';
                 else currentPath = `~/${baseCmd}`;
                 pathSpan.innerText = currentPath;
-
-            } else if (cleanCmd === 'clear') {
+            } 
+            else if (baseCmd === 'cat' || baseCmd === 'read') {
+                if (!arg) {
+                    output = `<span class="alert">Usage: cat [filename]</span>`;
+                } else if (fileSystem[arg]) {
+                    output = fileSystem[arg];
+                } else {
+                    output = `<span class="alert">cat: ${arg}: No such file or directory</span>`;
+                }
+            }
+            else if (baseCmd === 'clear') {
                 displayArea.innerHTML = '';
-            } else if (cleanCmd === 'sudo') {
-                 displayArea.innerHTML = `<span class="alert">Permission denied:</span> User 'visitor' is not in the sudoers file. This incident will be reported.`;
-            } else if (cleanCmd === 'exit') {
-                 displayArea.innerHTML = `<span class="dim">There is no escape.</span>`;
-            } else if (cleanCmd.startsWith('rm -rf')) {
-                 displayArea.innerHTML = `<span class="alert">Why would you want to do that...</span>`;
-            } else if (cleanCmd === 'ls' || cleanCmd === 'dir' || cleanCmd === 'help') {
-                displayArea.innerHTML = `<span class="dim">Available commands:</span><br><span class="highlight">projects  skills  about  resume  contact  home</span>`;
-            } else if (cleanCmd !== '') {
-                displayArea.innerHTML = `<span class="alert">bash: ${cleanCmd}: command not found</span><br><span class="dim">Type 'home' for menu.</span>`;
+                realInput.value = '';
+                return;
+            }
+            else if (baseCmd === 'history') {
+                output = commandHistory.map((c, i) => `<span class="dim">${i + 1}</span> ${c}`).join('<br>');
+            }
+            else if (baseCmd === 'date') {
+                output = new Date().toString();
+            }
+            else if (baseCmd === 'echo') {
+                output = rawCmd.substring(5);
+            }
+            else if (baseCmd === 'whoami') {
+                output = "visitor";
+            }
+            else if (baseCmd === 'mute') {
+                isMuted = !isMuted;
+                output = `<span class="dim">Audio: ${isMuted ? 'OFF' : 'ON'}</span>`;
+            }
+            else if (baseCmd === 'sudo') {
+                 output = `<span class="alert">Permission denied:</span> User 'visitor' is not in the sudoers file. This incident will be reported.`;
+            } 
+            else if (baseCmd === 'ls' || baseCmd === 'dir' || baseCmd === 'help') {
+                output = `<span class="dim">Available commands:</span><br>
+<span class="highlight">projects</span>  <span class="dim">View project list</span>
+<span class="highlight">cat [file]</span><span class="dim">Read file content</span>
+<span class="highlight">skills</span>    <span class="dim">View tech stack</span>
+<span class="highlight">about</span>     <span class="dim">About me</span>
+<span class="highlight">clear</span>     <span class="dim">Clear screen</span>
+<span class="highlight">history</span>   <span class="dim">Command history</span>
+<span class="highlight">mute</span>      <span class="dim">Toggle sound</span>`;
+            } 
+            else if (cleanCmd !== '') {
+                output = `<span class="alert">bash: ${cleanCmd}: command not found</span><br><span class="dim">Type 'help' for available commands.</span>`;
+            }
+
+            if (output) {
+                displayArea.classList.remove('glitch-active');
+                void displayArea.offsetWidth; 
+                displayArea.classList.add('glitch-active');
+                displayArea.innerHTML = output;
             }
 
             realInput.value = '';
             visualInput.textContent = '';
-            ghostInput.textContent = ''; // Clear ghost
+            ghostInput.textContent = ''; 
             screen.scrollTop = 0; 
             realInput.focus();
         };
 
+        function triggerPanic() {
+            panicOverlay.style.display = 'block';
+            panicOverlay.innerHTML = `
+<span class="bold">KERNEL PANIC: CRITICAL ERROR</span><br><br>
+Instruction at 0x00007FF7423 referenced memory at 0xFFFFFFFF.<br>
+The memory could not be "read".<br><br>
+Dump:<br>
+0x00A4 0x44B2 0x1123 0x0000<br>
+0x99A2 0x115B 0x0000 0x1123<br><br>
+<span class="blink">System halting...</span>
+`;
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        }
+
         realInput.addEventListener('input', () => {
             const val = realInput.value;
             visualInput.textContent = val;
+            
+            // Play Sound
+            if (val.length > visualInput.dataset.len || 0) {
+                 playTypingSound();
+            }
+            visualInput.dataset.len = val.length;
 
             ghostInput.textContent = ''; 
             if (val.length > 0) {
-                const availableCmds = Object.keys(pages);
+                const availableCmds = Object.keys(pages).concat(['clear', 'help', 'history', 'cat', 'whoami', 'sudo', 'date']);
                 const match = availableCmds.find(cmd => cmd.startsWith(val.toLowerCase()));
                 if (match) {
                     const suffix = match.slice(val.length);
