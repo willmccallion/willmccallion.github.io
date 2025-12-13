@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- --- SEO & SOCIAL PREVIEWS --- -->
     <title>willmccallion@dev: ~</title>
     <meta name="description" content="Systems Engineer specializing in Rust, Emulation, and Compilers.">
     
-    <!-- LinkedIn / Discord Preview -->
     <meta property="og:title" content="Will McCallion :: Systems Engineer">
     <meta property="og:description" content="Interactive Terminal Portfolio. Rust, RISC-V, and Low-Level Engineering.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://willmccallion.github.io/"> <!-- Change this to your actual URL -->
     
-    <!-- Favicon: A terminal prompt -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22grey%22>_</text></svg>">
     
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
@@ -78,7 +75,6 @@
             --scrollbar-hover: #ebdbb2;
         }
 
-        /* --- GLOBAL & SCROLLBAR --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
@@ -93,14 +89,13 @@
             font-size: 14px;
             line-height: 1.6;
             height: 100vh;
-            height: 100dvh; /* Mobile fix */
+            height: 100dvh; 
             width: 100vw;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* --- NAV BAR --- */
         #nav-bar {
             height: 40px;
             background: rgba(0,0,0,0.2);
@@ -126,7 +121,6 @@
         }
         .nav-item:hover { color: var(--primary-color); text-shadow: var(--glow); }
 
-        /* --- DROPDOWN MENU --- */
         .dropdown-container { position: relative; }
         .dropdown-btn { 
             border: 1px solid var(--text-dim); 
@@ -149,7 +143,7 @@
             border: 1px solid var(--border-color);
             list-style: none;
             padding: 5px 0;
-            display: none; /* Hidden by default */
+            display: none; 
             width: 120px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
@@ -166,7 +160,6 @@
             color: var(--primary-color);
         }
 
-        /* --- SCREEN --- */
         #screen {
             flex: 1;
             position: relative;
@@ -186,7 +179,6 @@
             padding-bottom: 20px;
         }
 
-        /* Typography */
         .primary { color: var(--primary-color); text-shadow: var(--glow); }
         .secondary { color: var(--secondary-color); }
         .highlight { color: var(--highlight-color); }
@@ -218,7 +210,6 @@
             border-radius: 2px;
         }
 
-        /* --- INPUT --- */
         #input-container {
             height: 50px;
             border-top: 1px solid var(--border-color);
@@ -233,7 +224,6 @@
 
         #visual-input { display: inline; outline: none; border: none; white-space: pre; }
         
-        /* Ghost Input for Fish-like autocomplete */
         #ghost-input {
             display: inline;
             color: var(--text-dim);
@@ -244,7 +234,6 @@
         
         #real-input { 
             position: absolute; opacity: 0; top: -1000px; 
-            /* Critical for mobile to not zoom in */
             font-size: 16px; 
         }
 
@@ -291,7 +280,6 @@
         <div class="nav-group">
             <span class="primary bold">● SYSTEM_READY</span>
             
-            <!-- Custom Dropdown Menu -->
             <div class="dropdown-container">
                 <div class="dropdown-btn" id="theme-btn" onclick="toggleThemeMenu(event)">THEME ▾</div>
                 <ul id="theme-menu">
@@ -326,7 +314,7 @@
         </span>
         <div id="visual-input"></div><div id="ghost-input"></div>
         <div class="cursor-block"></div>
-        <!-- IMPORTANT: No Autocorrect/Autocapitalize for code commands -->
+        <!-- No Autocorrect/Autocapitalize for code commands -->
         <input type="text" id="real-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
     </div>
 
@@ -432,8 +420,14 @@ emulation, and compiler infrastructure.
 Honors Computer Science
 <span class="dim">University of Alberta (Expected 2027)</span>
 
-<span class="dim">"I build things that run close to the metal. I enjoy optimizing 
-critical paths and understanding how hardware executes software."</span>
+<span class="highlight bold">RELEVANT_COURSEWORK:</span>
+  ├── <span class="primary">Advanced Algorithms</span>
+  ├── <span class="primary">Computer Architecture</span>
+  ├── <span class="primary">Procedural Programming</span>
+  ├── <span class="primary">Linear Algebra II</span>
+  ├── <span class="primary">Calculus IV</span>
+  ├── <span class="primary">Machine Learning I</span>
+  └── <span class="primary">Databases</span>
 `,
 
             'contact': `
@@ -455,17 +449,14 @@ critical paths and understanding how hardware executes software."</span>
 `
         };
 
-        // --- FUNCTIONALITY ---
 
         function handleScreenClick() {
-            // Only focus input if user isn't highlighting text
             const selection = window.getSelection();
             if (selection.type !== 'Range') {
                 realInput.focus();
             }
         }
 
-        // Theme Dropdown Logic
         function toggleThemeMenu(e) {
             e.stopPropagation();
             themeMenu.classList.toggle('show');
@@ -481,12 +472,10 @@ critical paths and understanding how hardware executes software."</span>
             realInput.focus();
         }
 
-        // Close dropdown when clicking elsewhere
         document.addEventListener('click', () => {
             themeMenu.classList.remove('show');
         });
 
-        // Command Execution
         window.exec = function(cmd) {
             if (isBooting) return;
             
@@ -524,19 +513,15 @@ critical paths and understanding how hardware executes software."</span>
             realInput.focus();
         };
 
-        // Key Listeners
         realInput.addEventListener('input', () => {
             const val = realInput.value;
             visualInput.textContent = val;
-            
-            // Fish-style Autocomplete Logic
-            ghostInput.textContent = ''; // Reset
+
+            ghostInput.textContent = ''; 
             if (val.length > 0) {
                 const availableCmds = Object.keys(pages);
-                // Find command that starts with input
                 const match = availableCmds.find(cmd => cmd.startsWith(val.toLowerCase()));
                 if (match) {
-                    // Display only the remaining part of the command
                     const suffix = match.slice(val.length);
                     ghostInput.textContent = suffix;
                 }
@@ -544,7 +529,6 @@ critical paths and understanding how hardware executes software."</span>
         });
 
         realInput.addEventListener('keydown', (e) => {
-            // Handle Tab or Right Arrow to accept Autocomplete
             if (e.key === 'Tab' || (e.key === 'ArrowRight' && realInput.selectionStart === realInput.value.length)) {
                 if (ghostInput.textContent !== '') {
                     e.preventDefault();
@@ -553,7 +537,7 @@ critical paths and understanding how hardware executes software."</span>
                     ghostInput.textContent = '';
                     return;
                 }
-                if (e.key === 'Tab') e.preventDefault(); // Prevent focus loss if no match
+                if (e.key === 'Tab') e.preventDefault(); 
             }
 
             if (e.key === 'ArrowUp') {
@@ -592,7 +576,6 @@ critical paths and understanding how hardware executes software."</span>
             }
         });
 
-        // Boot Logic (Session Storage to run only once)
         const bootLines = [
             "Initializing Kernel...",
             "Loading Modules...",
