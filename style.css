@@ -1,0 +1,342 @@
+:root {
+    --bg-color: #1d2021;      
+    --text-main: #ebdbb2;     
+    --text-dim: #928374;      
+    --border-color: #3c3836;  
+    --primary-color: #d79921; /* Yellow/Amber */
+    --secondary-color: #83a598; /* Blue/Grey */
+    --highlight-color: #fe8019; /* Orange */
+    --alert-color: #cc241d; /* Red */
+    --font-stack: 'Fira Code', monospace;
+    --cursor-color: #ebdbb2;
+    --scrollbar-thumb: #928374;
+    --scrollbar-hover: #d79921;
+    
+    --ls-dir: #83a598; /* Blue */
+    --ls-exec: #b8bb26; /* Green */
+    --ls-link: #8ec07c; /* Cyan/Aqua */
+    --ls-file: #ebdbb2; /* Standard */
+    --ls-perm: #d3869b; /* Purple/Pink */
+    --ls-meta: #928374; /* Dim */
+}
+
+[data-theme="matrix"] {
+    --bg-color: #0d1117;
+    --text-main: #c9d1d9;
+    --text-dim: #6e7681;
+    --border-color: #30363d;
+    --primary-color: #39ff14; 
+    --secondary-color: #58a6ff; 
+    --highlight-color: #f778ba; 
+    --alert-color: #ff7b72;     
+    --cursor-color: #39ff14;
+    
+    --ls-dir: #58a6ff;
+    --ls-exec: #39ff14;
+    --ls-link: #39ff14;
+    --ls-file: #c9d1d9;
+    --ls-perm: #79c0ff;
+    --ls-meta: #6e7681;
+}
+
+[data-theme="cyberpunk"] {
+    --bg-color: #050a14;
+    --text-main: #d4f0f0;
+    --text-dim: #546e7a;
+    --border-color: #1e293b;
+    --primary-color: #00ffff;
+    --secondary-color: #00b7eb;
+    --highlight-color: #ff00ff;
+    --alert-color: #ff3333;
+    --cursor-color: #00ffff;
+    
+    --ls-dir: #00b7eb;
+    --ls-exec: #00ffff;
+    --ls-link: #00ffff;
+    --ls-file: #d4f0f0;
+    --ls-perm: #d2a8ff;
+    --ls-meta: #546e7a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-stack);
+    font-size: 14px;
+    line-height: 1.6;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; border: 2px solid var(--bg-color); }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
+
+#simple-ui {
+    height: 100%;
+    overflow-y: auto;
+    padding: 40px;
+    display: block;
+    max-width: 900px;
+    margin: 0 auto;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#simple-ui::-webkit-scrollbar {
+    display: none;
+}
+
+.header-block { border-bottom: 2px solid var(--text-dim); padding-bottom: 20px; margin-bottom: 40px; position: relative; }
+.title-large { font-size: 24px; color: var(--primary-color); font-weight: 700; margin-bottom: 5px; }
+.subtitle { color: var(--text-dim); }
+
+.section-title {
+    color: var(--highlight-color);
+    font-weight: 700;
+    border-bottom: 1px dashed var(--text-dim);
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.simple-link { color: var(--secondary-color); text-decoration: none; border-bottom: 1px dotted var(--secondary-color); cursor: pointer; transition: 0.2s; }
+.simple-link:hover { background: var(--secondary-color); color: var(--bg-color); }
+
+.grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+.item-box { margin-bottom: 20px; }
+.item-head { display: flex; justify-content: space-between; font-weight: 700; color: var(--text-main); }
+.item-desc { color: var(--text-dim); font-size: 13px; margin-top: 5px; }
+.tag { display: inline-block; border: 1px solid var(--text-dim); padding: 2px 6px; font-size: 11px; margin-right: 5px; color: var(--text-dim); margin-top: 5px; }
+
+#mode-toggle {
+    position: absolute; top: 0; right: 0;
+    cursor: pointer; color: var(--text-dim);
+    border: 1px solid var(--text-dim); padding: 5px 10px;
+    font-size: 12px; transition: 0.2s;
+}
+#mode-toggle:hover { color: var(--primary-color); border-color: var(--primary-color); }
+
+/* --- TERMINAL UI --- */
+#terminal-ui { display: none; height: 100%; width: 100%; flex-direction: column; }
+
+#nav-bar {
+    height: 40px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    font-size: 12px;
+    flex-shrink: 0;
+    user-select: none;
+    z-index: 20;
+}
+
+.nav-group { display: flex; gap: 15px; align-items: center; position: relative; }
+.nav-item { cursor: pointer; color: var(--text-dim); font-weight: bold; transition: 0.2s; }
+.nav-item:hover { color: var(--primary-color); }
+
+.dropdown-container { position: relative; }
+.dropdown-btn { 
+    border: 1px solid var(--text-dim); 
+    padding: 2px 8px; 
+    border-radius: 4px; 
+    font-size: 10px; 
+    cursor: pointer;
+    color: var(--text-dim);
+}
+.dropdown-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
+
+#theme-menu {
+    position: absolute; top: 25px; left: 0;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    list-style: none; padding: 5px 0;
+    display: none; width: 120px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 50;
+}
+#theme-menu.show { display: block; }
+.theme-option { padding: 5px 10px; cursor: pointer; color: var(--text-dim); font-size: 11px; }
+.theme-option:hover { background: var(--border-color); color: var(--primary-color); }
+
+#screen {
+    flex: 1;
+    position: relative;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column; 
+}
+
+.content-layer {
+    white-space: pre-wrap;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#input-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-shrink: 0;
+    padding-top: 10px; 
+}
+
+#visual-input { display: inline; outline: none; border: none; white-space: pre; color: var(--text-main); }
+#ghost-input { display: inline; color: var(--text-dim); opacity: 0.5; pointer-events: none; white-space: pre; }
+#real-input { position: absolute; opacity: 0; top: -1000px; font-size: 16px; }
+
+.cursor-block {
+    display: inline-block; width: 10px; height: 1.2em;
+    background-color: var(--cursor-color);
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+}
+
+#vim-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: var(--bg-color);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+}
+#vim-content {
+    flex: 1;
+    background: transparent;
+    border: none;
+    resize: none;
+    color: var(--text-main);
+    font-family: var(--font-stack);
+    font-size: 14px;
+    outline: none;
+}
+#vim-status-bar {
+    height: 25px;
+    background: var(--text-dim);
+    color: var(--bg-color);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+#vim-mode { margin-right: 15px; text-transform: uppercase; }
+
+.scanlines {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 50%);
+    background-size: 100% 4px; pointer-events: none; z-index: 900; display: none;
+}
+#panic-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: black; z-index: 999; display: none;
+    padding: 50px; color: var(--alert-color); font-family: var(--font-stack);
+}
+
+.primary { color: var(--primary-color); }
+.secondary { color: var(--secondary-color); }
+.highlight { color: var(--highlight-color); }
+.dim { color: var(--text-dim); }
+.alert { color: var(--alert-color); }
+.bold { font-weight: 700; }
+
+.ls-row { display: block; white-space: pre; font-family: var(--font-stack); }
+.ls-perm { color: var(--ls-perm); }
+.ls-meta { color: var(--ls-meta); }
+.ls-dir { color: var(--ls-dir); font-weight: 700; }
+.ls-file { color: var(--ls-file); }
+
+.ls-exec { 
+    color: var(--ls-exec); 
+    font-weight: 700; 
+    cursor: pointer; 
+    text-decoration: none;
+}
+.ls-exec:hover { 
+    background-color: var(--ls-exec); 
+    color: var(--bg-color); 
+}
+
+.ls-link {
+    color: var(--ls-link);
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+}
+.ls-link:hover {
+    background-color: var(--ls-link); 
+    color: var(--bg-color); 
+}
+
+.boot-line { display: block; font-family: var(--font-stack); white-space: pre-wrap; margin-bottom: 2px; }
+.boot-bracket { color: var(--text-main); font-weight: bold; } 
+.boot-ok { color: #b8bb26; font-weight: bold; } 
+.boot-text { color: var(--text-main); }
+
+.cmd-link { 
+    cursor: pointer; 
+    color: var(--highlight-color); 
+    font-weight: 700; 
+    transition: all 0.1s ease; 
+    display: inline-block;
+    padding: 0 4px;
+    border-radius: 2px;
+}
+.cmd-link:hover { 
+    background-color: var(--highlight-color); 
+    color: var(--bg-color); 
+    box-shadow: none;
+}
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+@media (max-width: 600px) {
+    #simple-ui { padding: 20px; }
+    .nav-item { display: none; } 
+    .ls-row { font-size: 11px; }
+}
+
+[data-theme="cyberpunk"] body {
+    text-shadow: 0 0 1px rgba(0, 255, 255, 0.2); 
+}
+
+[data-theme="cyberpunk"] .title-large,
+[data-theme="cyberpunk"] .primary,
+[data-theme="cyberpunk"] .highlight,
+[data-theme="cyberpunk"] .section-title span:first-child {
+    text-shadow: 0 0 4px rgba(0, 255, 255, 0.4);
+}
+
+[data-theme="cyberpunk"] .tag,
+[data-theme="cyberpunk"] #mode-toggle,
+[data-theme="cyberpunk"] .dropdown-btn {
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.15); /* Very low opacity */
+    border-color: rgba(0, 255, 255, 0.5);
+}
+
+[data-theme="cyberpunk"] .section-title {
+    box-shadow: 0 2px 4px -2px rgba(0, 255, 255, 0.3);
+}
+
+[data-theme="cyberpunk"] .cursor-block {
+    box-shadow: 0 0 5px var(--primary-color);
+}
+
+[data-theme="cyberpunk"] .simple-link:hover,
+[data-theme="cyberpunk"] .ls-exec:hover, 
+[data-theme="cyberpunk"] .cmd-link:hover {
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+    text-shadow: none; 
+}

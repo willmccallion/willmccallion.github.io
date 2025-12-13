@@ -2,773 +2,172 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>willmccallion@dev: ~</title>
-    <meta name="description" content="Honors Computer Science student interested in Rust, Emulation, Computer Architecture, and Compilers.">
-    
-    <meta property="og:title" content="Will McCallion :: Student">
-    <meta property="og:description" content="Interactive Terminal Portfolio. Rust, RISC-V, and Low-Level Engineering.">
+    <meta name="description" content="Portfolio of Will McCallion, Honors CS Student at U of A. Systems, Rust, and Architecture.">
+    <meta property="og:title" content="will_mccallion.log">
+    <meta property="og:description" content="Interactive terminal portfolio. Rust, Compilers, and Emulation.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://willmccallion.github.io/"> 
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22grey%22>_</text></svg>">
+    <title>will_mccallion.log</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            /* Default: Matrix Green */
-            --bg-color: #0d1117;
-            --text-main: #c9d1d9;
-            --text-dim: #6e7681;
-            --border-color: #30363d;
-            --primary-color: #39ff14; 
-            --secondary-color: #58a6ff; 
-            --highlight-color: #f778ba; 
-            --alert-color: #ff7b72;     
-            --font-stack: 'Fira Code', monospace;
-            --glow: 0 0 5px rgba(57, 255, 20, 0.2);
-            --cursor-color: var(--primary-color);
-            --scrollbar-thumb: #30363d;
-            --scrollbar-hover: #6e7681;
-        }
-
-        [data-theme="amber"] {
-            --bg-color: #100f0f;
-            --text-main: #ffcc80;
-            --text-dim: #8d7b68;
-            --primary-color: #ffb000;
-            --secondary-color: #ffd700;
-            --highlight-color: #ffca28;
-            --alert-color: #ff3333;
-            --glow: 0 0 5px rgba(255, 176, 0, 0.2);
-            --scrollbar-thumb: #8d7b68;
-            --scrollbar-hover: #ffb000;
-        }
-        
-        [data-theme="cyan"] {
-            --bg-color: #050a14;
-            --text-main: #d4f0f0;
-            --text-dim: #546e7a;
-            --primary-color: #00ffff;
-            --secondary-color: #00b7eb;
-            --highlight-color: #ff00ff;
-            --alert-color: #ff3333;
-            --glow: 0 0 5px rgba(0, 255, 255, 0.2);
-            --scrollbar-thumb: #546e7a;
-            --scrollbar-hover: #00ffff;
-        }
-
-        [data-theme="gruvbox"] {
-            --bg-color: #282828;
-            --text-main: #ebdbb2;
-            --text-dim: #928374;
-            --border-color: #3c3836;
-            --primary-color: #b8bb26;
-            --secondary-color: #83a598;
-            --highlight-color: #fe8019;
-            --alert-color: #fb4934;
-            --glow: none;
-            --cursor-color: #ebdbb2;
-            --scrollbar-thumb: #928374;
-            --scrollbar-hover: #ebdbb2;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; border: 2px solid var(--bg-color); }
-        ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
-        ::selection { background: var(--primary-color); color: var(--bg-color); }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: var(--font-stack);
-            font-size: 14px;
-            line-height: 1.6;
-            height: 100vh;
-            height: 100dvh; 
-            width: 100vw;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #nav-bar {
-            height: 40px;
-            background: rgba(0,0,0,0.2);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-            font-size: 12px;
-            flex-shrink: 0;
-            z-index: 20;
-            user-select: none;
-        }
-
-        .nav-group { display: flex; gap: 15px; align-items: center; position: relative; }
-        
-        .nav-item {
-            cursor: pointer;
-            color: var(--text-dim);
-            transition: 0.2s;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .nav-item:hover { color: var(--primary-color); text-shadow: var(--glow); }
-
-        .dropdown-container { position: relative; }
-        .dropdown-btn { 
-            border: 1px solid var(--text-dim); 
-            padding: 2px 8px; 
-            border-radius: 4px; 
-            font-size: 10px; 
-            cursor: pointer;
-            color: var(--text-dim);
-        }
-        .dropdown-btn:hover, .dropdown-btn.active { 
-            border-color: var(--primary-color); 
-            color: var(--primary-color); 
-        }
-
-        #theme-menu {
-            position: absolute;
-            top: 25px;
-            left: 0;
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            list-style: none;
-            padding: 5px 0;
-            display: none; 
-            width: 120px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        #theme-menu.show { display: block; }
-
-        .theme-option {
-            padding: 5px 10px;
-            cursor: pointer;
-            color: var(--text-dim);
-            font-size: 11px;
-        }
-        .theme-option:hover {
-            background: var(--border-color);
-            color: var(--primary-color);
-        }
-
-        #screen {
-            flex: 1;
-            position: relative;
-            padding: 20px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            scrollbar-gutter: stable;
-        }
-
-        /* Crash Overlay */
-        #panic-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: black; z-index: 999; display: none;
-            padding: 50px; color: var(--alert-color); font-family: var(--font-stack);
-        }
-
-        .content-layer {
-            white-space: pre-wrap;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
-            padding-bottom: 20px;
-        }
-
-        .primary { color: var(--primary-color); text-shadow: var(--glow); }
-        .secondary { color: var(--secondary-color); }
-        .highlight { color: var(--highlight-color); }
-        .dim { color: var(--text-dim); }
-        .alert { color: var(--alert-color); }
-        .bold { font-weight: 700; }
-        
-        a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            border-bottom: 1px dashed var(--secondary-color);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        a:hover { background: var(--secondary-color); color: var(--bg-color); }
-
-        .cmd-link {
-            cursor: pointer;
-            color: var(--highlight-color);
-            font-weight: bold;
-            display: inline-block;
-            transition: 0.2s;
-        }
-        .cmd-link:hover {
-            color: var(--bg-color);
-            background-color: var(--highlight-color);
-            padding: 0 4px;
-            margin: 0 -4px;
-            border-radius: 2px;
-        }
-
-        #input-container {
-            height: 50px;
-            border-top: 1px solid var(--border-color);
-            background: var(--bg-color);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            flex-shrink: 0;
-            z-index: 20;
-            transition: background-color 0.3s ease;
-        }
-
-        #visual-input { display: inline; outline: none; border: none; white-space: pre; }
-        
-        #ghost-input {
-            display: inline;
-            color: var(--text-dim);
-            opacity: 0.5;
-            pointer-events: none;
-            white-space: pre;
-        }
-        
-        #real-input { 
-            position: absolute; opacity: 0; top: -1000px; 
-            font-size: 16px; 
-        }
-
-        .cursor-block {
-            display: inline-block;
-            width: 1ch;
-            height: 1.2em;
-            background-color: var(--cursor-color);
-            animation: blink 1s step-end infinite;
-            vertical-align: text-bottom;
-            box-shadow: var(--glow);
-        }
-
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 50%);
-            background-size: 100% 4px;
-            pointer-events: none; z-index: 10;
-        }
-
-        @keyframes glitch-anim {
-            0% { transform: translate(0); opacity: 0.9; }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); opacity: 1; }
-        }
-        .glitch-active { animation: glitch-anim 0.2s cubic-bezier(.25, .46, .45, .94) both; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-        @media (max-width: 600px) {
-            .ascii-logo { font-size: 6px; line-height: 6px; }
-            .nav-item { display: none; } 
-            #input-container { padding: 0 10px; font-size: 12px; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div id="simple-ui">
+        <div class="header-block">
+            <div id="mode-toggle" onclick="switchToTerminal()">[ &gt;_ ]</div>
+            <div class="title-large">WILL_MCCALLION</div>
+            <div class="subtitle">
+                &gt; Honors Computer Science<br>
+                &gt; University of Alberta, Class of 2027
+            </div>
+            
+            <div style="margin-top: 15px; max-width: 600px; color: var(--text-main);">
+                I am a systems-focused developer with a passion for 
+                <span class="highlight">low-level engineering</span>. 
+                I enjoy building emulators, compilers, and engines to understand 
+                how computers work from the metal up.
+            </div>
+
+            <div style="margin-top: 20px;">
+                <span class="dim">[</span> <a class="simple-link" href="mailto:wcmccallion@gmail.com">Email</a> <span class="dim">]</span>
+                <span class="dim">[</span> <a class="simple-link" href="https://github.com/willmccallion" target="_blank">GitHub</a> <span class="dim">]</span>
+                <span class="dim">[</span> <a class="simple-link" href="#">LinkedIn</a> <span class="dim">]</span>
+                <span class="dim">[</span> <span class="simple-link" onclick="downloadResume()">Download Resume</span> <span class="dim">]</span>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <span>01_PROJECTS</span> <span class="dim">// Recent work</span>
+        </div>
+        
+        <div class="item-box">
+            <div class="item-head">
+                <span>Chess Engine</span> <a class="simple-link" href="#">[source]</a>
+            </div>
+            <div class="item-desc">
+                High-performance UCI engine. Implements Magic Bitboards, Alpha-Beta pruning with PVS, NNUE evaluation, and Transposition Tables.
+            </div>
+            <div><span class="tag">Rust</span><span class="tag">Algorithms</span><span class="tag">Optimization</span></div>
+        </div>
+
+        <div class="item-box">
+            <div class="item-head">
+                <span>RISC-V CPU Simulator</span> <a class="simple-link" href="#">[source]</a>
+            </div>
+            <div class="item-desc">
+                Cycle-accurate simulator for the RISC-V 64IM ISA. Features 5-stage pipeline visualization and GShare branch prediction.
+            </div>
+            <div><span class="tag">Architecture</span><span class="tag">Emulation</span></div>
+        </div>
+
+        <div class="item-box">
+            <div class="item-head">
+                <span>C Subset Compiler</span> <a class="simple-link" href="#">[source]</a>
+            </div>
+            <div class="item-desc">
+                Recursive descent compiler targeting RISC-V Assembly. Handles pointers, stack allocation, and control flow.
+            </div>
+            <div><span class="tag">C++</span><span class="tag">Compilers</span><span class="tag">Assembly</span></div>
+        </div>
+
+        <div class="section-title">
+            <span>02_SKILLS</span> <span class="dim">// Toolkit</span>
+        </div>
+        <div class="grid-container">
+            <div>
+                <span class="dim">></span> <strong>Languages</strong><br>
+                <span class="dim">Rust, C, C++, Assembly (RISC-V), Python</span>
+            </div>
+            <div>
+                <span class="dim">></span> <strong>Environment</strong><br>
+                <span class="dim">Linux, Git, GDB, QEMU, LLVM</span>
+            </div>
+            <div>
+                <span class="dim">></span> <strong>Focus Areas</strong><br>
+                <span class="dim">Systems Programming, Computer Architecture, Emulation</span>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <span>03_RELEVANT_COURSEWORK</span> <span class="dim">// Academics</span>
+        </div>
+        <div class="item-box">
+            <div class="item-desc" style="margin-bottom: 10px;">
+                Selected coursework emphasizing systems, mathematics, and optimization.
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                <span class="tag">Advanced Algorithms</span>
+                <span class="tag">Machine Learning I</span>
+                <span class="tag">Computer Architecture I</span>
+                <span class="tag">Databases</span>
+                <span class="tag">Procedural Programming</span>
+                <span class="tag">Numerical Methods</span>
+                <span class="tag">Calculus IV</span>
+                <span class="tag">Linear Algebra II</span>
+                <span class="tag">Ordinary Differential Equations</span>
+                <span class="tag">Statistics</span>
+            </div>
+        </div>
+
+        <footer style="text-align: center; color: var(--text-dim); font-size: 0.8em; margin-top: 60px;">
+            <p>EOF: Generated by will_mccallion v2.5</p>
+        </footer>
+    </div>    
 
     <div class="scanlines"></div>
     <div id="panic-overlay"></div>
 
-    <div id="nav-bar">
-        <div class="nav-group">
-            <span class="primary bold">● SYSTEM_READY</span>
+    <div id="vim-overlay">
+        <textarea id="vim-content" spellcheck="false"></textarea>
+        <div id="vim-status-bar">
+            <span id="vim-mode">NORMAL</span>
+            <span id="vim-message">"vim_buffer.txt" [New File]</span>
+            <span style="margin-left: auto;">0,0-1</span>
+        </div>
+    </div>
+
+    <div id="terminal-ui" onclick="handleScreenClick()">
+        <div id="nav-bar">
+            <div class="nav-group">
+                <span class="primary bold">● SYSTEM_READY</span>
+                <div class="dropdown-container">
+                    <div class="dropdown-btn" id="theme-btn" onclick="toggleThemeMenu(event)">THEME ▾</div>
+                    <ul id="theme-menu">
+                        <li class="theme-option" onclick="setTheme('gruvbox')">Gruvbox (Def)</li>
+                        <li class="theme-option" onclick="setTheme('matrix')">Matrix</li>
+                        <li class="theme-option" onclick="setTheme('cyberpunk')">Cyberpunk</li>
+                    </ul>
+                </div>
+            </div>
             
-            <div class="dropdown-container">
-                <div class="dropdown-btn" id="theme-btn" onclick="toggleThemeMenu(event)">THEME ▾</div>
-                <ul id="theme-menu">
-                    <li class="theme-option" onclick="setTheme('green')">Matrix (Def)</li>
-                    <li class="theme-option" onclick="setTheme('amber')">Retro Amber</li>
-                    <li class="theme-option" onclick="setTheme('cyan')">Cyberpunk</li>
-                    <li class="theme-option" onclick="setTheme('gruvbox')">Gruvbox</li>
-                </ul>
+            <div class="nav-group desktop-nav">
+                <span class="nav-item" onclick="exec('home')">HOME</span>
+                <span class="nav-item" onclick="exec('ls projects')">PROJECTS</span>
+                <span class="nav-item" onclick="exec('about')">ABOUT</span>
+                <span class="nav-item" onclick="switchToSimple()">[ EXIT ]</span>
+            </div>
+
+            <div class="nav-group">
+                <span id="clock" class="dim">00:00</span>
             </div>
         </div>
-        
-        <div class="nav-group">
-            <span class="nav-item" onclick="exec('home')">HOME</span>
-            <span class="nav-item" onclick="exec('projects')">PROJECTS</span>
-            <span class="nav-item" onclick="exec('skills')">SKILLS</span>
-            <span class="nav-item" onclick="exec('about')">ABOUT</span>
-            <span class="nav-item" onclick="exec('contact')">CONTACT</span>
+
+        <div id="screen">
+            <div id="display-area" class="content-layer"></div>
+            
+            <div id="input-container">
+                <span style="margin-right: 10px; white-space: nowrap;">
+                    <span class="primary">visitor</span><span class="dim">@</span><span class="highlight">willdev</span><span class="dim">:</span><span id="path" class="secondary">~</span><span class="dim">$</span>
+                </span>
+                <div id="visual-input"></div><div id="ghost-input"></div>
+                <div class="cursor-block"></div>
+                <input type="text" id="real-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>
         </div>
-
-        <div class="nav-group">
-            <span id="clock" class="dim">00:00</span>
-        </div>
     </div>
 
-    <div id="screen" onclick="handleScreenClick()">
-        <div id="display-area" class="content-layer"></div>
-    </div>
-
-    <div id="input-container" onclick="handleScreenClick()">
-        <span style="margin-right: 10px; white-space: nowrap;">
-            <span class="primary">visitor</span><span class="dim">@</span><span class="highlight">willdev</span><span class="dim">:</span><span id="path" class="secondary">~</span><span class="dim">$</span>
-        </span>
-        <div id="visual-input"></div><div id="ghost-input"></div>
-        <div class="cursor-block"></div>
-        <!-- No Autocorrect/Autocapitalize for code commands -->
-        <input type="text" id="real-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
-    </div>
-
-    <script>
-        const config = {
-            github: "willmccallion",
-            email: "wcmccallion@gmail.com",
-            linkedin: "willmccallion"
-        };
-
-        const displayArea = document.getElementById('display-area');
-        const realInput = document.getElementById('real-input');
-        const visualInput = document.getElementById('visual-input');
-        const ghostInput = document.getElementById('ghost-input');
-        const pathSpan = document.getElementById('path');
-        const clock = document.getElementById('clock');
-        const screen = document.getElementById('screen');
-        const themeMenu = document.getElementById('theme-menu');
-        const panicOverlay = document.getElementById('panic-overlay');
-
-        let currentPath = "~";
-        let commandHistory = [];
-        let historyIndex = -1;
-        let isBooting = true;
-        let isMuted = true;
-        
-        // --- AUDIO ENGINE ---
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playTypingSound() {
-            if (isMuted || audioCtx.state === 'suspended') {
-                if(audioCtx.state === 'suspended') audioCtx.resume();
-                if(isMuted) return;
-            }
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            // Filtered noise click simulation
-            osc.type = 'square';
-            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.03);
-            
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.04);
-        }
-
-        const headerArt = `
-<span class="highlight" style="font-size: 10px; line-height: 10px;">
- __      __.__.__  .__   
-/  \\    /  \\__|  | |  |  
-\\   \\/\\/   /  |  | |  |  
- \\        /|  |  |_|  |__
-  \\__/\\__/ |__|____/____/
-</span>`;
-
-        // Virtual File System for 'cat' command
-        // Keys now exactly match github repo names (slugs)
-        const fileSystem = {
-            "chess": `
-<span class="primary bold">FILE: chess/README.md</span>
-====================
-<span class="dim">Project:</span> UCI Chess Engine
-<span class="dim">Language:</span> Rust
-<span class="dim">Description:</span>
-A high-performance chess engine compliant with the Universal Chess Interface (UCI).
-Features:
-- Magic Bitboard move generation
-- Alpha-Beta pruning with Principal Variation Search
-- Transposition Tables
-- NNUE Evaluation (ported)
-`,
-            "riscv-cpu-sim": `
-<span class="primary bold">FILE: riscv-cpu-sim/README.md</span>
-====================
-<span class="dim">Project:</span> RISC-V 64IM Emulator
-<span class="dim">Language:</span> Rust
-<span class="dim">Description:</span>
-Cycle-accurate simulator for the RISC-V 64-bit integer + multiply ISA.
-Includes:
-- 5-stage pipeline simulation
-- GShare Branch Prediction visualization
-- Virtual File System mapping
-- Supports running ELF binaries
-`,
-            "compiler": `
-<span class="primary bold">FILE: compiler/README.md</span>
-====================
-<span class="dim">Project:</span> C Subset Compiler
-<span class="dim">Target:</span> RISC-V Assembly
-<span class="dim">Description:</span>
-A recursive descent compiler for a subset of C.
-Generates non-optimized RISC-V assembly.
-Handles:
-- Pointers and Memory allocation
-- Function calls and stack frames
-- Control flow (if/while/for)
-`,
-            "ray-tracer": `
-<span class="primary bold">FILE: ray-tracer/README.md</span>
-====================
-<span class="dim">Project:</span> PBR Ray Tracer
-<span class="dim">Libs:</span> Rayon (Parallelism)
-<span class="dim">Description:</span>
-A path tracer implementing 'Ray Tracing in One Weekend' + advanced features.
-- BVH (Bounding Volume Hierarchy) for O(log n) intersections
-- Monte Carlo Integration
-- Multithreading via Rayon
-`
-        };
-
-        const pages = {
-            'home': `
-${headerArt}
-<span class="bold secondary">SYSTEM v2.5.0 :: WELCOME VISITOR</span>
-=======================================
-
-I am a <span class="bold primary">student</span> interester in Rust, low-level performance, 
-emulation, computer architecture, and compiler infrastructure.
-
-<span class="dim">AVAILABLE COMMANDS:</span>
-
-  > <span class="cmd-link" onclick="exec('projects')">projects</span>   ::  View engineering portfolio
-  > <span class="cmd-link" onclick="exec('skills')">skills</span>     ::  Technical stack & Tools
-  > <span class="cmd-link" onclick="exec('about')">about</span>      ::  Background & Education
-  > <span class="cmd-link" onclick="exec('resume')">resume</span>     ::  Download PDF Resume
-  > <span class="cmd-link" onclick="exec('contact')">contact</span>    ::  Connect via Email/Socials
-  
-<span class="dim">Tip: Type <span class="highlight">help</span> for all commands.</span>
-`,
-            'skills': `
-<span class="secondary bold">>> SYSTEM / TOOLCHAIN</span>
-========================
-
-<span class="highlight bold">LANGUAGES:</span>
-  ├── <span class="primary bold">Rust</span> (Advanced, Systems Focus)
-  ├── <span class="primary bold">C / C++</span> (Microkernels, Embedded)
-  └── <span class="dim">RISC-V Assembly, Python, Bash</span>
-
-<span class="highlight bold">DOMAINS & TOOLS:</span>
-  ├── <span class="primary">Architecture:</span> Pipelining, Caching, Branch Prediction
-  ├── <span class="primary">Systems:</span> OS Development, Drivers, MMU Simulation
-  ├── <span class="primary">Algorithms:</span> Alpha-Beta Pruning, Monte Carlo Integration
-  └── <span class="primary">Tools:</span> QEMU, GDB, Docker, Git, Rayon
-`,
-
-            'projects': `
-<span class="secondary bold">>> HOME / PROJECTS_DIRECTORY</span>
-============================
-<span class="dim">Tip: Use '<span class="highlight">cat [name]</span>' to read project details (e.g., 'cat chess')</span>
-<span class="dim">.</span>
-├── <span class="primary bold">chess</span> <span class="dim">[Rust]</span>
-│   ├── <span class="dim">type:</span> UCI-compliant engine
-│   └── <a href="https://github.com/${config.github}/chess" target="_blank">[source_code]</a>
-│
-├── <span class="primary bold">riscv-cpu-sim</span> <span class="dim">[Rust]</span>
-│   ├── <span class="dim">type:</span> RV64IM Cycle-Accurate Simulator
-│   └── <a href="https://github.com/${config.github}/riscv-cpu-sim" target="_blank">[source_code]</a>
-│
-├── <span class="primary bold">compiler</span> <span class="dim">[Rust]</span>
-│   ├── <span class="dim">type:</span> C-Subset to RISC-V ASM
-│   └── <a href="https://github.com/uofa-systems/compiler" target="_blank">[source_code]</a>
-│
-└── <span class="primary bold">ray-tracer</span> <span class="dim">[Rust]</span>
-    ├── <span class="dim">type:</span> Multithreaded PBR Renderer
-    └── <a href="https://github.com/${config.github}/ray-tracer" target="_blank">[source_code]</a>
-`,
-
-            'about': `
-<span class="secondary bold">>> SYSTEM / USER_PROFILE</span>
-========================
-
-<span class="dim">NAME:</span>     Will McCallion
-<span class="dim">LOCATION:</span> Canada
-<span class="dim">FOCUS:</span>   Computer Architecture 
-
-<span class="primary bold">EDUCATION:</span>
-Honors Computer Science
-<span class="dim">University of Alberta (Expected 2027)</span>
-
-<span class="highlight bold">RELEVANT_COURSEWORK:</span>
-  ├── <span class="primary">Advanced Algorithms</span>
-  ├── <span class="primary">Computer Architecture</span>
-  ├── <span class="primary">Procedural Programming</span>
-  ├── <span class="primary">Linear Algebra II</span>
-  ├── <span class="primary">Calculus IV</span>
-  ├── <span class="primary">Machine Learning I</span>
-  ├── <span class="primary">Databases</span>
-  ├── <span class="primary">Ordinary Differential Equations</span>
-  ├── <span class="primary">Numerical Methods</span>
-  └── <span class="primary">Statistics</span>
-`,
-
-            'contact': `
-<span class="secondary bold">>> HOME / CONTACT_UPLINK</span>
-========================
-
-<span class="highlight">Email:</span>    <a href="mailto:${config.email}">${config.email}</a>
-<span class="highlight">GitHub:</span>   <a href="https://github.com/${config.github}" target="_blank">github.com/${config.github}</a>
-<span class="highlight">LinkedIn:</span> <a href="https://linkedin.com/in/${config.linkedin}" target="_blank">linkedin.com/in/${config.linkedin}</a>
-`,
-
-            'resume': `
-<span class="highlight bold">>> INITIATING DOWNLOAD...</span>
-=========================
-
-<span class="primary">SUCCESS:</span> resume.pdf retrieved.
-
-<a href="./resume.pdf" class="bold" target="_blank" style="font-size: 1.2em; border-bottom: 2px solid;">[ DOWNLOAD PDF ]</a>
-`
-        };
-
-
-        function handleScreenClick() {
-            const selection = window.getSelection();
-            if (selection.type !== 'Range') {
-                realInput.focus();
-            }
-            // Init audio context if suspended
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        function toggleThemeMenu(e) {
-            e.stopPropagation();
-            themeMenu.classList.toggle('show');
-        }
-
-        function setTheme(theme) {
-            if (theme === 'green') {
-                document.documentElement.removeAttribute('data-theme');
-            } else {
-                document.documentElement.setAttribute('data-theme', theme);
-            }
-            themeMenu.classList.remove('show');
-            realInput.focus();
-        }
-
-        document.addEventListener('click', () => {
-            themeMenu.classList.remove('show');
-        });
-
-        // --- COMMAND EXECUTION ---
-        window.exec = function(cmd) {
-            if (isBooting) return;
-            
-            const rawCmd = cmd.trim();
-            const cleanCmd = rawCmd.toLowerCase();
-            const parts = cleanCmd.split(' ');
-            const baseCmd = parts[0];
-            const arg = parts[1];
-
-            // Sudo Crash Logic
-            if (cleanCmd === "sudo rm -rf /") {
-                triggerPanic();
-                return;
-            }
-
-            let output = "";
-
-            if (pages[baseCmd]) {
-                output = pages[baseCmd];
-                if (baseCmd === 'home') currentPath = '~';
-                else currentPath = `~/${baseCmd}`;
-                pathSpan.innerText = currentPath;
-            } 
-            else if (baseCmd === 'cat' || baseCmd === 'read') {
-                if (!arg) {
-                    output = `<span class="alert">Usage: cat [filename]</span>`;
-                } else if (fileSystem[arg]) {
-                    output = fileSystem[arg];
-                } else {
-                    output = `<span class="alert">cat: ${arg}: No such file or directory</span>`;
-                }
-            }
-            else if (baseCmd === 'clear') {
-                displayArea.innerHTML = '';
-                realInput.value = '';
-                return;
-            }
-            else if (baseCmd === 'history') {
-                output = commandHistory.map((c, i) => `<span class="dim">${i + 1}</span> ${c}`).join('<br>');
-            }
-            else if (baseCmd === 'date') {
-                output = new Date().toString();
-            }
-            else if (baseCmd === 'echo') {
-                output = rawCmd.substring(5);
-            }
-            else if (baseCmd === 'whoami') {
-                output = "visitor";
-            }
-            else if (baseCmd === 'mute') {
-                isMuted = !isMuted;
-                output = `<span class="dim">Audio: ${isMuted ? 'OFF' : 'ON'}</span>`;
-            }
-            else if (baseCmd === 'sudo') {
-                 output = `<span class="alert">Permission denied:</span> User 'visitor' is not in the sudoers file. This incident will be reported.`;
-            } 
-            else if (baseCmd === 'ls' || baseCmd === 'dir' || baseCmd === 'help') {
-                output = `<span class="dim">Available commands:</span><br>
-<span class="highlight">projects</span>  <span class="dim">View project list</span>
-<span class="highlight">cat [file]</span><span class="dim">Read file content</span>
-<span class="highlight">skills</span>    <span class="dim">View tech stack</span>
-<span class="highlight">about</span>     <span class="dim">About me</span>
-<span class="highlight">clear</span>     <span class="dim">Clear screen</span>
-<span class="highlight">history</span>   <span class="dim">Command history</span>
-<span class="highlight">mute</span>      <span class="dim">Toggle sound</span>`;
-            } 
-            else if (cleanCmd !== '') {
-                output = `<span class="alert">bash: ${cleanCmd}: command not found</span><br><span class="dim">Type 'help' for available commands.</span>`;
-            }
-
-            if (output) {
-                displayArea.classList.remove('glitch-active');
-                void displayArea.offsetWidth; 
-                displayArea.classList.add('glitch-active');
-                displayArea.innerHTML = output;
-            }
-
-            realInput.value = '';
-            visualInput.textContent = '';
-            ghostInput.textContent = ''; 
-            screen.scrollTop = 0; 
-            realInput.focus();
-        };
-
-        function triggerPanic() {
-            panicOverlay.style.display = 'block';
-            panicOverlay.innerHTML = `
-<span class="bold">KERNEL PANIC: CRITICAL ERROR</span><br><br>
-Instruction at 0x00007FF7423 referenced memory at 0xFFFFFFFF.<br>
-The memory could not be "read".<br><br>
-Dump:<br>
-0x00A4 0x44B2 0x1123 0x0000<br>
-0x99A2 0x115B 0x0000 0x1123<br><br>
-<span class="blink">System halting...</span>
-`;
-            setTimeout(() => {
-                location.reload();
-            }, 3000);
-        }
-
-        realInput.addEventListener('input', () => {
-            const val = realInput.value;
-            visualInput.textContent = val;
-            
-            // Play Sound
-            if (val.length > visualInput.dataset.len || 0) {
-                 playTypingSound();
-            }
-            visualInput.dataset.len = val.length;
-
-            ghostInput.textContent = ''; 
-            if (val.length > 0) {
-                const availableCmds = Object.keys(pages).concat(['clear', 'help', 'history', 'cat', 'whoami', 'sudo', 'date']);
-                const match = availableCmds.find(cmd => cmd.startsWith(val.toLowerCase()));
-                if (match) {
-                    const suffix = match.slice(val.length);
-                    ghostInput.textContent = suffix;
-                }
-            }
-        });
-
-        realInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab' || (e.key === 'ArrowRight' && realInput.selectionStart === realInput.value.length)) {
-                if (ghostInput.textContent !== '') {
-                    e.preventDefault();
-                    realInput.value += ghostInput.textContent;
-                    visualInput.textContent = realInput.value;
-                    ghostInput.textContent = '';
-                    return;
-                }
-                if (e.key === 'Tab') e.preventDefault(); 
-            }
-
-            if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (historyIndex > 0) {
-                    historyIndex--;
-                    realInput.value = commandHistory[historyIndex];
-                    visualInput.textContent = realInput.value;
-                    ghostInput.textContent = '';
-                }
-                return;
-            }
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (historyIndex < commandHistory.length - 1) {
-                    historyIndex++;
-                    realInput.value = commandHistory[historyIndex];
-                    visualInput.textContent = realInput.value;
-                    ghostInput.textContent = '';
-                } else {
-                    historyIndex = commandHistory.length;
-                    realInput.value = '';
-                    visualInput.textContent = '';
-                    ghostInput.textContent = '';
-                }
-                return;
-            }
-
-            if (e.key === 'Enter') {
-                const val = realInput.value.trim();
-                if (val) {
-                    commandHistory.push(val);
-                    historyIndex = commandHistory.length;
-                    exec(val);
-                }
-            }
-        });
-
-        const bootLines = [
-            "Initializing Kernel...",
-            "Loading Modules...",
-            "Access Granted."
-        ];
-
-        async function runBoot() {
-            if (sessionStorage.getItem('booted')) {
-                isBooting = false;
-                exec('home');
-                return;
-            }
-
-            for (let line of bootLines) {
-                displayArea.innerHTML += `<div class="dim">${line}</div>`;
-                await new Promise(r => setTimeout(r, 150));
-            }
-            await new Promise(r => setTimeout(r, 300));
-            displayArea.innerHTML = '';
-            isBooting = false;
-            sessionStorage.setItem('booted', 'true');
-            exec('home');
-        }
-
-        setInterval(() => {
-            const now = new Date();
-            clock.innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        }, 1000);
-
-        runBoot();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
