@@ -93,39 +93,8 @@ const rootDirectory = {
 const projectsDirectory = {
     ".": { type: 'dir', perm: 'drwxr-xr-x', size: '4096', date: 'Oct 12', name: '.' },
     "..": { type: 'dir', perm: 'drwxr-xr-x', size: '4096', date: 'Oct 12', name: '..' },
-    "chess": { 
-        type: 'link', perm: 'lrwxrwxrwx', size: '26', date: 'Nov 01', name: 'chess -> git/chess',
-        url: `https://github.com/${config.github}/chess`,
-        content: `
-<span class="primary bold">PROJECT: Chess Engine (Rust)</span>
-=======================================
-A high-performance, UCI-compliant chess engine designed for 
-correctness and strength. Features NNUE evaluation and 
-Polyglot opening book support.
-
-<span class="highlight bold">>> ENGINE FEATURES</span>
-<span class="primary">*</span> <span class="bold">Search:</span>    Alpha-Beta Pruning with PVS & Transposition Tables.
-<span class="primary">*</span> <span class="bold">Rules:</span>     Full support (Castling, En Passant, 50-move rule).
-<span class="primary">*</span> <span class="bold">Eval:</span>      Supports NNUE (Neural Network).
-<span class="primary">*</span> <span class="bold">Protocol:</span>  Universal Chess Interface (UCI) compatible.
-<span class="primary">*</span> <span class="bold">Verify:</span>    Includes 'perft' move generation tester.
-
-<span class="highlight bold">>> HOW TO USE</span>
-
-<span class="dim"># 1. Play in Terminal (5 seconds per move)</span>
-<span class="ls-exec">cargo run --release -- play-cli --time 5000</span>
-
-<span class="dim"># 2. Run in GUI (Arena, Scid, etc)</span>
-<span class="ls-exec">cargo run --release -- uci</span>
-
-<span class="dim"># 3. Watch Self-Play (5 rounds)</span>
-<span class="ls-exec">cargo run --release -- self-play --rounds 5 --time 1000</span>
-
-<span class="highlight bold">>> NNUE SETUP</span>
-To enable neural network evaluation, download the network file:
-<a href="https://tests.stockfishchess.org/api/nn/nn-82215d0fd0df.nnue" target="_blank" class="ls-link">nn-82215d0fd0df.nnue</a>
-`
-    },
+    
+    // 1. RISC-V CPU
     "riscv-cpu-sim": { 
         type: 'link', perm: 'lrwxrwxrwx', size: '32', date: 'Sep 20', name: 'riscv-cpu-sim -> git/riscv-cpu-sim',
         url: `https://github.com/${config.github}/riscv-cpu-sim`,
@@ -166,6 +135,71 @@ branch prediction, and cache hierarchy.
 <span class="dim">----------------------------------------------------</span>
 `
     },
+
+    // 2. Chess Engine
+    "chess": { 
+        type: 'link', perm: 'lrwxrwxrwx', size: '26', date: 'Nov 01', name: 'chess -> git/chess',
+        url: `https://github.com/${config.github}/chess`,
+        content: `
+<span class="primary bold">PROJECT: Chess Engine (Rust)</span>
+=======================================
+A high-performance, UCI-compliant chess engine designed for 
+correctness and strength. Features NNUE evaluation and 
+Polyglot opening book support.
+
+<span class="highlight bold">>> ENGINE FEATURES</span>
+<span class="primary">*</span> <span class="bold">Search:</span>    Alpha-Beta Pruning with PVS & Transposition Tables.
+<span class="primary">*</span> <span class="bold">Rules:</span>     Full support (Castling, En Passant, 50-move rule).
+<span class="primary">*</span> <span class="bold">Eval:</span>      Supports NNUE (Neural Network).
+<span class="primary">*</span> <span class="bold">Protocol:</span>  Universal Chess Interface (UCI) compatible.
+<span class="primary">*</span> <span class="bold">Verify:</span>    Includes 'perft' move generation tester.
+
+<span class="highlight bold">>> HOW TO USE</span>
+
+<span class="dim"># 1. Play in Terminal (5 seconds per move)</span>
+<span class="ls-exec">cargo run --release -- play-cli --time 5000</span>
+
+<span class="dim"># 2. Run in GUI (Arena, Scid, etc)</span>
+<span class="ls-exec">cargo run --release -- uci</span>
+
+<span class="dim"># 3. Watch Self-Play (5 rounds)</span>
+<span class="ls-exec">cargo run --release -- self-play --rounds 5 --time 1000</span>
+
+<span class="highlight bold">>> NNUE SETUP</span>
+To enable neural network evaluation, download the network file:
+<a href="https://tests.stockfishchess.org/api/nn/nn-82215d0fd0df.nnue" target="_blank" class="ls-link">nn-82215d0fd0df.nnue</a>
+`
+    },
+
+    // 3. F1 Optimizer
+    "f1-optimizer": { 
+        type: 'link', perm: 'lrwxrwxrwx', size: '42', date: 'Dec 20', name: 'f1-optimizer -> git/f1-opt',
+        url: `https://github.com/${config.github}/f1-optimizer`,
+        content: `
+<span class="primary bold">PROJECT: F1 Racing Line Optimizer</span>
+=======================================
+A numerical optimization engine written in C that calculates the
+time-optimal racing line for Formula 1 circuits. It compares simulation
+data against real-world telemetry (e.g., Max Verstappen's pole laps).
+
+<span class="highlight bold">>> CORE FEATURES</span>
+<span class="dim">-</span> <span class="bold">Solver:</span>     Levenberg-Marquardt non-linear least squares optimization.
+<span class="dim">-</span> <span class="bold">Physics:</span>    2D simulation with Aero, Load Transfer, and Friction Circle.
+<span class="dim">-</span> <span class="bold">Visuals:</span>    Real-time Raylib rendering (Heatmaps, G-Force, Telemetry).
+<span class="dim">-</span> <span class="bold">Data:</span>       Python pipeline (FastF1) for GPS/Telemetry extraction.
+
+<span class="highlight bold">>> TECH STACK</span>
+<span class="dim">Lang:</span>     C99, Python
+<span class="dim">Libs:</span>     Raylib, OpenMP, NumPy, SciPy
+<span class="dim">Math:</span>     Cholesky Decomposition, Finite Differences
+
+<span class="highlight bold">>> BUILD & RUN</span>
+<span class="ls-exec">cmake -B build && cmake --build build</span>
+<span class="ls-exec">./build/race_optimizer -f silverstone_2023.csv</span>
+`
+    },
+
+    // 4. Compiler
     "compiler": { 
         type: 'link', perm: 'lrwxrwxrwx', size: '28', date: 'Oct 15', name: 'compiler -> git/compiler',
         url: `https://github.com/uofa-systems/compiler`,
@@ -198,7 +232,7 @@ RISC-V 64-bit Assembly (RV64I). Supports recursion and stack frames.
 <span class="ls-exec">qemu-riscv64 ./program</span>
 `
     }
-};;
+};
 
 const manuals = {
     "ls": "List directory contents.",
