@@ -199,7 +199,36 @@ data against real-world telemetry (e.g., Max Verstappen's pole laps).
 `
     },
 
-    // 4. Compiler
+   // 4. Neural Network Engine (NEW)
+    "neural-engine": { 
+        type: 'link', perm: 'lrwxrwxrwx', size: '38', date: 'Jan 10', name: 'neural-engine -> git/neural',
+        url: `https://github.com/${config.github}/c-neural-network`,
+        content: `
+<span class="primary bold">PROJECT: Neural Network Engine</span>
+=======================================
+A high-performance Convolutional Neural Network built entirely
+from scratch in C. It visualizes internal network states (activations,
+weights, gradients) in real-time while training.
+
+<span class="highlight bold">>> CORE FEATURES</span>
+<span class="dim">-</span> <span class="bold">Engine:</span>     Custom implementation of Conv2D, MaxPool, ReLU, Softmax.
+<span class="dim">-</span> <span class="bold">Training:</span>   Stochastic Gradient Descent with Adam Optimizer.
+<span class="dim">-</span> <span class="bold">System:</span>     Multithreaded architecture (Training thread + UI thread).
+<span class="dim">-</span> <span class="bold">Visuals:</span>    Real-time heatmaps of feature maps and weight histograms.
+
+<span class="highlight bold">>> TECH STACK</span>
+<span class="dim">Lang:</span>     C99
+<span class="dim">Libs:</span>     Raylib (Visualization), OpenMP (Parallelism), Pthreads
+<span class="dim">Data:</span>     EMNIST + Google QuickDraw (Merged)
+
+<span class="highlight bold">>> BUILD & RUN</span>
+<span class="ls-exec">cmake -B build && cmake --build build</span>
+<span class="ls-exec">./build/draw_predictor</span>
+`
+    },
+
+
+    // 5. Compiler
     "compiler": { 
         type: 'link', perm: 'lrwxrwxrwx', size: '28', date: 'Oct 15', name: 'compiler -> git/compiler',
         url: `https://github.com/uofa-systems/compiler`,
