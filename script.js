@@ -93,6 +93,41 @@ const rootDirectory = {
 const projectsDirectory = {
     ".": { type: 'dir', perm: 'drwxr-xr-x', size: '4096', date: 'Oct 12', name: '.' },
     "..": { type: 'dir', perm: 'drwxr-xr-x', size: '4096', date: 'Oct 12', name: '..' },
+
+  // 0. Security Unikernel (FLAGSHIP)
+    "security-unikernel": { 
+        type: 'link', perm: 'lrwxrwxrwx', size: '64', date: 'Dec 29', name: 'security-unikernel -> git/sec-kernel',
+        url: `https://github.com/${config.github}/security-unikernel`,
+        content: `
+<span class="primary bold">PROJECT: RISC-V Security Unikernel</span>
+=======================================
+A high-performance network security appliance running bare-metal
+on RISC-V (Ring 0). Engineered to function within a strict 
+<span class="highlight bold">64KB RAM</span> hardware limit.
+
+<span class="highlight bold">>> THE 64KB CHALLENGE</span>
+To fit a full network stack + security suite in 64KB, this kernel uses:
+<span class="dim">-</span> <span class="bold">Zero-Alloc Runtime:</span> No heap usage on hot paths.
+<span class="dim">-</span> <span class="bold">Probabilistic Data:</span> Count-Min Sketch for DDoS tracking.
+<span class="dim">-</span> <span class="bold">Static Flow Table:</span> Packed 5-tuple tracking (100% RAM usage).
+
+<span class="highlight bold">>> SECURITY FEATURES</span>
+<span class="primary">*</span> <span class="bold">Firewall:</span>   Stateful L4 tracking & Port Blocking.
+<span class="primary">*</span> <span class="bold">DDoS:</span>       Volumetric mitigation via Penalty Box.
+<span class="primary">*</span> <span class="bold">DPI:</span>        Aho-Corasick payload scanning (SQLi/XSS).
+<span class="primary">*</span> <span class="bold">eBPF:</span>       Custom VM for dynamic packet filtering.
+<span class="primary">*</span> <span class="bold">Heuristics:</span> Detects NOP sleds & Xmas scans.
+
+<span class="highlight bold">>> CONTROL PLANE</span>
+Includes a companion Rust GUI dashboard for real-time telemetry 
+(Throughput, Active Flows, Alerts) and traffic simulation.
+
+<span class="highlight bold">>> TECH STACK</span>
+<span class="dim">Lang:</span>     Rust (no_std), Assembly
+<span class="dim">Arch:</span>     RISC-V 64-bit
+<span class="dim">Driver:</span>   VirtIO Net (DMA)
+`
+    },
     
     // 1. RISC-V CPU
     "riscv-cpu-sim": { 
