@@ -94,6 +94,40 @@ const projectsDirectory = {
     ".": { type: 'dir', perm: 'drwxr-xr-x', size: '4096', date: 'Oct 12', name: '.' },
     "..": { type: 'dir', perm: 'drwxr-xr-x', size: '4096', date: 'Oct 12', name: '..' },
 
+  // 0. VLSI Toolchain (FLAGSHIP)
+    "eda-toolchain": { 
+        type: 'link', perm: 'lrwxrwxrwx', size: '52', date: 'Jan 05', name: 'eda-toolchain -> git/vlsi',
+        url: `https://github.com/${config.github}/vlsi-physical-design`,
+        content: `
+<span class="primary bold">PROJECT: VLSI Physical Design Engine</span>
+=======================================
+A modular physical design toolchain for digital integrated circuits.
+It transforms logical netlists (LEF/DEF) into physical layouts through
+analytical placement and negotiation-based routing.
+
+<span class="highlight bold">>> CORE ALGORITHMS</span>
+<span class="dim">-</span> <span class="bold">Placement:</span>   Analytical solver using Electrostatic analogies.
+                Solves Poisson's equation via <span class="highlight">FFT</span> to model density.
+                Minimizes wirelength using Nesterov optimization.
+<span class="dim">-</span> <span class="bold">Legalize:</span>    Abacus algorithm for cell alignment.
+<span class="dim">-</span> <span class="bold">Routing:</span>     Pathfinder algorithm (Rip-up and Reroute).
+                Uses 3D A* search on a multi-layer metal grid.
+
+<span class="highlight bold">>> PERFORMANCE</span>
+<span class="primary">*</span> <span class="bold">Scale:</span>      Handles designs with 10k+ nets (e.g., AES encryption).
+<span class="primary">*</span> <span class="bold">Speed:</span>      Multithreaded routing using Rayon.
+<span class="primary">*</span> <span class="bold">Output:</span>     Generates routed DEF files and visual heatmaps.
+
+<span class="highlight bold">>> TECH STACK</span>
+<span class="dim">Lang:</span>     Rust
+<span class="dim">Math:</span>     RustFFT, Nalgebra
+<span class="dim">Format:</span>   LEF/DEF Parsers
+
+<span class="highlight bold">>> RUN DEMO</span>
+<span class="ls-exec">cargo run --release -- flow</span>
+`
+    },
+
   // 0. Security Unikernel (FLAGSHIP)
     "security-unikernel": { 
         type: 'link', perm: 'lrwxrwxrwx', size: '64', date: 'Dec 29', name: 'security-unikernel -> git/sec-kernel',
