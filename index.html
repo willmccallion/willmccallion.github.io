@@ -9,7 +9,6 @@
     <title>will_mccallion.log</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -34,7 +33,6 @@
                 <span class="dim">[</span> <a class="simple-link" href="mailto:wcmccallion@gmail.com">Email</a> <span class="dim">]</span>
                 <span class="dim">[</span> <a class="simple-link" href="https://github.com/willmccallion" target="_blank">GitHub</a> <span class="dim">]</span>
                 <span class="dim">[</span> <a class="simple-link" href="#">LinkedIn</a> <span class="dim">]</span>
-                <span class="dim">[</span> <span class="simple-link" onclick="downloadResume()">Download Resume</span> <span class="dim">]</span>
             </div>
         </div>
 
@@ -42,100 +40,13 @@
             <span>01_PROJECTS</span> <span class="dim">// Recent work</span>
         </div>
 
-        <!-- 0. VLSI Toolchain (NEW FLAGSHIP) -->
-        <div class="item-box">
-            <div class="item-head">
-                <span>VLSI Physical Design Engine</span> <a class="simple-link" href="https://github.com/willmccallion/vlsi-physical-design" target="_blank">[source]</a>
-            </div>
-            <div class="item-desc">
-                A modular digital IC design toolchain written in Rust. Implements <span class="highlight">analytical placement</span> using electrostatic analogies (FFT-based density solving) and <span class="highlight">congestion-aware routing</span> via the Pathfinder algorithm. Capable of placing and routing 10k+ nets.
-            </div>
-            <div><span class="tag">Rust</span><span class="tag">VLSI</span><span class="tag">Algorithms</span><span class="tag">HPC</span></div>
-        </div>
-
-        <!-- 0. Security Unikernel -->
-        <div class="item-box">
-            <div class="item-head">
-                <span>RISC-V Security Unikernel</span> <a class="simple-link" href="https://github.com/willmccallion/riscv-security-unikernel" target="_blank">[source]</a>
-            </div>
-            <div class="item-desc">
-                A bare-metal network security appliance written in Rust. Runs in Ring 0 on RISC-V with a strict <span class="highlight">64KB RAM limit</span>. Features stateful firewalling, DDoS mitigation (Count-Min Sketch), Heuristic Analysis, and a custom eBPF VM. Includes a real-time GUI dashboard.
-            </div>
-            <div><span class="tag">Rust</span><span class="tag">Kernel Dev</span><span class="tag">Embedded</span><span class="tag">eBPF</span></div>
-        </div>
-
-        <!-- 1. RISC-V CPU -->
-        <div class="item-box">
-            <div class="item-head">
-                <span>RISC-V CPU Simulator</span> <a class="simple-link" href="#">[source]</a>
-            </div>
-            <div class="item-desc">
-                Cycle-accurate simulator for the RISC-V 64IM ISA. Features 5-stage pipeline visualization and GShare branch prediction. This project also comes with a bunch of little C programs that can be run on the micro-kernel provided.
-            </div>
-            <div><span class="tag">Rust</span><span class="tag">Architecture</span><span class="tag">Emulation</span></div>
-        </div>
-        
-        <!-- 2. Chess Engine -->
-        <div class="item-box">
-            <div class="item-head">
-                <span>Chess Engine</span> <a class="simple-link" href="#">[source]</a>
-            </div>
-            <div class="item-desc">
-                High-performance UCI engine. Implements Magic Bitboards, Alpha-Beta pruning with PVS, NNUE evaluation, and Transposition Tables.
-            </div>
-            <div><span class="tag">Rust</span><span class="tag">Algorithms</span><span class="tag">Optimization</span></div>
-        </div>
-
-        <!-- 3. F1 Optimizer (NEW) -->
-        <div class="item-box">
-            <div class="item-head">
-                <span>F1 Racing Optimizer</span> <a class="simple-link" href="https://github.com/willmccallion/f1-optimizer" target="_blank">[source]</a>
-            </div>
-            <div class="item-desc">
-                Numerical optimization engine for F1 racing lines. Uses the Levenberg-Marquardt algorithm and a 2D vehicle physics simulation to solve for time-optimal trajectories. Visualized in real-time with Raylib.
-            </div>
-            <div><span class="tag">C</span><span class="tag">Physics</span><span class="tag">Raylib</span><span class="tag">Optimization</span></div>
-        </div>
-
-        <!-- 4. Neural Network Engine (NEW) -->
-        <div class="item-box">
-            <div class="item-head">
-                <span>Neural Network Engine</span> <a class="simple-link" href="https://github.com/willmccallion/c-neural-network" target="_blank">[source]</a>
-            </div>
-            <div class="item-desc">
-                Multithreaded Convolutional Neural Network built from scratch in C. Implements custom backpropagation, Adam optimizer, and real-time activation heatmaps using Raylib.
-            </div>
-            <div><span class="tag">C</span><span class="tag">Machine Learning</span><span class="tag">Raylib</span><span class="tag">Concurrency</span></div>
-        </div>
-
-        <!-- 5. Compiler -->
-        <div class="item-box">
-            <div class="item-head">
-                <span>C Subset Compiler</span> <a class="simple-link" href="#">[source]</a>
-            </div>
-            <div class="item-desc">
-                Recursive descent compiler targeting RISC-V Assembly. Handles pointers, stack allocation, and control flow.
-            </div>
-            <div><span class="tag">Rust</span><span class="tag">Compilers</span><span class="tag">Assembly</span></div>
-        </div>
+        <div id="projects-container"></div>
 
         <div class="section-title">
             <span>02_SKILLS</span> <span class="dim">// Toolkit</span>
         </div>
-        <div class="grid-container">
-            <div>
-                <span class="dim">></span> <strong>Languages</strong><br>
-                <span class="dim">Rust, C, C++, Assembly (RISC-V), Python</span>
-            </div>
-            <div>
-                <span class="dim">></span> <strong>Environment</strong><br>
-                <span class="dim">Linux, Git, GDB, QEMU, LLVM</span>
-            </div>
-            <div>
-                <span class="dim">></span> <strong>Focus Areas</strong><br>
-                <span class="dim">Systems Programming, Computer Architecture, Emulation</span>
-            </div>
-        </div>
+        
+        <div id="skills-container" class="grid-container"></div>
 
         <div class="section-title">
             <span>03_RELEVANT_COURSEWORK</span> <span class="dim">// Academics</span>
@@ -144,22 +55,11 @@
             <div class="item-desc" style="margin-bottom: 10px;">
                 Selected coursework emphasizing systems, mathematics, and optimization.
             </div>
-            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
-                <span class="tag">Advanced Algorithms</span>
-                <span class="tag">Machine Learning I</span>
-                <span class="tag">Computer Architecture I</span>
-                <span class="tag">Databases</span>
-                <span class="tag">Procedural Programming</span>
-                <span class="tag">Numerical Methods</span>
-                <span class="tag">Calculus IV</span>
-                <span class="tag">Linear Algebra II</span>
-                <span class="tag">Ordinary Differential Equations</span>
-                <span class="tag">Statistics</span>
-            </div>
+            <div id="coursework-container" style="display: flex; flex-wrap: wrap; gap: 4px;"></div>
         </div>
 
         <footer style="text-align: center; color: var(--text-dim); font-size: 0.8em; margin-top: 60px;">
-            <p>EOF: Generated by will_mccallion v2.5</p>
+            <p>EOF: Generated by will_mccallion v3.0 (Modular)</p>
         </footer>
     </div>    
 
@@ -175,12 +75,12 @@
         </div>
     </div>
 
-    <div id="terminal-ui" onclick="handleScreenClick()">
+    <div id="terminal-ui">
         <div id="nav-bar">
             <div class="nav-group">
                 <span class="primary bold">● SYSTEM_READY</span>
                 <div class="dropdown-container">
-                    <div class="dropdown-btn" id="theme-btn" onclick="toggleThemeMenu(event)">THEME ▾</div>
+                    <div class="dropdown-btn" id="theme-btn">THEME ▾</div>
                     <ul id="theme-menu">
                         <li class="theme-option" onclick="setTheme('gruvbox')">Gruvbox (Def)</li>
                         <li class="theme-option" onclick="setTheme('matrix')">Matrix</li>
@@ -215,6 +115,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="./src/main.js"></script>
 </body>
 </html>
