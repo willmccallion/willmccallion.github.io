@@ -46,7 +46,7 @@ analytical placement and negotiation-based routing.
         title: "RISC-V Security Unikernel",
         link: `https://github.com/${config.github}/riscv-security-unikernel`,
         desc: "A bare-metal network security appliance written in Rust. Runs in Ring 0 on RISC-V with a strict <span class='highlight'>64KB RAM limit</span>. Features stateful firewalling, DDoS mitigation (Count-Min Sketch), Heuristic Analysis, and a custom eBPF VM. Includes a real-time GUI dashboard.",
-        tags: ["Rust", "Kernel Dev", "Embedded", "eBPF"],
+        tags: ["Rust", "Embedded", "eBPF"],
         terminal: {
             name: "security-unikernel",
             date: "Dec 29",
@@ -83,43 +83,44 @@ Includes a companion Rust GUI dashboard for real-time telemetry
         }
     },
     {
-        id: "cpu",
-        title: "RISC-V CPU Simulator",
-        link: "#",
-        desc: "Cycle-accurate simulator for the RISC-V 64IM ISA. Features 5-stage pipeline visualization and GShare branch prediction. This project also comes with a bunch of little C programs that can be run on the micro-kernel provided.",
-        tags: ["Rust", "Architecture", "Emulation"],
+        id: "riscv-emulator",
+        title: "RISC-V System Emulator",
+        link: `https://github.com/${config.github}/riscv-system-emulator`,
+        desc: "A cycle-accurate <span class='highlight'>RV64IMAFD</span> emulator written in Rust. Features a 5-stage pipeline with <span class='highlight'>perceptron branch prediction</span>, SV39 MMU, and a custom <span class='highlight'>microkernel</span>. Includes evolutionary algorithms for hardware design space exploration.",
+        tags: ["Rust", "RISC-V", "Architecture"],
         terminal: {
-            name: "riscv-cpu-sim",
-            date: "Sep 20",
-            size: "32",
+            name: "riscv-emulator",
+            date: "Feb 12",
+            size: "48",
             content: `
-<span class="primary bold">RISC-V SYSTEM EMULATOR & MICROKERNEL</span>
+<span class="primary bold">PROJECT: RISC-V System Emulator</span>
 =======================================
-A cycle-accurate RISC-V (RV64IM) processor simulator written in Rust.
-It boots a custom C-based microkernel with a 5-stage pipeline,
-branch prediction, and cache hierarchy.
+A high-fidelity system emulator for the RISC-V 64-bit architecture.
+It models the full hardware stack from the pipeline up to the OS,
+enabling cycle-accurate performance analysis and architectural research.
 
-<span class="highlight bold">>> FEATURES :: CPU ARCHITECTURE</span>
-<span class="dim">-</span> <span class="bold">ISA:</span>        RV64IM (Integer + Multiply/Divide)
-<span class="dim">-</span> <span class="bold">Pipeline:</span>   5-Stage (Fetch, Decode, Execute, Memory, Writeback)
-<span class="dim">-</span> <span class="bold">Prediction:</span> GShare (Global History), BTB, and RAS
-<span class="dim">-</span> <span class="bold">Memory:</span>     L1 (16KB I/D), L2 (128KB), L3 (2MB)
-<span class="dim">-</span> <span class="bold">MMU:</span>        Sv39-style translation with TLB
+<span class="highlight bold">>> MICROARCHITECTURE</span>
+<span class="dim">-</span> <span class="bold">Core:</span>       5-Stage Pipeline (IF, ID, EX, MEM, WB) with Data Forwarding.
+<span class="dim">-</span> <span class="bold">Prediction:</span> Interchangeable predictors: <span class="highlight">TAGE</span>, Perceptron, Tournament.
+<span class="dim">-</span> <span class="bold">Memory:</span>     Configurable L1/L2/L3 Caches (MESI) + DRAM Controller.
+<span class="dim">-</span> <span class="bold">MMU:</span>        Full SV39 Virtual Memory with TLB.
 
-<span class="highlight bold">>> FEATURES :: OPERATING SYSTEM</span>
-<span class="dim">-</span> <span class="bold">Bootloader:</span> M-Mode Assembly loader
-<span class="dim">-</span> <span class="bold">Kernel:</span>     C-based S-Mode Microkernel
-                <span class="dim">drivers: UART, VFS, ELF-loading, Malloc</span>
-<span class="dim">-</span> <span class="bold">User Space:</span> Interactive Shell ('sh'), 'ls', and user programs
+<span class="highlight bold">>> SOFTWARE ECOSYSTEM</span>
+<span class="primary">*</span> <span class="bold">Microkernel:</span> Custom C kernel with threading, VFS, and syscalls.
+<span class="primary">*</span> <span class="bold">Libc:</span>        From-scratch implementation of standard library.
+<span class="primary">*</span> <span class="bold">Userland:</span>    Runs Raytracer, Chess Engine, and Maze Solvers.
 
-<span class="highlight bold">>> BUILD & RUN</span>
-<span class="dim">1. Build Simulator:</span>  <span class="ls-exec">cargo build --release</span>
-<span class="dim">2. Run System:</span>       <span class="ls-exec">cargo run --release</span>
-<span class="dim">3. Pipeline Trace:</span>   <span class="ls-exec">cargo run --release -- --trace</span>
+<span class="highlight bold">>> ANALYSIS TOOLS</span>
+Includes a genetic algorithm engine (Python) to evolve optimal 
+hardware configurations (Cache Size vs IPC) for specific workloads.
+
+<span class="highlight bold">>> RUN DEMO</span>
+<span class="ls-exec"># Boot the OS and run the Raytracer</span>
+<span class="ls-exec">cargo run --release -- --config configs/high_perf.toml --bin raytracer</span>
 `
         }
     },
-    {
+  {
         id: "chess",
         title: "Chess Engine",
         link: "#",
