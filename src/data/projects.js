@@ -3,79 +3,71 @@ import { config } from '../config.js';
 export const projects = [
     {
         id: "qec",
-        title: "Real-Time Quantum Error Decoder",
-        link: `https://github.com/${config.github}/qec`,
-        desc: "A bare-metal, <span class='highlight'>zero-allocation</span> decoder for Surface Code Quantum Error Correction. Implements the Union-Find algorithm in `no_std` Rust. Features a custom bump allocator, lock-free ring buffers, and boots as a standalone <span class='highlight'>RISC-V kernel</span>. Benchmarked at < 2µs latency.",
-        tags: ["Rust", "Quantum", "Embedded", "RISC-V"],
+        title: "RISC-V Quantum Control Unit",
+        link: `https://github.com/${config.github}/riscv-qcu`,
+        desc: "A hardware-software co-design for real-time Quantum Error Correction. Features a <span class='highlight'>SystemVerilog accelerator</span> and a bare-metal Rust firmware. Achieves <span class='highlight'>~580 cycle latency</span> for Surface Code decoding on RISC-V soft-cores.",
+        tags: ["Rust", "SystemVerilog", "RISC-V", "Embedded"],
         terminal: {
-            name: "qec-decoder",
-            date: "Jan 14",
-            size: "18", // Small binary size implies efficiency
+            name: "qcu-firmware",
+            date: "Jan 15",
+            size: "24",
             content: `
-<span class="primary bold">PROJECT: Real-Time Surface Code Decoder</span>
+<span class="primary bold">PROJECT: RISC-V Quantum Control Unit</span>
 =======================================
-A bare-metal implementation of the Union-Find decoding algorithm for 
-Quantum Error Correction (QEC). Designed for embedded control systems 
-where heap allocation and OS-level synchronization are prohibited.
+A full-stack embedded architecture for decoding Surface Code quantum 
+errors within the coherence time of superconducting qubits.
 
-<span class="highlight bold">>> SYSTEMS ARCHITECTURE</span>
-<span class="dim">-</span> <span class="bold">Zero-Alloc:</span>    Hot path uses a custom <span class="highlight">Bump Allocator</span> (O(1)) 
-                backed by static memory to prevent latency spikes.
-<span class="dim">-</span> <span class="bold">Concurrency:</span> Lock-free Single-Producer Single-Consumer (SPSC)
-                ring buffer using C11 Atomics.
-<span class="dim">-</span> <span class="bold">Kernel:</span>      Boots directly on RISC-V via QEMU (VirtIO).
+<span class="highlight bold">>> SYSTEM ARCHITECTURE</span>
+<span class="dim">-</span> <span class="bold">Firmware:</span>    Bare-metal Rust (no_std) kernel for RV64IMAC.
+<span class="dim">-</span> <span class="bold">Hardware:</span>    Custom SystemVerilog accelerator for Union-Find.
+<span class="dim">-</span> <span class="bold">Memory:</span>      Bump-allocated static arenas (Zero-GC/Malloc).
+<span class="dim">-</span> <span class="bold">IPC:</span>         Lock-free SPSC ring buffers for core synchronization.
 
-<span class="highlight bold">>> PERFORMANCE BENCHMARKS</span>
-<span class="primary">*</span> <span class="bold">Linux:</span>      ~1.99 µs avg latency @ 100kHz (Distance 21).
-<span class="primary">*</span> <span class="bold">RISC-V:</span>     ~132 ns algorithmic latency (1.0GHz clock).
-<span class="primary">*</span> <span class="bold">Throughput:</span> >2.2 Million shots/s (Batch Mode).
+<span class="highlight bold">>> PERFORMANCE METRICS (QEMU/RV64)</span>
+<span class="primary">*</span> <span class="bold">Latency:</span>    ~580 Clock Cycles (0.58 µs @ 1GHz).
+<span class="primary">*</span> <span class="bold">Throughput:</span> ~55,000 shots/s (3 Worker Cores).
+<span class="primary">*</span> <span class="bold">Jitter:</span>     < 50 Cycles (Deterministic execution).
 
-<span class="highlight bold">>> TECH STACK</span>
-<span class="dim">Core:</span>     Rust (no_std), RISC-V Assembly
-<span class="dim">Sim:</span>      Stim (Syndrome Generation), QEMU
-<span class="dim">Algo:</span>     Union-Find with Path Compression
+<span class="highlight bold">>> VERIFICATION</span>
+<span class="dim">Flow:</span>     Stim Circuit -> B8 Syndrome Data -> Firmware -> Decoder
+<span class="dim">Co-Sim:</span>   Verilator integration for cycle-accurate hardware testing.
 
 <span class="highlight bold">>> BOOT KERNEL</span>
-<span class="ls-exec">./scripts/run.fish kernel</span>
+<span class="ls-exec">./scripts/run.py kernel --size 5</span>
 `
         }
     },
     {
         id: "vlsi",
-        title: "VLSI Physical Design Prototype",
+        title: "VLSI Physical Design Tool",
         link: `https://github.com/${config.github}/vlsi-physical-design`,
-        desc: "A digital IC placement and routing tool built in Rust to explore EDA algorithms. Implements <span class='highlight'>electrostatic global placement</span> (FFT-based) and <span class='highlight'>negotiation-based routing</span> (Pathfinder). Capable of processing synthetic benchmarks up to 10k nets.",
-        tags: ["Rust", "Algorithms", "Optimization", "HPC"],
+        desc: "A digital IC placement and routing engine. Implements <span class='highlight'>electrostatic global placement</span> (ePlace algorithm) using FFTs and <span class='highlight'>negotiation-based routing</span> (Pathfinder). Handles synthetic benchmarks up to 10k nets.",
+        tags: ["Rust", "EDA", "Algorithms", "Optimization"],
         terminal: {
-            name: "eda-flow",
+            name: "vlsi-flow",
             date: "Jan 05",
             size: "52",
             content: `
 <span class="primary bold">PROJECT: VLSI Physical Design Prototype</span>
 =======================================
 A from-scratch implementation of core Electronic Design Automation (EDA) 
-algorithms for placing and routing digital circuits.
+algorithms for placing and routing digital integrated circuits.
 
 <span class="highlight bold">>> ALGORITHMIC IMPLEMENTATION</span>
-<span class="dim">-</span> <span class="bold">Placement:</span>   Analytical solver based on electrostatic analogies.
-                Uses <span class="highlight">FFT</span> to compute density gradients and 
-                Nesterov optimization for wirelength minimization.
-<span class="dim">-</span> <span class="bold">Legalize:</span>    Abacus algorithm for row alignment.
+<span class="dim">-</span> <span class="bold">Placement:</span>   Electrostatic analogy (ePlace). Models cells as 
+                electric charges and density as electric potential.
+                Solved via <span class="highlight">FFT</span> and Nesterov optimization.
+<span class="dim">-</span> <span class="bold">Legalize:</span>    Abacus algorithm for standard cell row alignment.
 <span class="dim">-</span> <span class="bold">Routing:</span>     Pathfinder (Rip-up and Reroute) strategy using
-                multithreaded 3D A* search.
+                multithreaded 3D A* search on a routing graph.
 
 <span class="highlight bold">>> CAPABILITIES</span>
 <span class="primary">*</span> <span class="bold">Input:</span>      Parses industry-standard LEF/DEF files.
 <span class="primary">*</span> <span class="bold">Scale:</span>      Optimized for designs up to ~10k nets.
-<span class="primary">*</span> <span class="bold">Concurrency:</span> Heavily parallelized routing using Rayon.
-
-<span class="highlight bold">>> TECH STACK</span>
-<span class="dim">Lang:</span>     Rust
-<span class="dim">Math:</span>     RustFFT, Nalgebra
-<span class="dim">Vis:</span>      Custom image generation for heatmaps
+<span class="primary">*</span> <span class="bold">Concurrency:</span> Parallelized routing stage using Rayon.
 
 <span class="highlight bold">>> RUN DEMO</span>
-<span class="ls-exec">cargo run --release -- flow</span>
+<span class="ls-exec">cargo run --release -- flow --bench superblue1</span>
 `
         }
     },
@@ -83,8 +75,8 @@ algorithms for placing and routing digital circuits.
         id: "unikernel",
         title: "RISC-V Security Unikernel",
         link: `https://github.com/${config.github}/riscv-security-unikernel`,
-        desc: "A bare-metal network security appliance written in Rust. Runs in Ring 0 on RISC-V with a strict <span class='highlight'>64KB RAM limit</span>. Features stateful firewalling, DDoS mitigation (Count-Min Sketch), Heuristic Analysis, and a custom eBPF VM. Includes a real-time GUI dashboard.",
-        tags: ["Rust", "Embedded", "eBPF"],
+        desc: "A bare-metal network appliance running in Ring 0. Engineered for a strict <span class='highlight'>64KB RAM limit</span>. Features a custom <span class='highlight'>JIT-compiled eBPF VM</span> for packet filtering and probabilistic data structures for DDoS mitigation.",
+        tags: ["Rust", "Kernel", "eBPF", "Security"],
         terminal: {
             name: "security-unikernel",
             date: "Dec 29",
@@ -93,30 +85,23 @@ algorithms for placing and routing digital circuits.
 <span class="primary bold">PROJECT: RISC-V Security Unikernel</span>
 =======================================
 A high-performance network security appliance running bare-metal
-on RISC-V (Ring 0). Engineered to function within a strict 
-<span class="highlight bold">64KB RAM</span> hardware limit.
+on RISC-V. Engineered to function within a strict <span class="highlight bold">64KB RAM</span> 
+hardware limit (L1 Cache size).
 
-<span class="highlight bold">>> THE 64KB CHALLENGE</span>
-To fit a full network stack + security suite in 64KB, this kernel uses:
-<span class="dim">-</span> <span class="bold">Zero-Alloc Runtime:</span> No heap usage on hot paths.
-<span class="dim">-</span> <span class="bold">Probabilistic Data:</span> Count-Min Sketch for DDoS tracking.
-<span class="dim">-</span> <span class="bold">Static Flow Table:</span> Packed 5-tuple tracking (100% RAM usage).
+<span class="highlight bold">>> MEMORY OPTIMIZATION strategy</span>
+<span class="dim">-</span> <span class="bold">Zero-Alloc:</span> No heap usage on hot paths.
+<span class="dim">-</span> <span class="bold">Sketching:</span>  Count-Min Sketch for O(1) heavy-hitter detection.
+<span class="dim">-</span> <span class="bold">Flow Table:</span> Cuckoo Hashing for compact state tracking.
 
 <span class="highlight bold">>> SECURITY FEATURES</span>
 <span class="primary">*</span> <span class="bold">Firewall:</span>   Stateful L4 tracking & Port Blocking.
 <span class="primary">*</span> <span class="bold">DDoS:</span>       Volumetric mitigation via Penalty Box.
-<span class="primary">*</span> <span class="bold">DPI:</span>        Aho-Corasick payload scanning (SQLi/XSS).
-<span class="primary">*</span> <span class="bold">eBPF:</span>       Custom VM for dynamic packet filtering.
-<span class="primary">*</span> <span class="bold">Heuristics:</span> Detects NOP sleds & Xmas scans.
+<span class="primary">*</span> <span class="bold">DPI:</span>        Aho-Corasick payload scanning.
+<span class="primary">*</span> <span class="bold">eBPF:</span>       Custom VM for dynamic packet filtering rules.
 
-<span class="highlight bold">>> CONTROL PLANE</span>
-Includes a companion Rust GUI dashboard for real-time telemetry 
-(Throughput, Active Flows, Alerts) and traffic simulation.
-
-<span class="highlight bold">>> TECH STACK</span>
-<span class="dim">Lang:</span>     Rust (no_std), Assembly
-<span class="dim">Arch:</span>     RISC-V 64-bit
-<span class="dim">Driver:</span>   VirtIO Net (DMA)
+<span class="highlight bold">>> TELEMETRY</span>
+Includes a companion Rust GUI dashboard for real-time visualization
+of throughput, active flows, and dropped packets.
 `
         }
     },
@@ -124,117 +109,100 @@ Includes a companion Rust GUI dashboard for real-time telemetry
         id: "riscv-emulator",
         title: "RISC-V System Emulator",
         link: `https://github.com/${config.github}/riscv-system-emulator`,
-        desc: "A cycle-accurate <span class='highlight'>RV64IMAFD</span> emulator written in Rust. Features a 5-stage pipeline with <span class='highlight'>perceptron branch prediction</span>, SV39 MMU, and a custom <span class='highlight'>microkernel</span>. Includes evolutionary algorithms for hardware design space exploration.",
-        tags: ["Rust", "RISC-V", "Architecture"],
+        desc: "A cycle-accurate <span class='highlight'>RV64IMAFD</span> emulator. Features a 5-stage superscalar pipeline with <span class='highlight'>perceptron branch prediction</span>, SV39 MMU, and L1/L2 cache modeling. Used for hardware design space exploration.",
+        tags: ["Rust", "Architecture", "Simulation"],
         terminal: {
-            name: "riscv-emulator",
+            name: "riscv-sim",
             date: "Feb 12",
             size: "48",
             content: `
 <span class="primary bold">PROJECT: RISC-V System Emulator</span>
 =======================================
 A high-fidelity system emulator for the RISC-V 64-bit architecture.
-It models the full hardware stack from the pipeline up to the OS,
-enabling cycle-accurate performance analysis and architectural research.
+Models the full hardware stack from the pipeline up to the OS.
 
 <span class="highlight bold">>> MICROARCHITECTURE</span>
-<span class="dim">-</span> <span class="bold">Core:</span>       5-Stage Pipeline (IF, ID, EX, MEM, WB) with Data Forwarding.
-<span class="dim">-</span> <span class="bold">Prediction:</span> Interchangeable predictors: <span class="highlight">TAGE</span>, Perceptron, Tournament.
-<span class="dim">-</span> <span class="bold">Memory:</span>     Configurable L1/L2/L3 Caches (MESI) + DRAM Controller.
-<span class="dim">-</span> <span class="bold">MMU:</span>        Full SV39 Virtual Memory with TLB.
+<span class="dim">-</span> <span class="bold">Core:</span>       5-Stage Superscalar Pipeline (IF, ID, EX, MEM, WB).
+<span class="dim">-</span> <span class="bold">Hazards:</span>    Full data forwarding and stall logic.
+<span class="dim">-</span> <span class="bold">Prediction:</span> Perceptron Branch Predictor with global history.
+<span class="dim">-</span> <span class="bold">Memory:</span>     Configurable L1/L2 Caches (MESI) + TLB.
 
 <span class="highlight bold">>> SOFTWARE ECOSYSTEM</span>
-<span class="primary">*</span> <span class="bold">Microkernel:</span> Custom C kernel with threading, VFS, and syscalls.
-<span class="primary">*</span> <span class="bold">Libc:</span>        From-scratch implementation of standard library.
-<span class="primary">*</span> <span class="bold">Userland:</span>    Runs Raytracer, Chess Engine, and Maze Solvers.
+<span class="primary">*</span> <span class="bold">Kernel:</span>     Custom microkernel with VFS and syscalls.
+<span class="primary">*</span> <span class="bold">Userland:</span>   Runs Raytracer and Matrix Multiplication benchmarks.
 
-<span class="highlight bold">>> ANALYSIS TOOLS</span>
-Includes a genetic algorithm engine (Python) to evolve optimal 
-hardware configurations (Cache Size vs IPC) for specific workloads.
-
-<span class="highlight bold">>> RUN DEMO</span>
-<span class="ls-exec"># Boot the OS and run the Raytracer</span>
-<span class="ls-exec">cargo run --release -- --config configs/high_perf.toml --bin raytracer</span>
+<span class="highlight bold">>> DESIGN SPACE EXPLORATION</span>
+Includes a genetic algorithm engine to evolve optimal hardware 
+configurations (Cache Size vs IPC) for specific workloads.
 `
         }
     },
     {
         id: "chess",
-        title: "Chess Engine",
-        link: "#",
-        desc: "High-performance UCI engine. Implements Magic Bitboards, Alpha-Beta pruning with PVS, NNUE evaluation, and Transposition Tables.",
-        tags: ["Rust", "Algorithms", "Optimization"],
+        title: "High-Perf Chess Engine",
+        link: `https://github.com/${config.github}/chess-engine`,
+        desc: "A UCI-compliant chess engine. Features <span class='highlight'>Magic Bitboards</span> for move generation, PVS search with Alpha-Beta pruning, and <span class='highlight'>NNUE</span> (Efficiently Updatable Neural Network) evaluation.",
+        tags: ["Rust", "HPC", "AI"],
         terminal: {
-            name: "chess",
+            name: "chess-cli",
             date: "Nov 01",
             size: "26",
             content: `
-<span class="primary bold">PROJECT: Chess Engine (Rust)</span>
+<span class="primary bold">PROJECT: Chess Engine</span>
 =======================================
 A high-performance, UCI-compliant chess engine designed for 
-correctness and strength. Features NNUE evaluation and 
-Polyglot opening book support.
+correctness and strength.
 
 <span class="highlight bold">>> ENGINE FEATURES</span>
-<span class="primary">*</span> <span class="bold">Search:</span>    Alpha-Beta Pruning with PVS & Transposition Tables.
-<span class="primary">*</span> <span class="bold">Rules:</span>     Full support (Castling, En Passant, 50-move rule).
-<span class="primary">*</span> <span class="bold">Eval:</span>      Supports NNUE (Neural Network).
+<span class="primary">*</span> <span class="bold">Board Rep:</span> Magic Bitboards for O(1) sliding piece attacks.
+<span class="primary">*</span> <span class="bold">Search:</span>    Principal Variation Search (PVS) & Transposition Tables.
+<span class="primary">*</span> <span class="bold">Eval:</span>      NNUE (Neural Network) trained on 50M positions.
 <span class="primary">*</span> <span class="bold">Protocol:</span>  Universal Chess Interface (UCI) compatible.
-<span class="primary">*</span> <span class="bold">Verify:</span>    Includes 'perft' move generation tester.
 
-<span class="highlight bold">>> HOW TO USE</span>
+<span class="highlight bold">>> BENCHMARKS</span>
+<span class="dim">NPS:</span>      > 2,500,000 nodes/sec (Single Thread)
+<span class="dim">Rating:</span>   ~2800 ELO (Estimated)
 
-<span class="dim"># 1. Play in Terminal (5 seconds per move)</span>
-<span class="ls-exec">cargo run --release -- play-cli --time 5000</span>
-
-<span class="dim"># 2. Run in GUI (Arena, Scid, etc)</span>
-<span class="ls-exec">cargo run --release -- uci</span>
-
-<span class="dim"># 3. Watch Self-Play (5 rounds)</span>
-<span class="ls-exec">cargo run --release -- self-play --rounds 5 --time 1000</span>
+<span class="ls-exec">cargo run --release -- bench</span>
 `
         }
     },
     {
         id: "f1",
-        title: "F1 Racing Optimizer",
+        title: "F1 Trajectory Optimizer",
         link: `https://github.com/${config.github}/f1-optimizer`,
-        desc: "Numerical optimization engine for F1 racing lines. Uses the Levenberg-Marquardt algorithm and a 2D vehicle physics simulation to solve for time-optimal trajectories. Visualized in real-time with Raylib.",
-        tags: ["C", "Physics", "Raylib", "Optimization"],
+        desc: "Numerical optimization engine for vehicle dynamics. Uses <span class='highlight'>Levenberg-Marquardt</span> non-linear least squares to solve for time-optimal racing lines based on a 2D physics model.",
+        tags: ["C", "Physics", "Numerical Methods"],
         terminal: {
-            name: "f1-optimizer",
+            name: "f1-solver",
             date: "Dec 20",
             size: "42",
             content: `
 <span class="primary bold">PROJECT: F1 Racing Line Optimizer</span>
 =======================================
-A numerical optimization engine written in C that calculates the
-time-optimal racing line for Formula 1 circuits. It compares simulation
-data against real-world telemetry (e.g., Max Verstappen's pole laps).
+A numerical optimization engine that calculates the time-optimal 
+racing line for Formula 1 circuits.
 
 <span class="highlight bold">>> CORE FEATURES</span>
-<span class="dim">-</span> <span class="bold">Solver:</span>     Levenberg-Marquardt non-linear least squares optimization.
-<span class="dim">-</span> <span class="bold">Physics:</span>    2D simulation with Aero, Load Transfer, and Friction Circle.
-<span class="dim">-</span> <span class="bold">Visuals:</span>    Real-time Raylib rendering (Heatmaps, G-Force, Telemetry).
-<span class="dim">-</span> <span class="bold">Data:</span>       Python pipeline (FastF1) for GPS/Telemetry extraction.
+<span class="dim">-</span> <span class="bold">Solver:</span>     Levenberg-Marquardt optimization algorithm.
+<span class="dim">-</span> <span class="bold">Physics:</span>    2D point-mass model with Aero, Load Transfer, 
+                and Friction Circle constraints.
+<span class="dim">-</span> <span class="bold">Data:</span>       Ingests telemetry from FastF1 (Python).
 
-<span class="highlight bold">>> TECH STACK</span>
-<span class="dim">Lang:</span>     C99, Python
-<span class="dim">Libs:</span>     Raylib, OpenMP, NumPy, SciPy
-<span class="dim">Math:</span>     Cholesky Decomposition, Finite Differences
+<span class="highlight bold">>> VISUALIZATION</span>
+Real-time rendering using Raylib. Displays friction circle usage,
+G-Force heatmaps, and delta-time comparisons against real pole laps.
 
-<span class="highlight bold">>> BUILD & RUN</span>
-<span class="ls-exec">cmake -B build && cmake --build build</span>
-<span class="ls-exec">./build/race_optimizer -f silverstone_2023.csv</span>
+<span class="ls-exec">./build/race_optimizer -f silverstone_2024.csv</span>
 `
         }
     },
     {
         id: "neural",
-        title: "Neural Network Engine",
+        title: "C Neural Network",
         link: `https://github.com/${config.github}/c-neural-network`,
-        desc: "Multithreaded Convolutional Neural Network built from scratch in C. Implements custom backpropagation, Adam optimizer, and real-time activation heatmaps using Raylib.",
-        tags: ["C", "Machine Learning", "Raylib", "Concurrency"],
+        desc: "A multithreaded Convolutional Neural Network built from scratch in C99. Implements custom backpropagation, <span class='highlight'>Adam optimizer</span>, and real-time activation heatmaps.",
+        tags: ["C", "ML", "Raylib"],
         terminal: {
             name: "neural-engine",
             date: "Jan 10",
@@ -242,23 +210,18 @@ data against real-world telemetry (e.g., Max Verstappen's pole laps).
             content: `
 <span class="primary bold">PROJECT: Neural Network Engine</span>
 =======================================
-A high-performance Convolutional Neural Network built entirely
-from scratch in C. It visualizes internal network states (activations,
-weights, gradients) in real-time while training.
+A low-level implementation of a Convolutional Neural Network (CNN)
+without external ML libraries.
 
 <span class="highlight bold">>> CORE FEATURES</span>
-<span class="dim">-</span> <span class="bold">Engine:</span>     Custom implementation of Conv2D, MaxPool, ReLU, Softmax.
-<span class="dim">-</span> <span class="bold">Training:</span>   Stochastic Gradient Descent with Adam Optimizer.
-<span class="dim">-</span> <span class="bold">System:</span>     Multithreaded architecture (Training thread + UI thread).
-<span class="dim">-</span> <span class="bold">Visuals:</span>    Real-time heatmaps of feature maps and weight histograms.
+<span class="dim">-</span> <span class="bold">Layers:</span>     Conv2D, MaxPool, ReLU, Softmax (Manual implementation).
+<span class="dim">-</span> <span class="bold">Training:</span>   Stochastic Gradient Descent with Adam.
+<span class="dim">-</span> <span class="bold">Parallel:</span>   OpenMP for matrix multiplication acceleration.
+<span class="dim">-</span> <span class="bold">Visuals:</span>    Real-time heatmaps of weights and gradients.
 
-<span class="highlight bold">>> TECH STACK</span>
-<span class="dim">Lang:</span>     C99
-<span class="dim">Libs:</span>     Raylib (Visualization), OpenMP (Parallelism), Pthreads
-<span class="dim">Data:</span>     EMNIST + Google QuickDraw (Merged)
+<span class="highlight bold">>> DATASET</span>
+Trained on EMNIST (Letters) and Google QuickDraw.
 
-<span class="highlight bold">>> BUILD & RUN</span>
-<span class="ls-exec">cmake -B build && cmake --build build</span>
 <span class="ls-exec">./build/draw_predictor</span>
 `
         }
@@ -266,40 +229,30 @@ weights, gradients) in real-time while training.
     {
         id: "compiler",
         title: "C Subset Compiler",
-        link: "#",
-        desc: "Recursive descent compiler targeting RISC-V Assembly. Handles pointers, stack allocation, and control flow.",
+        link: `https://github.com/${config.github}/c-compiler`,
+        desc: "Recursive descent compiler targeting <span class='highlight'>RISC-V Assembly</span>. Supports pointers, stack allocation, and control flow structures.",
         tags: ["Rust", "Compilers", "Assembly"],
         terminal: {
-            name: "compiler",
+            name: "c-compiler",
             date: "Oct 15",
             size: "28",
             content: `
 <span class="primary bold">PROJECT: C to RISC-V Compiler</span>
 =======================================
-A Rust-based compiler that translates a C-subset language into 
-RISC-V 64-bit Assembly (RV64I). Supports recursion and stack frames.
-
-<span class="highlight bold">>> LANGUAGE SUPPORT</span>
-<span class="dim">-</span> <span class="bold">Types:</span>    64-bit signed integers (int)
-<span class="dim">-</span> <span class="bold">Control:</span>  if/else, while loops
-<span class="dim">-</span> <span class="bold">Funcs:</span>    Recursive calls, arguments, return values
-<span class="dim">-</span> <span class="bold">Ops:</span>      Arithmetic (+-*/) and Comparison (== != < >)
+A compiler that translates a C-subset language into RISC-V 
+64-bit Assembly (RV64I).
 
 <span class="highlight bold">>> TECHNICAL DETAILS</span>
 <span class="dim">Target:</span>   RISC-V 64-bit (RV64I)
-<span class="dim">Method:</span>   Stack-machine based code generation
-<span class="dim">Regs:</span>     Uses <span class="secondary">a0</span> (return/arg), <span class="secondary">s0</span> (frame ptr), <span class="secondary">sp</span> (stack)
+<span class="dim">Method:</span>   Recursive Descent Parser -> AST -> Code Gen.
+<span class="dim">ABI:</span>      Compliant with RISC-V calling convention (lp64).
 
-<span class="highlight bold">>> USAGE PIPELINE</span>
+<span class="highlight bold">>> FEATURES</span>
+<span class="dim">-</span> Stack frame management (prologue/epilogue).
+<span class="dim">-</span> Pointer arithmetic and dereferencing.
+<span class="dim">-</span> Recursive function calls.
 
-<span class="dim"># 1. Compile Source (C -> Assembly)</span>
 <span class="ls-exec">cargo run --quiet -- input.c > output.s</span>
-
-<span class="dim"># 2. Assemble & Link (using GCC)</span>
-<span class="ls-exec">riscv64-linux-gnu-gcc -static output.s -o program</span>
-
-<span class="dim"># 3. Run (using QEMU)</span>
-<span class="ls-exec">qemu-riscv64 ./program</span>
 `
         }
     }
