@@ -3,38 +3,38 @@ import { config } from '../config.js';
 export const projects = [
     {
         id: "vlsi",
-        title: "VLSI Physical Design Engine",
+        title: "VLSI Physical Design Prototype", // Changed from "Engine"
         link: `https://github.com/${config.github}/vlsi-physical-design`,
-        desc: "A modular digital IC design toolchain written in Rust. Implements <span class='highlight'>analytical placement</span> using electrostatic analogies (FFT-based density solving) and <span class='highlight'>congestion-aware routing</span> via the Pathfinder algorithm. Capable of placing and routing 10k+ nets.",
-        tags: ["Rust", "VLSI", "Algorithms", "HPC"],
+        // Description focuses on the *algorithms* implemented, not the tool's commercial readiness
+        desc: "A digital IC placement and routing tool built in Rust to explore EDA algorithms. Implements <span class='highlight'>electrostatic global placement</span> (FFT-based) and <span class='highlight'>negotiation-based routing</span> (Pathfinder). Capable of processing synthetic benchmarks up to 10k nets.",
+        tags: ["Rust", "Algorithms", "Optimization", "HPC"],
         terminal: {
-            name: "eda-toolchain",
+            name: "eda-flow",
             date: "Jan 05",
             size: "52",
             content: `
-<span class="primary bold">PROJECT: VLSI Physical Design Engine</span>
+<span class="primary bold">PROJECT: VLSI Physical Design Prototype</span>
 =======================================
-A modular physical design toolchain for digital integrated circuits.
-It transforms logical netlists (LEF/DEF) into physical layouts through
-analytical placement and negotiation-based routing.
+A from-scratch implementation of core Electronic Design Automation (EDA) 
+algorithms for placing and routing digital circuits.
 
-<span class="highlight bold">>> CORE ALGORITHMS</span>
-<span class="dim">-</span> <span class="bold">Placement:</span>   Analytical solver using Electrostatic analogies.
-                Solves Poisson's equation via <span class="highlight">FFT</span> to model density.
-                Minimizes wirelength using Nesterov optimization.
-<span class="dim">-</span> <span class="bold">Legalize:</span>    Abacus algorithm for cell alignment.
-<span class="dim">-</span> <span class="bold">Routing:</span>     Pathfinder algorithm (Rip-up and Reroute).
-                Uses 3D A* search on a multi-layer metal grid.
+<span class="highlight bold">>> ALGORITHMIC IMPLEMENTATION</span>
+<span class="dim">-</span> <span class="bold">Placement:</span>   Analytical solver based on electrostatic analogies.
+                Uses <span class="highlight">FFT</span> to compute density gradients and 
+                Nesterov optimization for wirelength minimization.
+<span class="dim">-</span> <span class="bold">Legalize:</span>    Abacus algorithm for row alignment.
+<span class="dim">-</span> <span class="bold">Routing:</span>     Pathfinder (Rip-up and Reroute) strategy using
+                multithreaded 3D A* search.
 
-<span class="highlight bold">>> PERFORMANCE</span>
-<span class="primary">*</span> <span class="bold">Scale:</span>      Handles designs with 10k+ nets (e.g., AES encryption).
-<span class="primary">*</span> <span class="bold">Speed:</span>      Multithreaded routing using Rayon.
-<span class="primary">*</span> <span class="bold">Output:</span>     Generates routed DEF files and visual heatmaps.
+<span class="highlight bold">>> CAPABILITIES</span>
+<span class="primary">*</span> <span class="bold">Input:</span>      Parses industry-standard LEF/DEF files.
+<span class="primary">*</span> <span class="bold">Scale:</span>      Optimized for designs up to ~10k nets.
+<span class="primary">*</span> <span class="bold">Concurrency:</span> Heavily parallelized routing using Rayon.
 
 <span class="highlight bold">>> TECH STACK</span>
 <span class="dim">Lang:</span>     Rust
 <span class="dim">Math:</span>     RustFFT, Nalgebra
-<span class="dim">Format:</span>   LEF/DEF Parsers
+<span class="dim">Vis:</span>      Custom image generation for heatmaps
 
 <span class="highlight bold">>> RUN DEMO</span>
 <span class="ls-exec">cargo run --release -- flow</span>
