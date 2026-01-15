@@ -2,10 +2,48 @@ import { config } from '../config.js';
 
 export const projects = [
     {
+        id: "qec",
+        title: "Real-Time Quantum Error Decoder",
+        link: `https://github.com/${config.github}/qec`,
+        desc: "A bare-metal, <span class='highlight'>zero-allocation</span> decoder for Surface Code Quantum Error Correction. Implements the Union-Find algorithm in `no_std` Rust. Features a custom bump allocator, lock-free ring buffers, and boots as a standalone <span class='highlight'>RISC-V kernel</span>. Benchmarked at < 2µs latency.",
+        tags: ["Rust", "Quantum", "Embedded", "RISC-V"],
+        terminal: {
+            name: "qec-decoder",
+            date: "Jan 14",
+            size: "18", // Small binary size implies efficiency
+            content: `
+<span class="primary bold">PROJECT: Real-Time Surface Code Decoder</span>
+=======================================
+A bare-metal implementation of the Union-Find decoding algorithm for 
+Quantum Error Correction (QEC). Designed for embedded control systems 
+where heap allocation and OS-level synchronization are prohibited.
+
+<span class="highlight bold">>> SYSTEMS ARCHITECTURE</span>
+<span class="dim">-</span> <span class="bold">Zero-Alloc:</span>    Hot path uses a custom <span class="highlight">Bump Allocator</span> (O(1)) 
+                backed by static memory to prevent latency spikes.
+<span class="dim">-</span> <span class="bold">Concurrency:</span> Lock-free Single-Producer Single-Consumer (SPSC)
+                ring buffer using C11 Atomics.
+<span class="dim">-</span> <span class="bold">Kernel:</span>      Boots directly on RISC-V via QEMU (VirtIO).
+
+<span class="highlight bold">>> PERFORMANCE BENCHMARKS</span>
+<span class="primary">*</span> <span class="bold">Linux:</span>      ~1.99 µs avg latency @ 100kHz (Distance 21).
+<span class="primary">*</span> <span class="bold">RISC-V:</span>     ~132 ns algorithmic latency (1.0GHz clock).
+<span class="primary">*</span> <span class="bold">Throughput:</span> >2.2 Million shots/s (Batch Mode).
+
+<span class="highlight bold">>> TECH STACK</span>
+<span class="dim">Core:</span>     Rust (no_std), RISC-V Assembly
+<span class="dim">Sim:</span>      Stim (Syndrome Generation), QEMU
+<span class="dim">Algo:</span>     Union-Find with Path Compression
+
+<span class="highlight bold">>> BOOT KERNEL</span>
+<span class="ls-exec">./scripts/run.fish kernel</span>
+`
+        }
+    },
+    {
         id: "vlsi",
-        title: "VLSI Physical Design Prototype", // Changed from "Engine"
+        title: "VLSI Physical Design Prototype",
         link: `https://github.com/${config.github}/vlsi-physical-design`,
-        // Description focuses on the *algorithms* implemented, not the tool's commercial readiness
         desc: "A digital IC placement and routing tool built in Rust to explore EDA algorithms. Implements <span class='highlight'>electrostatic global placement</span> (FFT-based) and <span class='highlight'>negotiation-based routing</span> (Pathfinder). Capable of processing synthetic benchmarks up to 10k nets.",
         tags: ["Rust", "Algorithms", "Optimization", "HPC"],
         terminal: {
@@ -120,7 +158,7 @@ hardware configurations (Cache Size vs IPC) for specific workloads.
 `
         }
     },
-  {
+    {
         id: "chess",
         title: "Chess Engine",
         link: "#",
