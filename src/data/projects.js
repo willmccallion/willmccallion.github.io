@@ -2,38 +2,69 @@ import { config } from '../config.js';
 
 export const projects = [
     {
-        id: "qec",
-        title: "RISC-V Quantum Control Unit",
-        link: `https://github.com/${config.github}/riscv-qcu`,
-        desc: "A hardware-software co-design for real-time Quantum Error Correction. Features a <span class='highlight'>SystemVerilog accelerator</span> and a bare-metal Rust firmware. Achieves <span class='highlight'>~580 cycle latency</span> for Surface Code decoding on RISC-V soft-cores.",
-        tags: ["Rust", "SystemVerilog", "RISC-V", "Embedded"],
+        id: "riscv-emulator",
+        title: "RISC-V System Emulator",
+        link: `https://github.com/${config.github}/riscv-system-emulator`,
+        desc: "A cycle-accurate <span class='highlight'>RV64IMAFD</span> emulator. Features a 5-stage superscalar pipeline with <span class='highlight'>perceptron branch prediction</span>, SV39 MMU, and L1/L2 cache modeling. Used for hardware design space exploration.",
+        tags: ["Rust", "Architecture", "Simulation"],
         terminal: {
-            name: "qcu-firmware",
-            date: "Jan 15",
-            size: "24",
+            name: "riscv-sim",
+            date: "Feb 12",
+            size: "48",
             content: `
-<span class="primary bold">PROJECT: RISC-V Quantum Control Unit</span>
+<span class="primary bold">PROJECT: RISC-V System Emulator</span>
 =======================================
-A full-stack embedded architecture for decoding Surface Code quantum 
-errors within the coherence time of superconducting qubits.
+A high-fidelity system emulator for the RISC-V 64-bit architecture.
+Models the full hardware stack from the pipeline up to the OS.
 
-<span class="highlight bold">>> SYSTEM ARCHITECTURE</span>
-<span class="dim">-</span> <span class="bold">Firmware:</span>    Bare-metal Rust (no_std) kernel for RV64IMAC.
-<span class="dim">-</span> <span class="bold">Hardware:</span>    Custom SystemVerilog accelerator for Union-Find.
-<span class="dim">-</span> <span class="bold">Memory:</span>      Bump-allocated static arenas (Zero-GC/Malloc).
-<span class="dim">-</span> <span class="bold">IPC:</span>         Lock-free SPSC ring buffers for core synchronization.
+<span class="highlight bold">>> MICROARCHITECTURE</span>
+<span class="dim">-</span> <span class="bold">Core:</span>       5-Stage Superscalar Pipeline (IF, ID, EX, MEM, WB).
+<span class="dim">-</span> <span class="bold">Hazards:</span>    Full data forwarding and stall logic.
+<span class="dim">-</span> <span class="bold">Prediction:</span> Perceptron Branch Predictor with global history.
+<span class="dim">-</span> <span class="bold">Memory:</span>     Configurable L1/L2 Caches (MESI) + TLB.
 
-<span class="highlight bold">>> PERFORMANCE METRICS (QEMU/RV64)</span>
-<span class="primary">*</span> <span class="bold">Latency:</span>    ~580 Clock Cycles (0.58 µs @ 1GHz).
-<span class="primary">*</span> <span class="bold">Throughput:</span> ~55,000 shots/s (3 Worker Cores).
-<span class="primary">*</span> <span class="bold">Jitter:</span>     < 50 Cycles (Deterministic execution).
+<span class="highlight bold">>> SOFTWARE ECOSYSTEM</span>
+<span class="primary">*</span> <span class="bold">Kernel:</span>     Custom microkernel with VFS and syscalls.
+<span class="primary">*</span> <span class="bold">Userland:</span>   Runs Raytracer and Matrix Multiplication benchmarks.
 
-<span class="highlight bold">>> VERIFICATION</span>
-<span class="dim">Flow:</span>     Stim Circuit -> B8 Syndrome Data -> Firmware -> Decoder
-<span class="dim">Co-Sim:</span>   Verilator integration for cycle-accurate hardware testing.
+<span class="highlight bold">>> DESIGN SPACE EXPLORATION</span>
+Includes a genetic algorithm engine to evolve optimal hardware
+configurations (Cache Size vs IPC) for specific workloads.
+`
+        }
+    },
+    {
+        id: "hexz",
+        title: "Seekable Compression Engine",
+        link: `https://github.com/Alethic-Systems/hexz`,
+        desc: "A high-performance PyTorch data loader with <span class='highlight'>seekable compressed archives</span>. Streams datasets directly from S3 with <span class='highlight'>random access</span> and deduplication. Enables training on massive datasets without local storage.",
+        tags: ["Rust", "PyTorch", "Compression", "HPC"],
+        terminal: {
+            name: "hexz-loader",
+            date: "Feb 01",
+            size: "36",
+            content: `
+<span class="primary bold">PROJECT: Seekable Compression Engine (Hexz)</span>
+=======================================
+A zero-copy data streaming system for training ML models on
+massive compressed datasets stored in cloud object storage.
 
-<span class="highlight bold">>> BOOT KERNEL</span>
-<span class="ls-exec">./scripts/run.py kernel --size 5</span>
+<span class="highlight bold">>> CORE INNOVATION</span>
+<span class="dim">-</span> <span class="bold">Archive:</span>    Custom seekable compression format.
+<span class="dim">-</span> <span class="bold">Access:</span>     O(1) random-access to compressed samples.
+<span class="dim">-</span> <span class="bold">Streaming:</span>  Direct S3 reads via HTTP Range requests.
+<span class="dim">-</span> <span class="bold">Dedup:</span>      Content-addressed deduplication.
+
+<span class="highlight bold">>> PERFORMANCE</span>
+<span class="primary">*</span> <span class="bold">Throughput:</span> 10GB/s decompression (Multi-threaded).
+<span class="primary">*</span> <span class="bold">Memory:</span>     Zero-copy via PyTorch C++ extension.
+<span class="primary">*</span> <span class="bold">Latency:</span>    Sub-millisecond sample fetch.
+
+<span class="highlight bold">>> USE CASE</span>
+Train ImageNet-scale models without downloading the entire dataset.
+Ideal for multi-node distributed training on ephemeral cloud VMs.
+
+<span class="ls-exec">python train.py --data s3://bucket/archive.hexz</span>
 `
         }
     },
@@ -72,6 +103,42 @@ algorithms for placing and routing digital integrated circuits.
         }
     },
     {
+        id: "qec",
+        title: "RISC-V Quantum Control Unit",
+        link: `https://github.com/${config.github}/riscv-qcu`,
+        desc: "A hardware-software co-design for real-time Quantum Error Correction. Features a <span class='highlight'>SystemVerilog accelerator</span> and a bare-metal Rust firmware. Achieves <span class='highlight'>~580 cycle latency</span> for Surface Code decoding on RISC-V soft-cores.",
+        tags: ["Rust", "SystemVerilog", "RISC-V", "Embedded"],
+        terminal: {
+            name: "qcu-firmware",
+            date: "Jan 15",
+            size: "24",
+            content: `
+<span class="primary bold">PROJECT: RISC-V Quantum Control Unit</span>
+=======================================
+A full-stack embedded architecture for decoding Surface Code quantum
+errors within the coherence time of superconducting qubits.
+
+<span class="highlight bold">>> SYSTEM ARCHITECTURE</span>
+<span class="dim">-</span> <span class="bold">Firmware:</span>    Bare-metal Rust (no_std) kernel for RV64IMAC.
+<span class="dim">-</span> <span class="bold">Hardware:</span>    Custom SystemVerilog accelerator for Union-Find.
+<span class="dim">-</span> <span class="bold">Memory:</span>      Bump-allocated static arenas (Zero-GC/Malloc).
+<span class="dim">-</span> <span class="bold">IPC:</span>         Lock-free SPSC ring buffers for core synchronization.
+
+<span class="highlight bold">>> PERFORMANCE METRICS (QEMU/RV64)</span>
+<span class="primary">*</span> <span class="bold">Latency:</span>    ~580 Clock Cycles (0.58 µs @ 1GHz).
+<span class="primary">*</span> <span class="bold">Throughput:</span> ~55,000 shots/s (3 Worker Cores).
+<span class="primary">*</span> <span class="bold">Jitter:</span>     < 50 Cycles (Deterministic execution).
+
+<span class="highlight bold">>> VERIFICATION</span>
+<span class="dim">Flow:</span>     Stim Circuit -> B8 Syndrome Data -> Firmware -> Decoder
+<span class="dim">Co-Sim:</span>   Verilator integration for cycle-accurate hardware testing.
+
+<span class="highlight bold">>> BOOT KERNEL</span>
+<span class="ls-exec">./scripts/run.py kernel --size 5</span>
+`
+        }
+    },
+    {
         id: "unikernel",
         title: "RISC-V Security Unikernel",
         link: `https://github.com/${config.github}/riscv-security-unikernel`,
@@ -85,7 +152,7 @@ algorithms for placing and routing digital integrated circuits.
 <span class="primary bold">PROJECT: RISC-V Security Unikernel</span>
 =======================================
 A high-performance network security appliance running bare-metal
-on RISC-V. Engineered to function within a strict <span class="highlight bold">64KB RAM</span> 
+on RISC-V. Engineered to function within a strict <span class="highlight bold">64KB RAM</span>
 hardware limit (L1 Cache size).
 
 <span class="highlight bold">>> MEMORY OPTIMIZATION strategy</span>
@@ -102,38 +169,6 @@ hardware limit (L1 Cache size).
 <span class="highlight bold">>> TELEMETRY</span>
 Includes a companion Rust GUI dashboard for real-time visualization
 of throughput, active flows, and dropped packets.
-`
-        }
-    },
-    {
-        id: "riscv-emulator",
-        title: "RISC-V System Emulator",
-        link: `https://github.com/${config.github}/riscv-system-emulator`,
-        desc: "A cycle-accurate <span class='highlight'>RV64IMAFD</span> emulator. Features a 5-stage superscalar pipeline with <span class='highlight'>perceptron branch prediction</span>, SV39 MMU, and L1/L2 cache modeling. Used for hardware design space exploration.",
-        tags: ["Rust", "Architecture", "Simulation"],
-        terminal: {
-            name: "riscv-sim",
-            date: "Feb 12",
-            size: "48",
-            content: `
-<span class="primary bold">PROJECT: RISC-V System Emulator</span>
-=======================================
-A high-fidelity system emulator for the RISC-V 64-bit architecture.
-Models the full hardware stack from the pipeline up to the OS.
-
-<span class="highlight bold">>> MICROARCHITECTURE</span>
-<span class="dim">-</span> <span class="bold">Core:</span>       5-Stage Superscalar Pipeline (IF, ID, EX, MEM, WB).
-<span class="dim">-</span> <span class="bold">Hazards:</span>    Full data forwarding and stall logic.
-<span class="dim">-</span> <span class="bold">Prediction:</span> Perceptron Branch Predictor with global history.
-<span class="dim">-</span> <span class="bold">Memory:</span>     Configurable L1/L2 Caches (MESI) + TLB.
-
-<span class="highlight bold">>> SOFTWARE ECOSYSTEM</span>
-<span class="primary">*</span> <span class="bold">Kernel:</span>     Custom microkernel with VFS and syscalls.
-<span class="primary">*</span> <span class="bold">Userland:</span>   Runs Raytracer and Matrix Multiplication benchmarks.
-
-<span class="highlight bold">>> DESIGN SPACE EXPLORATION</span>
-Includes a genetic algorithm engine to evolve optimal hardware 
-configurations (Cache Size vs IPC) for specific workloads.
 `
         }
     },
