@@ -4,6 +4,7 @@ export const projects = [
     {
         id: "riscv-emulator",
         title: "RISC-V System Emulator",
+        image: "assets/rvsim_stats.png",
         link: `https://github.com/${config.github}/rvsim`,
         desc: "Cycle-accurate <span class='highlight'>RV64IMAFDC</span> simulator modeling a full out-of-order superscalar core — physical register file, CAM-style issue queue with wakeup/select, ROB, non-blocking caches with MSHRs, DRAM row-buffer timing, and five branch predictors including TAGE. Exposes everything through a Python API for design-space exploration. Passes all 134 riscv-tests.",
         tags: ["Rust", "Architecture", "Simulation"],
@@ -40,6 +41,7 @@ Static · GShare · Tournament · Perceptron · TAGE (with loop predictor)
     {
         id: "vlsi",
         title: "VLSI Physical Design Tool",
+        image: "assets/vlsi_ibm01_routed.png",
         link: `https://github.com/${config.github}/vlsi-physical-design`,
         desc: "Digital IC placement and routing engine in Rust. Global placement models cell density as an electrostatic field and solves Poisson's equation via <span class='highlight'>FFT</span>, then minimizes wirelength with <span class='highlight'>Nesterov accelerated gradient descent</span>. Two-stage Pathfinder routing on an edge-capacity gcell grid with pattern routing and 3D A* places and routes the 12k-cell IBM01 ISPD benchmark DRC-clean across 5 metal layers.",
         tags: ["Rust", "EDA", "Algorithms", "Optimization"],
@@ -72,6 +74,7 @@ Full placement and routing flow for digital ICs, built from scratch.
     {
         id: "unikernel",
         title: "RISC-V Security Unikernel",
+        image: "assets/security_kernel.png",
         link: `https://github.com/${config.github}/riscv-security-unikernel`,
         desc: "Bare-metal network security appliance in Rust for RISC-V. Packs a stateful firewall, <span class='highlight'>Count-Min Sketch</span> DDoS mitigation, Aho-Corasick DPI, and a custom <span class='highlight'>eBPF VM</span> for runtime-injected packet filters into a strict <span class='highlight'>64 KB RAM</span> budget — zero heap use on the hot path. Ships with a real-time egui control plane.",
         tags: ["Rust", "Kernel", "eBPF", "Security"],
@@ -107,6 +110,7 @@ Dashboard · SDN rule injection · eBPF Studio · Traffic generator
     {
         id: "qec",
         title: "RISC-V Quantum Control Unit",
+        image: "assets/qcu_hil.png",
         link: `https://github.com/${config.github}/riscv-qcu`,
         desc: "Hardware-software co-design for real-time Quantum Error Correction on RISC-V. A zero-allocation Union-Find decoder achieves <span class='highlight'>~580 cycle deterministic latency</span> with under 50 cycle jitter. Includes a <span class='highlight'>SystemVerilog path-compression accelerator</span> verified cycle-accurately via Verilator co-simulation.",
         tags: ["Rust", "SystemVerilog", "RISC-V", "Embedded"],
@@ -141,6 +145,7 @@ Must decode within qubit coherence time (~1-100 µs).
     {
         id: "eithne",
         title: "x86_64 OS Kernel",
+        image: "assets/kernel.png",
         link: `https://github.com/${config.github}/Eithne`,
         desc: "x86_64 OS kernel written in Rust, booting via UEFI. Implements an <span class='highlight'>O(1) buddy frame allocator</span> with XOR bitmap coalescing, a per-size-class slab heap, 4-level page tables, a 256-entry IDT with hand-written assembly stubs for every exception, and a <span class='highlight'>preemptive round-robin scheduler</span> with assembly context switching.",
         tags: ["Rust", "Kernel", "x86_64", "UEFI"],
@@ -176,6 +181,7 @@ Assembly context switch (callee-saved GPRs + RSP) · IRETQ resume
     {
         id: "chess",
         title: "Chess Engine (~2900 ELO)",
+        image: "assets/chess.png",
         link: `https://github.com/${config.github}/chess`,
         desc: "UCI-compliant chess engine in Rust rated ~<span class='highlight'>2900 ELO</span>. Uses <span class='highlight'>magic bitboards</span> for O(1) sliding-piece move generation, PVS alpha-beta with a full pruning stack, and NNUE evaluation with SIMD-accelerated incremental accumulator updates — only changed pieces re-evaluated per move.",
         tags: ["Rust", "HPC", "AI"],
@@ -214,6 +220,7 @@ Incremental accumulator — only changed pieces re-evaluated per move
     {
         id: "f1",
         title: "F1 Trajectory Optimizer",
+        image: "assets/f1_line.png",
         link: `https://github.com/${config.github}/f1-optimizer`,
         desc: "Numerical optimization engine for F1 racing lines written in C. Solves for the time-optimal path using <span class='highlight'>Levenberg-Marquardt</span> non-linear least squares on a 2D physics model with friction circle, aerodynamic downforce, and elevation. Results rendered in 3D against real <span class='highlight'>Max Verstappen 2023 telemetry</span>.",
         tags: ["C", "Physics", "Numerical Methods"],
@@ -247,6 +254,7 @@ G-force overlay · free camera + follow modes
     {
         id: "neural",
         title: "CNN from Scratch in C",
+        image: "assets/cnn_prediction.png",
         link: `https://github.com/${config.github}/c-neural-network`,
         desc: "Convolutional Neural Network built from scratch in C99 — no ML frameworks, no BLAS. Hand-coded backpropagation through conv, pooling, and dense layers, <span class='highlight'>Adam optimizer</span>, OpenMP matrix parallelism, and real-time Raylib visualization with activation heatmaps. Trained on a merged 70-class dataset (EMNIST + Google QuickDraw).",
         tags: ["C", "ML", "Raylib"],
@@ -277,37 +285,4 @@ Conv(16)→Pool → Conv(32)→Pool → Conv(64)→Pool → Dense(256) → 70-cl
 `
         }
     },
-    {
-        id: "compiler",
-        title: "C-to-RISC-V Compiler",
-        link: `https://github.com/${config.github}/compiler`,
-        desc: "Recursive descent compiler in Rust that targets <span class='highlight'>RV64 assembly</span>. Full pipeline from source through lexer, parser, type checker, IR lowering, optimizer, and code generator. Supports pointers, arrays, structs, enums, recursion, and all standard C control flow.",
-        tags: ["Rust", "Compilers", "Assembly"],
-        terminal: {
-            name: "compiler",
-            date: "Oct 15",
-            size: "5.2K",
-            content: `
-<span class="primary bold">PROJECT: C-to-RISC-V Compiler</span>
-=======================================
-Full compiler pipeline. C subset → RV64 assembly → QEMU execution.
-
-<span class="highlight bold">>> PIPELINE</span>
-Lexer → Parser → TypeCheck → IR Lower → Optimizer → Codegen
-
-<span class="highlight bold">>> SUPPORTED FEATURES</span>
-<span class="dim">-</span> Types: int · pointers · arrays · structs · enums · typedefs
-<span class="dim">-</span> Control: if/else · while · do-while · for · switch
-<span class="dim">-</span> Functions: recursion · up to 8 args (a0-a7) · RISC-V lp64 ABI
-
-<span class="highlight bold">>> EXAMPLE</span>
-<span class="ls-exec">cargo run --quiet -- input.c > out.s</span>
-<span class="ls-exec">riscv64-linux-gnu-gcc -static out.s -o prog</span>
-<span class="ls-exec">qemu-riscv64 ./prog && echo $?</span>
-
-int fib(int n) { if (n < 2) return n; return fib(n-1)+fib(n-2); }
-int main() { return fib(10); }  // exit code: 55
-`
-        }
-    }
 ];
