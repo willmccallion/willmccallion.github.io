@@ -38,37 +38,37 @@ Static · GShare · Tournament · Perceptron · TAGE (with loop predictor)
         }
     },
     {
-        id: "hexz",
-        title: "Deduplicated ML Checkpoint Storage",
-        link: `https://github.com/hexz-org/hexz`,
-        desc: "Content-addressable archive format for ML model weights. Chunks at <span class='highlight'>tensor boundaries</span> for stable deduplication, stores fine-tunes as <span class='highlight'>XOR deltas</span> against a base model, and streams random tensor access directly from S3 via HTTP byte-range requests. Zero-copy PyO3 Python bindings.",
-        tags: ["Rust", "PyTorch", "Compression", "HPC"],
+        id: "unikernel",
+        title: "RISC-V Security Unikernel",
+        link: `https://github.com/${config.github}/riscv-security-unikernel`,
+        desc: "Bare-metal network security appliance in Rust for RISC-V. Packs a stateful firewall, <span class='highlight'>Count-Min Sketch</span> DDoS mitigation, Aho-Corasick DPI, and a custom <span class='highlight'>eBPF VM</span> for runtime-injected packet filters into a strict <span class='highlight'>64 KB RAM</span> budget — zero heap use on the hot path. Ships with a real-time egui control plane.",
+        tags: ["Rust", "Kernel", "eBPF", "Security"],
         terminal: {
-            name: "hexz",
-            date: "Feb 01",
-            size: "213K",
+            name: "security-unikernel",
+            date: "Dec 29",
+            size: "94K",
             content: `
-<span class="primary bold">PROJECT: Deduplicated ML Checkpoint Storage</span>
+<span class="primary bold">PROJECT: RISC-V Security Unikernel</span>
 =======================================
-Content-addressable .hxz archives for ML model weights.
-Tensor-boundary chunking + XOR deltas for fine-tune storage.
+Full security stack — zero host OS — 64 KB RAM total.
 
-<span class="highlight bold">>> STORAGE ENGINE</span>
-<span class="dim">-</span> <span class="bold">Chunking:</span>   Tensor-boundary (safetensors header gives exact offsets)
-<span class="dim">-</span> <span class="bold">Dedup:</span>      BLAKE3 block dedup across parent snapshot chains
-<span class="dim">-</span> <span class="bold">Deltas:</span>     base XOR fine · byte-shuffle + zstd → low-magnitude diffs
-<span class="dim">-</span> <span class="bold">Index:</span>      Two-level B-tree · O(log P + log B) random access
+<span class="highlight bold">>> 6-STAGE PACKET PIPELINE</span>
+<span class="dim">①</span> Count-Min Sketch  — probabilistic DDoS heavy-hitter detection
+<span class="dim">②</span> Penalty Box       — 16-entry IP ban table (FIFO eviction)
+<span class="dim">③</span> Token Bucket      — global 10k pps rate cap
+<span class="dim">④</span> Flow Tracker      — 5-tuple stateful table · 74 entries
+<span class="dim">⑤</span> eBPF VM           — 16 regs · 64 instr · runtime-injected bytecode
+<span class="dim">⑥</span> DPI Engine        — Aho-Corasick · SQL injection · XSS · NOP sleds
 
-<span class="highlight bold">>> PYTHON API</span>
-<span class="primary">*</span> <span class="bold">Load:</span>       ckpt.load("finetuned.hxz", keys=["lm_head.weight"])
-<span class="primary">*</span> <span class="bold">Save:</span>       ckpt.save(state_dict, "ft.hxz", parent="base.hxz")
-<span class="primary">*</span> <span class="bold">S3:</span>         hexz.open("s3://bucket/model.hxz") — byte-range only
+<span class="highlight bold">>> MEMORY ENGINEERING</span>
+<span class="primary">*</span> Zero heap use on hot path — all structures statically allocated
+<span class="primary">*</span> VirtIO DMA buffers tuned to exact Ethernet MTU (1536 B)
 
-<span class="highlight bold">>> VALIDATED</span>
-CDC dedup: 92.4% on byte-shifted data vs 0% for fixed-size blocks.
+<span class="highlight bold">>> CONTROL PLANE (egui GUI)</span>
+Dashboard · SDN rule injection · eBPF Studio · Traffic generator
 
-<span class="ls-exec">pip install hexz</span>
-<span class="ls-exec">hexz store finetuned.safetensors ft.hxz --base base.hxz</span>
+<span class="ls-exec">make run   # QEMU + TAP interface</span>
+<span class="ls-exec">make gui   # egui control plane</span>
 `
         }
     },
