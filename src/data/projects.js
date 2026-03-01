@@ -38,6 +38,38 @@ Static · GShare · Tournament · Perceptron · TAGE (with loop predictor)
         }
     },
     {
+        id: "vlsi",
+        title: "VLSI Physical Design Tool",
+        link: `https://github.com/${config.github}/vlsi-physical-design`,
+        desc: "Digital IC placement and routing engine in Rust. Global placement models cell density as an electrostatic field and solves Poisson's equation via <span class='highlight'>FFT</span>, then minimizes wirelength with <span class='highlight'>Nesterov accelerated gradient descent</span>. Two-stage Pathfinder routing on an edge-capacity gcell grid with pattern routing and 3D A* places and routes the 12k-cell IBM01 ISPD benchmark DRC-clean across 5 metal layers.",
+        tags: ["Rust", "EDA", "Algorithms", "Optimization"],
+        terminal: {
+            name: "vlsi-flow",
+            date: "Jan 05",
+            size: "69K",
+            content: `
+<span class="primary bold">PROJECT: VLSI Physical Design Tool</span>
+=======================================
+Full placement and routing flow for digital ICs, built from scratch.
+
+<span class="highlight bold">>> PLACEMENT</span>
+<span class="dim">-</span> <span class="bold">Density:</span>    Solves Poisson equation via FFT (O(N log N))
+                Models cells as electric charges — high density = repulsion
+<span class="dim">-</span> <span class="bold">Wirelength:</span> Weighted Average smooth HPWL approximation
+<span class="dim">-</span> <span class="bold">Solver:</span>     Nesterov accelerated gradient descent
+<span class="dim">-</span> <span class="bold">Legalize:</span>   Abacus algorithm — row-grid alignment, min displacement
+
+<span class="highlight bold">>> ROUTING</span>
+<span class="primary">*</span> <span class="bold">Global:</span>     Coarse A* with Pathfinder rip-up & reroute (history costs)
+<span class="primary">*</span> <span class="bold">Detailed:</span>  Fine-grid 3D A* · guide-constrained · spatial batch parallel
+<span class="primary">*</span> <span class="bold">Formats:</span>   LEF/DEF · Bookshelf academic benchmarks
+
+<span class="ls-exec">cargo run --release -p eda-cli -- generate --cells 2000 --nets 2000</span>
+<span class="ls-exec">cargo run --release -p eda-cli -- flow</span>
+`
+        }
+    },
+    {
         id: "unikernel",
         title: "RISC-V Security Unikernel",
         link: `https://github.com/${config.github}/riscv-security-unikernel`,
@@ -69,38 +101,6 @@ Dashboard · SDN rule injection · eBPF Studio · Traffic generator
 
 <span class="ls-exec">make run   # QEMU + TAP interface</span>
 <span class="ls-exec">make gui   # egui control plane</span>
-`
-        }
-    },
-    {
-        id: "vlsi",
-        title: "VLSI Physical Design Tool",
-        link: `https://github.com/${config.github}/vlsi-physical-design`,
-        desc: "Digital IC placement and routing engine in Rust. Global placement models cell density as an electrostatic field and solves Poisson's equation via <span class='highlight'>FFT</span>, then minimizes wirelength with <span class='highlight'>Nesterov accelerated gradient descent</span>. Two-stage Pathfinder routing with 3D A* successfully routes the GCD benchmark end-to-end.",
-        tags: ["Rust", "EDA", "Algorithms", "Optimization"],
-        terminal: {
-            name: "vlsi-flow",
-            date: "Jan 05",
-            size: "69K",
-            content: `
-<span class="primary bold">PROJECT: VLSI Physical Design Tool</span>
-=======================================
-Full placement and routing flow for digital ICs, built from scratch.
-
-<span class="highlight bold">>> PLACEMENT</span>
-<span class="dim">-</span> <span class="bold">Density:</span>    Solves Poisson equation via FFT (O(N log N))
-                Models cells as electric charges — high density = repulsion
-<span class="dim">-</span> <span class="bold">Wirelength:</span> Weighted Average smooth HPWL approximation
-<span class="dim">-</span> <span class="bold">Solver:</span>     Nesterov accelerated gradient descent
-<span class="dim">-</span> <span class="bold">Legalize:</span>   Abacus algorithm — row-grid alignment, min displacement
-
-<span class="highlight bold">>> ROUTING</span>
-<span class="primary">*</span> <span class="bold">Global:</span>     Coarse A* with Pathfinder rip-up & reroute (history costs)
-<span class="primary">*</span> <span class="bold">Detailed:</span>  Fine-grid 3D A* · guide-constrained · spatial batch parallel
-<span class="primary">*</span> <span class="bold">Formats:</span>   LEF/DEF · Bookshelf academic benchmarks
-
-<span class="ls-exec">cargo run --release -p eda-cli -- generate --cells 2000 --nets 2000</span>
-<span class="ls-exec">cargo run --release -p eda-cli -- flow</span>
 `
         }
     },
