@@ -139,41 +139,6 @@ Must decode within qubit coherence time (~1-100 µs).
         }
     },
     {
-        id: "unikernel",
-        title: "RISC-V Security Unikernel",
-        link: `https://github.com/${config.github}/riscv-security-unikernel`,
-        desc: "Bare-metal network security appliance in Rust for RISC-V. Packs a stateful firewall, <span class='highlight'>Count-Min Sketch</span> DDoS mitigation, Aho-Corasick DPI, and a custom <span class='highlight'>eBPF VM</span> for runtime-injected packet filters into a strict <span class='highlight'>64 KB RAM</span> budget — zero heap use on the hot path. Ships with a real-time egui control plane.",
-        tags: ["Rust", "Kernel", "eBPF", "Security"],
-        terminal: {
-            name: "security-unikernel",
-            date: "Dec 29",
-            size: "94K",
-            content: `
-<span class="primary bold">PROJECT: RISC-V Security Unikernel</span>
-=======================================
-Full security stack — zero host OS — 64 KB RAM total.
-
-<span class="highlight bold">>> 6-STAGE PACKET PIPELINE</span>
-<span class="dim">①</span> Count-Min Sketch  — probabilistic DDoS heavy-hitter detection
-<span class="dim">②</span> Penalty Box       — 16-entry IP ban table (FIFO eviction)
-<span class="dim">③</span> Token Bucket      — global 10k pps rate cap
-<span class="dim">④</span> Flow Tracker      — 5-tuple stateful table · 74 entries
-<span class="dim">⑤</span> eBPF VM           — 16 regs · 64 instr · runtime-injected bytecode
-<span class="dim">⑥</span> DPI Engine        — Aho-Corasick · SQL injection · XSS · NOP sleds
-
-<span class="highlight bold">>> MEMORY ENGINEERING</span>
-<span class="primary">*</span> Zero heap use on hot path — all structures statically allocated
-<span class="primary">*</span> VirtIO DMA buffers tuned to exact Ethernet MTU (1536 B)
-
-<span class="highlight bold">>> CONTROL PLANE (egui GUI)</span>
-Dashboard · SDN rule injection · eBPF Studio · Traffic generator
-
-<span class="ls-exec">make run   # QEMU + TAP interface</span>
-<span class="ls-exec">make gui   # egui control plane</span>
-`
-        }
-    },
-    {
         id: "eithne",
         title: "x86_64 OS Kernel",
         link: `https://github.com/${config.github}/Eithne`,
