@@ -40,34 +40,40 @@ Static · GShare · Tournament · Perceptron · TAGE (with loop predictor)
     },
     {
         id: "vlsi",
-        title: "VLSI Physical Design Tool",
+        title: "PARE — Placement And Routing Engine",
         image: "assets/vlsi_ibm01_routed.png",
         link: `https://github.com/${config.github}/vlsi-physical-design`,
-        desc: "Digital IC placement and routing engine in Rust. Global placement models cell density as an electrostatic field and solves Poisson's equation via <span class='highlight'>FFT</span>, then minimizes wirelength with <span class='highlight'>Nesterov accelerated gradient descent</span>. Two-stage Pathfinder routing on an edge-capacity gcell grid with pattern routing and 3D A* places and routes the 12k-cell IBM01 ISPD benchmark DRC-clean across 5 metal layers.",
+        desc: "Digital IC placement and routing engine in Rust implementing the full physical design flow. Global placement solves Poisson's equation via <span class='highlight'>FFT</span> with Nesterov accelerated gradient descent, Abacus legalization snaps cells to the row grid, and two-stage <span class='highlight'>Pathfinder routing</span> runs on an edge-capacity gcell grid. Successfully places and routes real benchmarks up to <span class='highlight'>67k cells / 64k nets</span> with zero DRC violations.",
         tags: ["Rust", "EDA", "Algorithms", "Optimization"],
         terminal: {
             name: "vlsi-flow",
             date: "Jan 05",
             size: "69K",
             content: `
-<span class="primary bold">PROJECT: VLSI Physical Design Tool</span>
+<span class="primary bold">PROJECT: PARE — Placement And Routing Engine</span>
 =======================================
-Full placement and routing flow for digital ICs, built from scratch.
+Full physical design flow for digital ICs, built from scratch.
 
 <span class="highlight bold">>> PLACEMENT</span>
-<span class="dim">-</span> <span class="bold">Density:</span>    Solves Poisson equation via FFT (O(N log N))
-                Models cells as electric charges — high density = repulsion
+<span class="dim">-</span> <span class="bold">Density:</span>    Poisson equation via FFT (O(N log N))
+                cells as electric charges — high density = repulsion
 <span class="dim">-</span> <span class="bold">Wirelength:</span> Weighted Average smooth HPWL approximation
 <span class="dim">-</span> <span class="bold">Solver:</span>     Nesterov accelerated gradient descent
-<span class="dim">-</span> <span class="bold">Legalize:</span>   Abacus algorithm — row-grid alignment, min displacement
+<span class="dim">-</span> <span class="bold">Legalize:</span>   Abacus — row-grid alignment, min displacement
 
 <span class="highlight bold">>> ROUTING</span>
-<span class="primary">*</span> <span class="bold">Global:</span>     Coarse A* with Pathfinder rip-up & reroute (history costs)
-<span class="primary">*</span> <span class="bold">Detailed:</span>  Fine-grid 3D A* · guide-constrained · spatial batch parallel
-<span class="primary">*</span> <span class="bold">Formats:</span>   LEF/DEF · Bookshelf academic benchmarks
+<span class="primary">*</span> <span class="bold">Global:</span>     Coarse A* · Pathfinder rip-up & reroute (history costs)
+<span class="primary">*</span> <span class="bold">Detailed:</span>  Pattern routing + guide-constrained A* · spatial batch parallel
+<span class="primary">*</span> <span class="bold">Formats:</span>   LEF/DEF (Nangate45) · Bookshelf (ISPD benchmarks)
 
-<span class="ls-exec">cargo run --release -p eda-cli -- generate --cells 2000 --nets 2000</span>
-<span class="ls-exec">cargo run --release -p eda-cli -- flow</span>
+<span class="highlight bold">>> BENCHMARKS (all DRC-clean)</span>
+<span class="dim">IBM01:</span>  12,506 cells · 11,507 nets · 85% utilization
+<span class="dim">IBM05:</span>  28,146 cells · 28,446 nets · 80% utilization
+<span class="dim">AES:</span>    20,533 cells · 51,671 nets · Nangate45 10-layer
+<span class="dim">IBM10:</span>  67,692 cells · 64,227 nets · 49% utilization
+
+<span class="ls-exec">cargo run --release -- --config configs/config_ibm10.toml</span>
+<span class="ls-exec">cargo run --release -- --config configs/config_aes.toml</span>
 `
         }
     },
