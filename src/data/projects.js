@@ -41,7 +41,7 @@ Static · GShare · Tournament · Perceptron · TAGE (with loop predictor)
     {
         id: "vlsi",
         title: "PARE — Placement And Routing Engine",
-        image: "assets/vlsi_ibm01_routed.png",
+        image: "assets/routed_aes.png",
         link: `https://github.com/${config.github}/vlsi-physical-design`,
         desc: "Digital IC placement and routing engine in Rust implementing the full physical design flow. Global placement solves Poisson's equation via <span class='highlight'>FFT</span> with Nesterov accelerated gradient descent, Abacus legalization snaps cells to the row grid, and two-stage <span class='highlight'>Pathfinder routing</span> runs on an edge-capacity gcell grid. Successfully places and routes real benchmarks up to <span class='highlight'>67k cells / 64k nets</span> with zero DRC violations.",
         tags: ["Rust", "EDA", "Algorithms", "Optimization"],
