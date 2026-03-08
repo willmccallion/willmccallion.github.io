@@ -108,10 +108,17 @@ body {
     justify-content: space-between;
 }
 
-#page-switcher { margin-left: 10px; }
-.page-btn { cursor: pointer; color: var(--text-dim); transition: 0.2s; padding: 0 2px; }
-.page-btn:hover { color: var(--primary-color); }
-.page-btn-active { color: var(--highlight-color); cursor: default; }
+#page-switcher { margin-left: 15px; display: inline-flex; gap: 4px; }
+.page-btn {
+    cursor: pointer;
+    color: var(--text-dim);
+    border: 1px solid var(--text-dim);
+    padding: 1px 6px;
+    font-size: 12px;
+    transition: 0.2s;
+}
+.page-btn:hover { color: var(--primary-color); border-color: var(--primary-color); }
+.page-btn-active { color: var(--highlight-color); border-color: var(--highlight-color); cursor: default; }
 
 .simple-link { color: var(--secondary-color); text-decoration: none; border-bottom: 1px dotted var(--secondary-color); cursor: pointer; transition: 0.2s; }
 .simple-link:hover { background: var(--secondary-color); color: var(--bg-color); }
