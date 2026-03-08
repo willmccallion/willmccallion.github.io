@@ -108,6 +108,11 @@ body {
     justify-content: space-between;
 }
 
+#page-switcher { margin-left: 10px; }
+.page-btn { cursor: pointer; color: var(--text-dim); transition: 0.2s; padding: 0 2px; }
+.page-btn:hover { color: var(--primary-color); }
+.page-btn-active { color: var(--highlight-color); cursor: default; }
+
 .simple-link { color: var(--secondary-color); text-decoration: none; border-bottom: 1px dotted var(--secondary-color); cursor: pointer; transition: 0.2s; }
 .simple-link:hover { background: var(--secondary-color); color: var(--bg-color); }
 

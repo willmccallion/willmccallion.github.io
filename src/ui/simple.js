@@ -2,19 +2,51 @@ import { projects } from '../data/projects.js';
 import { experiments } from '../data/experiments.js';
 import { skills, coursework } from '../data/skills.js';
 
+let currentPage = 1;
+
+const pages = {
+    1: { data: projects, title: '01_PROJECTS', subtitle: '// Recent work' },
+    2: { data: experiments, title: '01_EXPERIMENTS', subtitle: '// Smaller builds & explorations' }
+};
+
 export function initSimpleUI() {
-    renderProjects();
-    renderExperiments();
+    renderPage(1);
     renderSkills();
     renderCoursework();
     initLightbox();
 }
 
-function renderProjectCards(data, containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+function renderPage(page) {
+    currentPage = page;
+    const { data, title, subtitle } = pages[page];
 
-    container.className = '';
+    document.getElementById('projects-title').textContent = title;
+    document.getElementById('projects-subtitle').textContent = subtitle;
+
+    // Page switcher
+    const switcher = document.getElementById('page-switcher');
+    const totalPages = Object.keys(pages).length;
+    let switcherHtml = '';
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === page) {
+            switcherHtml += `<span class="page-btn page-btn-active">[${i}]</span>`;
+        } else {
+            switcherHtml += `<span class="page-btn" data-page="${i}">[${i}]</span>`;
+        }
+    }
+    switcher.innerHTML = switcherHtml;
+
+    switcher.querySelectorAll('.page-btn[data-page]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            renderPage(parseInt(btn.dataset.page));
+            rebindLightbox();
+            // Scroll to top of projects section
+            document.getElementById('projects-title').scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+
+    // Render cards
+    const container = document.getElementById('projects-container');
     container.innerHTML = data.map(p => `
         <div class="item-box project-card${p.image ? ' has-image' : ''}" ${p.image ? `data-image="${p.image}" data-title="${p.title}"` : ''}>
             <div class="item-head">
@@ -27,21 +59,18 @@ function renderProjectCards(data, containerId) {
     `).join('');
 }
 
-function renderProjects() {
-    renderProjectCards(projects, 'projects-container');
-}
-
-function renderExperiments() {
-    renderProjectCards(experiments, 'experiments-container');
-}
-
 function initLightbox() {
     const lightbox = document.createElement('div');
     lightbox.id = 'img-lightbox';
     lightbox.innerHTML = `<div id="lightbox-inner"><img id="lightbox-img" src="" alt=""><div id="lightbox-title"></div></div>`;
     document.body.appendChild(lightbox);
+    lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
+    rebindLightbox();
+}
 
-    document.querySelectorAll('.has-image').forEach(card => {
+function rebindLightbox() {
+    const lightbox = document.getElementById('img-lightbox');
+    document.querySelectorAll('#projects-container .has-image').forEach(card => {
         card.addEventListener('click', (e) => {
             if (e.target.closest('a')) return;
             document.getElementById('lightbox-img').src = card.dataset.image;
@@ -49,8 +78,6 @@ function initLightbox() {
             lightbox.classList.add('active');
         });
     });
-
-    lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
 }
 
 function renderSkills() {
