@@ -4,7 +4,7 @@ export const experiments = [
     {
         id: "fluid",
         title: "GPU Fluid Simulation",
-        image: null,
+        image: "assets/fluid.png",
         link: `https://github.com/${config.github}/fluidsim`,
         desc: "Real-time 2D incompressible fluid solver on the GPU. Staggered-grid <span class='highlight'>Navier-Stokes</span> with Jacobi pressure projection, semi-Lagrangian advection, and vorticity confinement — all running as <span class='highlight'>OpenGL 4.3 compute shaders</span> at 2560x1280. Interactive force painting, obstacle placement, and a wind-tunnel mode for aerodynamic analysis.",
         tags: ["C", "GLSL", "Raylib", "GPU"],
@@ -107,7 +107,7 @@ Conv(16)→Pool → Conv(32)→Pool → Conv(64)→Pool → Dense(256) → 70-cl
     {
         id: "slimemold",
         title: "Slime Mold Simulation",
-        image: null,
+        image: "assets/slime.png",
         link: `https://github.com/${config.github}/slimesim`,
         desc: "Real-time <span class='highlight'>Physarum polycephalum</span> simulation with 200,000 autonomous agents exhibiting emergent network-formation behavior. Agents deposit and sense chemical trails (<span class='highlight'>stigmergy</span>), producing organic branching patterns. Diffusion via box blur, tunable parameters, and 6 color schemes.",
         tags: ["Zig", "SDL2", "Simulation"],
@@ -142,7 +142,7 @@ Conv(16)→Pool → Conv(32)→Pool → Conv(64)→Pool → Dense(256) → 70-cl
     {
         id: "haskell-raytracer",
         title: "Path Tracer (Haskell)",
-        image: null,
+        image: "assets/haskell_ray_tracer.png",
         link: `https://github.com/${config.github}/haskell-ray-tracer`,
         desc: "Monte Carlo path tracer in Haskell based on <span class='highlight'>Ray Tracing in One Weekend</span>. Lambertian, metal, and dielectric materials with recursive ray bouncing. <span class='highlight'>BVH acceleration</span>, defocus blur, configurable anti-aliasing, and parallel rendering via Haskell's strategic chunking.",
         tags: ["Haskell", "Graphics", "Parallel"],
