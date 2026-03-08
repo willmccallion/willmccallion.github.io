@@ -258,6 +258,42 @@ G-force overlay · free camera + follow modes
         }
     },
     {
+        id: "pbuild",
+        title: "pbuild — Parallel Build System",
+        image: "assets/pbuild.png",
+        link: `https://github.com/${config.github}/pbuild-rs`,
+        desc: "A fast, incremental parallel build system in Rust. Rules are declared in <span class='highlight'>pbuild.toml</span>; inputs are SHA-256 hashed to skip unchanged work. Independent rules run in parallel using a wave-based topological scheduler bounded by a Rayon thread pool. Supports depfile header tracking, named profiles, <span class='highlight'>shell completions</span>, watch mode, and a Graphviz dependency graph.",
+        tags: ["Rust", "Tools", "Build Systems"],
+        terminal: {
+            name: "pbuild",
+            date: "Mar 07",
+            size: "~3K",
+            content: `
+<span class="primary bold">PROJECT: pbuild — Parallel Build System</span>
+=======================================
+Hash-based incremental builds. Wave-parallel execution.
+
+<span class="highlight bold">>> HOW IT WORKS</span>
+<span class="dim">-</span> <span class="bold">Inputs:</span>     SHA-256 hashed; rules skipped when all hashes match lock file
+<span class="dim">-</span> <span class="bold">Scheduler:</span>  Topological waves — all ready rules run in parallel (Rayon)
+<span class="dim">-</span> <span class="bold">Output:</span>     Single rule → live stream; multiple rules → atomic buffered
+
+<span class="highlight bold">>> FEATURES</span>
+<span class="primary">*</span> <span class="bold">Depfiles:</span>   Injects -MF; discovers & tracks transitive header deps
+<span class="primary">*</span> <span class="bold">Profiles:</span>   [config.profiles.ci] — switch presets with -p
+<span class="primary">*</span> <span class="bold">Watch:</span>      Rebuilds on file change (notify)
+<span class="primary">*</span> <span class="bold">Graph:</span>      ASCII tree + Graphviz DOT export
+
+<span class="highlight bold">>> CLI</span>
+<span class="ls-exec">pbuild                  # build default target</span>
+<span class="ls-exec">pbuild fmt lint test    # multi-target sequential</span>
+<span class="ls-exec">pbuild graph --dot | dot -Tsvg > graph.svg</span>
+<span class="ls-exec">pbuild --watch          # rebuild on change</span>
+<span class="ls-exec">pbuild retry            # re-run last failed target</span>
+`
+        }
+    },
+    {
         id: "neural",
         title: "CNN from Scratch in C",
         image: "assets/cnn_prediction.png",
