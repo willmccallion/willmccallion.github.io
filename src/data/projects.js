@@ -293,38 +293,4 @@ Hash-based incremental builds. Wave-parallel execution.
 `
         }
     },
-    {
-        id: "neural",
-        title: "CNN from Scratch in C",
-        image: "assets/cnn_prediction.png",
-        link: `https://github.com/${config.github}/c-neural-network`,
-        desc: "Convolutional Neural Network built from scratch in C99 — no ML frameworks, no BLAS. Hand-coded backpropagation through conv, pooling, and dense layers, <span class='highlight'>Adam optimizer</span>, OpenMP matrix parallelism, and real-time Raylib visualization with activation heatmaps. Trained on a merged 70-class dataset (EMNIST + Google QuickDraw).",
-        tags: ["C", "ML", "Raylib"],
-        terminal: {
-            name: "cnn-visualizer",
-            date: "Jan 10",
-            size: "~4K",
-            content: `
-<span class="primary bold">PROJECT: CNN from Scratch in C</span>
-=======================================
-No ML frameworks. Manual backprop through every layer.
-
-<span class="highlight bold">>> ARCHITECTURE</span>
-Conv(16)→Pool → Conv(32)→Pool → Conv(64)→Pool → Dense(256) → 70-class
-
-<span class="highlight bold">>> IMPLEMENTATION</span>
-<span class="dim">-</span> <span class="bold">Forward:</span>    3×3 sliding-window conv · Leaky ReLU · 2×2 max-pool
-<span class="dim">-</span> <span class="bold">Backward:</span>   Chain rule · error maps × rotated weights (full conv)
-<span class="dim">-</span> <span class="bold">Optimizer:</span>  Adam (per-weight m/v estimates) · He initialization
-<span class="dim">-</span> <span class="bold">Parallel:</span>   OpenMP (matmul) · Pthreads (train/render separation)
-
-<span class="highlight bold">>> VISUALIZATION (Raylib)</span>
-<span class="primary">*</span> Live feature map heatmaps · weight histograms
-<span class="primary">*</span> Real-time loss/accuracy curves · top-5 prediction overlay
-<span class="primary">*</span> Interactive 28×28 draw canvas
-
-<span class="ls-exec">./draw_predictor</span>
-`
-        }
-    },
 ];
