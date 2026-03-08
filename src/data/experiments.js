@@ -2,6 +2,42 @@ import { config } from '../config.js';
 
 export const experiments = [
     {
+        id: "miniproof",
+        title: "Dependently-Typed Proof Checker",
+        image: null,
+        link: `https://github.com/${config.github}/miniproof`,
+        desc: "A dependently-typed proof checker in Haskell implementing <span class='highlight'>bidirectional type checking</span> over a calculus with Pi types, inductive data, recursive functions, and propositional equality via J. Evaluation uses <span class='highlight'>normalization by evaluation</span> (NbE) with de Bruijn indices. Features universe level polymorphism — functions generic over <span class='highlight'>Level</span> work at any universe — plus cumulativity, dependent pattern matching with index refinement, and a REPL.",
+        tags: ["Haskell", "Type Theory", "Compilers"],
+        terminal: {
+            name: "miniproof",
+            date: "Mar 08",
+            size: "~3K",
+            content: `
+<span class="primary bold">PROJECT: Dependently-Typed Proof Checker</span>
+=======================================
+Bidirectional type checker for a dependently-typed language.
+
+<span class="highlight bold">>> TYPE THEORY</span>
+<span class="dim">-</span> <span class="bold">Types:</span>      Pi types · inductive data · propositional equality (Id/J)
+<span class="dim">-</span> <span class="bold">Universes:</span>  Type hierarchy with cumulativity · Level polymorphism
+<span class="dim">-</span> <span class="bold">Recursion:</span>  fix combinator · dependent pattern match with motive
+<span class="dim">-</span> <span class="bold">Refinement:</span> Impossible branches auto-excluded via index mismatch
+
+<span class="highlight bold">>> IMPLEMENTATION</span>
+<span class="primary">*</span> NbE evaluator: de Bruijn indices (terms) + levels (values)
+<span class="primary">*</span> Closures for lazy evaluation — no explicit substitution
+<span class="primary">*</span> Bidirectional check/infer with subtype coercion
+<span class="primary">*</span> Megaparsec parser · pretty-printed error messages
+
+<span class="highlight bold">>> EXAMPLE</span>
+id : forall (l : Level) -> forall (A : Type l) -> A -> A
+   = \\(l : Level) -> \\(A : Type l) -> \\(a : A) -> a
+
+<span class="ls-exec">cabal run miniproof -- proof.pf</span>
+`
+        }
+    },
+    {
         id: "fluid",
         title: "GPU Fluid Simulation",
         image: "assets/fluid.png",
