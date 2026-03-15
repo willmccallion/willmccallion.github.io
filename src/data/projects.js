@@ -187,6 +187,46 @@ Assembly context switch (callee-saved GPRs + RSP) · IRETQ resume
         }
     },
     {
+        id: "hexz",
+        title: "Hexz — Deduplicated Archive Format",
+        link: `https://github.com/hexz-org/hexz`,
+        desc: "High-performance deduplicated archive format in Rust for storing and distributing massive datasets. Uses <span class='highlight'>Content-Defined Chunking</span> for block-level dedup, <span class='highlight'>O(1) seekable</span> random access via hierarchical B-tree indexing, and FUSE mounting for transparent filesystem access. Supports thin delta archives, LZ4/Zstd compression, AES-256-GCM encryption, and git-like checkout/commit workspaces — all in a single self-contained <span class='highlight'>.hxz</span> file.",
+        tags: ["Rust", "Storage", "FUSE", "Systems"],
+        terminal: {
+            name: "hexz",
+            date: "Mar 15",
+            size: "37K",
+            content: `
+<span class="primary bold">PROJECT: Hexz — Deduplicated Archive Format</span>
+=======================================
+Seekable, deduplicated archives for large-scale data distribution.
+
+<span class="highlight bold">>> ARCHIVE ENGINE</span>
+<span class="dim">-</span> <span class="bold">Chunking:</span>   FastCDC content-defined chunking — dedup across versions
+<span class="dim">-</span> <span class="bold">Index:</span>      Hierarchical B-tree — O(1) random access to any byte
+<span class="dim">-</span> <span class="bold">Compress:</span>   LZ4 (~2 GB/s) · Zstd (~500 MB/s) · per-block independent
+<span class="dim">-</span> <span class="bold">Encrypt:</span>    AES-256-GCM · Ed25519 signing · BLAKE3 hashing
+
+<span class="highlight bold">>> FUSE / NBD MOUNTING</span>
+<span class="primary">*</span> <span class="bold">FUSE:</span>       Mount .hxz as block device — transparent read/write
+<span class="primary">*</span> <span class="bold">Overlay:</span>    Copy-on-write layer for writable workspaces
+<span class="primary">*</span> <span class="bold">Latency:</span>    ~80 μs cached · ~1 ms uncached · <150 MB memory
+
+<span class="highlight bold">>> GIT-LIKE WORKSPACES</span>
+<span class="dim">checkout</span>  → mount archive into writable directory
+<span class="dim">status</span>   → diff changed blocks against base
+<span class="dim">commit</span>   → write only changed blocks as thin delta archive
+
+<span class="highlight bold">>> STORAGE BACKENDS</span>
+Local (mmap) · HTTP (range requests) · S3-compatible object storage
+
+<span class="ls-exec">hexz pack ./dataset.bin data.hxz --compression zstd</span>
+<span class="ls-exec">hexz mount data.hxz /mnt/data</span>
+<span class="ls-exec">hexz checkout data.hxz ./workspace && hexz commit v2.hxz</span>
+`
+        }
+    },
+    {
         id: "chess",
         title: "Chess Engine (~2900 ELO)",
         image: "assets/chess.png",
