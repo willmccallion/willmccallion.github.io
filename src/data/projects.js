@@ -260,6 +260,48 @@ G-force overlay · free camera + follow modes
         }
     },
     {
+        id: "netpath",
+        title: "netpath — Network Path Analyser",
+        image: "assets/netpath.png",
+        link: `https://github.com/${config.github}/netpath`,
+        desc: "Network diagnostic tool in C that traces the full path to a host and reports <span class='highlight'>security-relevant observations</span> at every layer — DNS, routing, TLS, HTTP, and anycast — in a single command. Implements DNS wire format, ICMP/UDP/TCP probing, TLS handshake parsing, and X.509 DER decoding entirely from scratch with <span class='highlight'>no external dependencies</span> and <span class='highlight'>zero heap allocation</span> — all memory comes from a single 4 MiB bump-pointer arena.",
+        tags: ["C", "Networking", "Security"],
+        terminal: {
+            name: "netpath",
+            date: "Mar 15",
+            size: "~8K",
+            content: `
+<span class="primary bold">PROJECT: netpath — Network Path Analyser</span>
+=======================================
+Single command. Five layers. Security flags with remediation hints.
+
+<span class="highlight bold">>> PHASES</span>
+<span class="dim">-</span> <span class="bold">DNS:</span>        A/AAAA resolution · CNAME chains · DNSSEC · TTL
+<span class="dim">-</span> <span class="bold">Route:</span>      ICMP/UDP/TCP traceroute · Paris (ECMP-stable) · ASN · bar chart RTT
+<span class="dim">-</span> <span class="bold">TLS:</span>        Partial handshake · version/cipher · X.509 SANs · OCSP staple
+<span class="dim">-</span> <span class="bold">HTTP:</span>       GET · HSTS · CSP · X-Frame-Options · X-Content-Type-Options
+<span class="dim">-</span> <span class="bold">Anycast:</span>    ECMP probe variation · TTL/cert serial/RTT divergence detection
+
+<span class="highlight bold">>> DESIGN</span>
+<span class="primary">*</span> <span class="bold">No dependencies:</span>  DNS, ICMP, TLS, HTTP, X.509 all from scratch
+<span class="primary">*</span> <span class="bold">No heap:</span>          4 MiB bump-pointer arena — zero malloc() anywhere
+<span class="primary">*</span> <span class="bold">Bounds checked:</span>   DNS compression loop bitmap · ASN.1 length validation · HTTP cap
+<span class="primary">*</span> <span class="bold">Arch opts:</span>        x86_64 NASM (checksum, byte search, timestamps) · aarch64/riscv64 C fallback
+
+<span class="highlight bold">>> SECURITY FLAGS (35+ across all phases)</span>
+<span class="dim">DNS</span>     No DNSSEC · short TTL · CNAME depth · NXDOMAIN · SERVFAIL
+<span class="dim">Route</span>   Routing loop · blackhole · excessive hops · private hops
+<span class="dim">TLS</span>     Weak cipher · old version · expired cert · short key · no OCSP
+<span class="dim">HTTP</span>    Missing HSTS · no CSP · insecure cookies · server version leak
+<span class="dim">Anycast</span> Detected · inconsistent PoP responses
+
+<span class="ls-exec">netpath google.com</span>
+<span class="ls-exec">netpath --json --no-http example.com | jq .dns</span>
+<span class="ls-exec">netpath -v --dnssec --show-asn 8.8.8.8</span>
+`
+        }
+    },
+    {
         id: "pbuild",
         title: "pbuild — Parallel Build System",
         image: "assets/pbuild.png",
