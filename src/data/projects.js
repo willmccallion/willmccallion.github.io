@@ -43,7 +43,7 @@ Static · GShare · Tournament · Perceptron · TAGE (with loop predictor)
         title: "PARE — Placement And Routing Engine",
         image: "assets/routed_aes.png",
         link: `https://github.com/${config.github}/vlsi-physical-design`,
-        desc: "Digital IC placement and routing engine in Rust implementing the full physical design flow. Global placement solves Poisson's equation via <span class='highlight'>FFT</span> with Nesterov accelerated gradient descent, Abacus legalization snaps cells to the row grid, and two-stage <span class='highlight'>Pathfinder routing</span> runs on an edge-capacity gcell grid. Successfully places and routes real benchmarks up to <span class='highlight'>313k cells / 407k nets</span> with zero DRC violations.",
+        desc: "Digital IC placement and routing engine in Rust implementing the full physical design flow. Global placement solves Poisson's equation via <span class='highlight'>FFT</span> with Nesterov accelerated gradient descent, Abacus legalization snaps cells to the row grid, and two-stage <span class='highlight'>Pathfinder routing</span> runs on an edge-capacity gcell grid. Successfully places and routes real benchmarks up to <span class='highlight'>313k cells / 407k nets</span> with no shorts or opens.",
         tags: ["Rust", "EDA", "Algorithms", "Optimization"],
         terminal: {
             name: "vlsi-flow",
@@ -66,7 +66,7 @@ Full physical design flow for digital ICs, built from scratch.
 <span class="primary">*</span> <span class="bold">Detailed:</span>  Pattern routing + guide-constrained A* · spatial batch parallel
 <span class="primary">*</span> <span class="bold">Formats:</span>   LEF/DEF (Nangate45) · Bookshelf (ISPD benchmarks)
 
-<span class="highlight bold">>> BENCHMARKS (all DRC-clean)</span>
+<span class="highlight bold">>> BENCHMARKS (No openings or shorts)</span>
 <span class="dim">IBM01:</span>    12,506 cells ·  11,507 nets · 85% util
 <span class="dim">AES:</span>      20,533 cells ·  51,671 nets · Nangate45 10-layer
 <span class="dim">IBM10:</span>    67,692 cells ·  64,227 nets · 49% util
