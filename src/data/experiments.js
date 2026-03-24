@@ -206,6 +206,77 @@ Monte Carlo path tracer. Functional rendering pipeline.
         }
     },
     {
+        id: "hypercube",
+        title: "Hypercube Network Simulator",
+        image: null,
+        link: `https://github.com/${config.github}/hypercube`,
+        desc: "Packet routing simulator for <span class='highlight'>n-dimensional hypercube</span> networks in Rust. Compares bit-fixing and <span class='highlight'>Valiant's randomized routing</span> across adversarial traffic patterns (bit-reversal, complement, transpose, butterfly, shuffle). Includes fault-tolerant routing around failed nodes/links and sweep mode for batch parameter studies with CSV export.",
+        tags: ["Rust", "Networking", "Simulation"],
+        terminal: {
+            name: "hypercube",
+            date: "Mar 23",
+            size: "~4K",
+            content: `
+<span class="primary bold">PROJECT: Hypercube Network Simulator</span>
+=======================================
+Packet routing on n-dimensional hypercube topologies.
+
+<span class="highlight bold">>> ROUTING STRATEGIES</span>
+<span class="dim">-</span> <span class="bold">Bit-fixing:</span>  Greedy — flip mismatched bits left to right
+<span class="dim">-</span> <span class="bold">Valiant:</span>     Randomized two-phase — route via random intermediate
+<span class="dim">-</span> <span class="bold">Fault-aware:</span> Route around failed nodes and links
+
+<span class="highlight bold">>> TRAFFIC PATTERNS</span>
+<span class="primary">*</span> Bit-reversal · complement · transpose · butterfly · shuffle · random
+
+<span class="highlight bold">>> SWEEP MODE</span>
+Batch runs across dimensions 3-16, all patterns, both strategies.
+CSV export with congestion, latency, and per-dimension load stats.
+
+<span class="ls-exec">cargo run --release -- --dim 10 --strategy valiant --traffic bit-reversal</span>
+<span class="ls-exec">cargo run --release -- sweep --dims 3-14 --runs 3 -o results.csv</span>
+`
+        }
+    },
+    {
+        id: "maxcut-sdp",
+        title: "Max-Cut SDP Solver",
+        image: null,
+        link: `https://github.com/${config.github}/maxcut-sdp`,
+        desc: "Implementation of the <span class='highlight'>Goemans-Williamson</span> Max-Cut approximation algorithm in Rust. Solves the SDP relaxation via a primal-dual <span class='highlight'>interior point method</span> with Nesterov-Todd scaling and a scalable <span class='highlight'>Burer-Monteiro</span> low-rank solver for larger instances. All linear algebra — Cholesky, eigendecomposition, matrix square roots — written from scratch with no external BLAS/LAPACK. Tested on Gset benchmarks up to 20,000 nodes.",
+        tags: ["Rust", "Optimization", "Algorithms"],
+        terminal: {
+            name: "maxcut-sdp",
+            date: "Mar 22",
+            size: "~4K",
+            content: `
+<span class="primary bold">PROJECT: Max-Cut SDP Solver</span>
+=======================================
+Goemans-Williamson 0.878-approximation for Max-Cut.
+
+<span class="highlight bold">>> SDP SOLVERS</span>
+<span class="dim">-</span> <span class="bold">Interior point:</span> Primal-dual · Nesterov-Todd scaling · Schur complement
+<span class="dim">-</span> <span class="bold">Burer-Monteiro:</span> Low-rank X=RR^T factorization · nonlinear CG · scales to 14k+ nodes
+
+<span class="highlight bold">>> ROUNDING</span>
+<span class="primary">*</span> Random hyperplane rounding
+<span class="primary">*</span> Zwick outward rotations · iterated local search
+<span class="primary">*</span> Population-based refinement
+
+<span class="highlight bold">>> LINEAR ALGEBRA (from scratch)</span>
+Cholesky · eigendecomposition · matrix square root · no BLAS/LAPACK
+
+<span class="highlight bold">>> GSET BENCHMARKS</span>
+<span class="dim">Median gap:</span> 0.65% from best-known values
+<span class="dim">11 of 15</span>  instances within 1% of best-known
+<span class="dim">Runtime:</span>   10s (800 nodes) to 660s (20,000 nodes)
+
+<span class="ls-exec">cargo run --release -- solve graphs/G1.txt</span>
+<span class="ls-exec">cargo run --release -- solve --solver bm graphs/G22.txt</span>
+`
+        }
+    },
+    {
         id: "rs-raytracer",
         title: "Ray Tracer (Rust)",
         image: null,
