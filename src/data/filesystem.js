@@ -1,4 +1,5 @@
 import { projects } from './projects.js';
+import { builds } from './builds.js';
 import { experiments } from './experiments.js';
 import { config } from '../config.js';
 
@@ -63,6 +64,36 @@ rootFiles["projects/"] = {
     action: "exec('ls projects')"
 };
 
+// Static files in builds directory
+const buildDirFiles = {
+    ".": { type: 'dir', perm: 'drwxr-xr-x', size: '4096', date: 'Oct 12', name: '.' },
+    "..": { type: 'dir', perm: 'drwxr-xr-x', size: '4096', date: 'Oct 12', name: '..' }
+};
+
+// Dynamically add builds to the builds directory
+builds.forEach(p => {
+    const t = p.terminal;
+    buildDirFiles[t.name] = {
+        type: 'link',
+        perm: 'lrwxrwxrwx',
+        size: t.size,
+        date: t.date,
+        name: `${t.name} -> git/${p.id}`,
+        url: p.link,
+        content: t.content
+    };
+});
+
+// Add the builds directory to root
+rootFiles["builds/"] = {
+    type: 'dir',
+    perm: 'drwxr-xr-x',
+    size: '4096',
+    date: 'Oct 12',
+    name: 'builds/',
+    action: "exec('ls builds')"
+};
+
 // Static files in experiments directory
 const experimentDirFiles = {
     ".": { type: 'dir', perm: 'drwxr-xr-x', size: '4096', date: 'Oct 12', name: '.' },
@@ -96,5 +127,6 @@ rootFiles["experiments/"] = {
 export const fileSystem = {
     "~": rootFiles,
     "~/projects": projectDirFiles,
+    "~/builds": buildDirFiles,
     "~/experiments": experimentDirFiles
 };

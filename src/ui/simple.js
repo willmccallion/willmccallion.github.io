@@ -1,12 +1,14 @@
 import { projects } from '../data/projects.js';
+import { builds } from '../data/builds.js';
 import { experiments } from '../data/experiments.js';
 import { skills, coursework } from '../data/skills.js';
 
 let currentPage = 1;
 
 const pages = {
-    1: { data: projects, title: '01_PROJECTS', subtitle: '// Recent work' },
-    2: { data: experiments, title: '01_EXPERIMENTS', subtitle: '// Smaller builds & explorations' }
+    1: { data: projects, title: '01_SYSTEMS', subtitle: '// Architecture, kernels & infrastructure' },
+    2: { data: builds, title: '02_PROJECTS', subtitle: '// Applied builds' },
+    3: { data: experiments, title: '03_EXPERIMENTS', subtitle: '// Smaller explorations' }
 };
 
 export function initSimpleUI() {

@@ -84,8 +84,9 @@ I am a <span class="bold primary">Honors Computer Science Student</span> interes
 Emulation, compilers, and Computer Architecture.
 
 <span class="dim">AVAILABLE COMMANDS:</span>
-  > <span class="cmd-link" onclick="exec('ls projects')">projects</span>      ::  View engineering portfolio
-  > <span class="cmd-link" onclick="exec('ls experiments')">experiments</span>   ::  Smaller builds & experiments
+  > <span class="cmd-link" onclick="exec('ls projects')">projects</span>      ::  Core systems & architecture
+  > <span class="cmd-link" onclick="exec('ls builds')">builds</span>        ::  Applied builds
+  > <span class="cmd-link" onclick="exec('ls experiments')">experiments</span>   ::  Smaller explorations
   > <span class="cmd-link" onclick="exec('about')">about</span>         ::  Background & Education
   > <span class="cmd-link" onclick="exec('contact')">contact</span>    ::  Connect via Email/Socials
   > <span class="cmd-link" onclick="exec('ls')">ls</span>         ::  List files
@@ -177,6 +178,11 @@ export function exec(cmd) {
         if (arg === 'projects') {
             targetDir = fileSystem["~/projects"];
             isProject = true;
+            sectionLabel = "SYSTEMS_DIRECTORY";
+        } else if (arg === 'builds') {
+            targetDir = fileSystem["~/builds"];
+            isProject = true;
+            sectionLabel = "PROJECTS_DIRECTORY";
         } else if (arg === 'experiments') {
             targetDir = fileSystem["~/experiments"];
             isProject = true;
@@ -184,6 +190,11 @@ export function exec(cmd) {
         } else if (currentPath === "~/projects") {
             targetDir = fileSystem["~/projects"];
             isProject = true;
+            sectionLabel = "SYSTEMS_DIRECTORY";
+        } else if (currentPath === "~/builds") {
+            targetDir = fileSystem["~/builds"];
+            isProject = true;
+            sectionLabel = "PROJECTS_DIRECTORY";
         } else if (currentPath === "~/experiments") {
             targetDir = fileSystem["~/experiments"];
             isProject = true;
@@ -239,6 +250,10 @@ export function exec(cmd) {
         exec('ls projects');
         return;
     }
+    else if (baseCmd === 'builds') {
+        exec('ls builds');
+        return;
+    }
     else if (baseCmd === 'experiments') {
         exec('ls experiments');
         return;
@@ -259,6 +274,15 @@ export function exec(cmd) {
                     output = `<span class="alert">cat: ${arg}: No such file</span>`;
                 }
             }
+            else if (arg.startsWith('builds/')) {
+                const buildName = arg.split('/')[1];
+                const buildDir = fileSystem["~/builds"];
+                if (buildDir[buildName]) {
+                    output = buildDir[buildName].content;
+                } else {
+                    output = `<span class="alert">cat: ${arg}: No such file</span>`;
+                }
+            }
             else if (arg.startsWith('experiments/')) {
                 const expName = arg.split('/')[1];
                 const expDir = fileSystem["~/experiments"];
@@ -272,6 +296,7 @@ export function exec(cmd) {
                 // Check current directory
                 let currentDir = fileSystem["~"];
                 if (currentPath === '~/projects') currentDir = fileSystem["~/projects"];
+                else if (currentPath === '~/builds') currentDir = fileSystem["~/builds"];
                 else if (currentPath === '~/experiments') currentDir = fileSystem["~/experiments"];
 
                 if (currentDir[arg]) {
@@ -286,6 +311,8 @@ export function exec(cmd) {
                      // Fallback: check projects and experiments from root
                      if (currentPath === '~' && fileSystem["~/projects"][arg]) {
                          output = fileSystem["~/projects"][arg].content;
+                     } else if (currentPath === '~' && fileSystem["~/builds"][arg]) {
+                         output = fileSystem["~/builds"][arg].content;
                      } else if (currentPath === '~' && fileSystem["~/experiments"][arg]) {
                          output = fileSystem["~/experiments"][arg].content;
                      } else {
@@ -338,10 +365,13 @@ export function exec(cmd) {
         else if (arg === 'projects' || arg === 'projects/') {
             currentPath = "~/projects";
         }
+        else if (arg === 'builds' || arg === 'builds/') {
+            currentPath = "~/builds";
+        }
         else if (arg === 'experiments' || arg === 'experiments/') {
             currentPath = "~/experiments";
         }
-        else if (arg === '..' && (currentPath === "~/projects" || currentPath === "~/experiments")) {
+        else if (arg === '..' && (currentPath === "~/projects" || currentPath === "~/builds" || currentPath === "~/experiments")) {
             currentPath = "~";
         }
         else if (arg === '.') {
@@ -516,13 +546,15 @@ function setupEventListeners() {
                 // Context aware autocomplete
                 if (cmd === 'ls' || cmd === 'cd') {
                     if (currentPath === '~' && 'projects'.startsWith(arg)) options.push('projects');
+                    if (currentPath === '~' && 'builds'.startsWith(arg)) options.push('builds');
                     if (currentPath === '~' && 'experiments'.startsWith(arg)) options.push('experiments');
-                    if ((currentPath === '~/projects' || currentPath === '~/experiments') && '..'.startsWith(arg)) options.push('..');
+                    if ((currentPath === '~/projects' || currentPath === '~/builds' || currentPath === '~/experiments') && '..'.startsWith(arg)) options.push('..');
                 }
 
                 if (cmd === 'cat') {
                     let targetDir = fileSystem["~"];
                     if (currentPath === '~/projects') targetDir = fileSystem["~/projects"];
+                    else if (currentPath === '~/builds') targetDir = fileSystem["~/builds"];
                     else if (currentPath === '~/experiments') targetDir = fileSystem["~/experiments"];
                     const match = Object.keys(targetDir).find(k => {
                         return k.startsWith(arg) && k !== '.' && k !== '..' && targetDir[k].type !== 'dir';

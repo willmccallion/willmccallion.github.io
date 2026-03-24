@@ -2,11 +2,45 @@ import { config } from '../config.js';
 
 export const experiments = [
     {
+        id: "f1",
+        title: "F1 Trajectory Optimizer",
+        image: "assets/f1_line.png",
+        link: `https://github.com/${config.github}/f1-optimizer`,
+        desc: "F1 racing line optimizer in C. Solves for the time-optimal path with <span class='highlight'>Levenberg-Marquardt</span> non-linear least squares on a 2D physics model (friction circle, aero downforce, elevation). 3D visualization compared against real <span class='highlight'>Max Verstappen 2023 telemetry</span>.",
+        tags: ["C", "Physics", "Numerical Methods"],
+        terminal: {
+            name: "f1-solver",
+            date: "Dec 20",
+            size: "4.2K",
+            content: `
+<span class="primary bold">PROJECT: F1 Racing Line Optimizer</span>
+=======================================
+Time-optimal racing line solver. Real F1 telemetry comparison.
+
+<span class="highlight bold">>> OPTIMIZATION</span>
+<span class="dim">-</span> <span class="bold">Algorithm:</span>  Levenberg-Marquardt (adaptive damping λ)
+<span class="dim">-</span> <span class="bold">Residuals:</span>  path length · Menger curvature · boundary barrier · jerk
+<span class="dim">-</span> <span class="bold">Jacobian:</span>   finite difference (h=1e-4)
+
+<span class="highlight bold">>> PHYSICS MODEL (F1-2023 spec)</span>
+<span class="primary">*</span> Friction circle: Glat² + Glong² ≤ μ²
+<span class="primary">*</span> Aero: downforce Cl=6.10 · drag Cd=0.92 · mass 798 kg
+<span class="primary">*</span> Speed profile: v_max = √(μ·g·R) per apex
+
+<span class="highlight bold">>> VISUALIZATION (Raylib 3D)</span>
+Elevation heatmap · optimized line · ghost car (real telemetry)
+G-force overlay · free camera + follow modes
+
+<span class="ls-exec">./race_optimizer   # select Silverstone, Monaco, etc.</span>
+`
+        }
+    },
+    {
         id: "miniproof",
         title: "Dependently-Typed Proof Checker",
         image: null,
         link: `https://github.com/${config.github}/miniproof`,
-        desc: "A dependently-typed proof checker in Haskell implementing <span class='highlight'>bidirectional type checking</span> over a calculus with Pi types, inductive data, recursive functions, and propositional equality via J. Evaluation uses <span class='highlight'>normalization by evaluation</span> (NbE) with de Bruijn indices. Features universe level polymorphism — functions generic over <span class='highlight'>Level</span> work at any universe — plus cumulativity, dependent pattern matching with index refinement, and a REPL.",
+        desc: "Dependently-typed proof checker in Haskell with <span class='highlight'>bidirectional type checking</span> over Pi types, inductive data, recursive functions, and propositional equality via J. <span class='highlight'>Normalization by evaluation</span> (NbE) with de Bruijn indices. Universe level polymorphism (functions generic over <span class='highlight'>Level</span>), cumulativity, dependent pattern matching with index refinement, and a REPL.",
         tags: ["Haskell", "Type Theory", "Compilers"],
         terminal: {
             name: "miniproof",
@@ -42,7 +76,7 @@ id : forall (l : Level) -> forall (A : Type l) -> A -> A
         title: "GPU Fluid Simulation",
         image: "assets/fluid.png",
         link: `https://github.com/${config.github}/fluidsim`,
-        desc: "Real-time 2D incompressible fluid solver on the GPU. Staggered-grid <span class='highlight'>Navier-Stokes</span> with Jacobi pressure projection, semi-Lagrangian advection, and vorticity confinement — all running as <span class='highlight'>OpenGL 4.3 compute shaders</span> at 2560x1280. Interactive force painting, obstacle placement, and a wind-tunnel mode for aerodynamic analysis.",
+        desc: "Real-time 2D incompressible fluid solver on the GPU. Staggered-grid <span class='highlight'>Navier-Stokes</span> with Jacobi pressure projection, semi-Lagrangian advection, and vorticity confinement, running as <span class='highlight'>OpenGL 4.3 compute shaders</span> at 2560x1280. Interactive force painting, obstacle placement, and wind-tunnel mode.",
         tags: ["C", "GLSL", "Raylib", "GPU"],
         terminal: {
             name: "fluid-sim",
@@ -77,7 +111,7 @@ Multiple viz: RGB / pressure tint / velocity tint
         title: "C-to-RISC-V Compiler",
         image: null,
         link: `https://github.com/${config.github}/compiler`,
-        desc: "Recursive-descent compiler translating a C subset to <span class='highlight'>RV64 assembly</span>. Full pipeline: lexer, parser, type checker, IR lowering, optimizer (<span class='highlight'>constant folding, DCE, peephole</span>), and stack-machine code gen with ABI-compliant calling conventions. Runs on QEMU and RARS.",
+        desc: "Recursive-descent compiler from a C subset to <span class='highlight'>RV64 assembly</span>. Lexer, parser, type checker, IR lowering, optimizer (<span class='highlight'>constant folding, DCE, peephole</span>), and stack-machine codegen with lp64 calling conventions. Runs on QEMU and RARS.",
         tags: ["Rust", "Compilers", "RISC-V"],
         terminal: {
             name: "c-compiler",
@@ -111,7 +145,7 @@ Recursive-descent compiler. C subset → RV64 assembly.
         title: "CNN from Scratch in C",
         image: "assets/cnn_prediction.png",
         link: `https://github.com/${config.github}/c-neural-network`,
-        desc: "Convolutional Neural Network built from scratch in C99 — no ML frameworks, no BLAS. Hand-coded backpropagation through conv, pooling, and dense layers, <span class='highlight'>Adam optimizer</span>, OpenMP matrix parallelism, and real-time Raylib visualization with activation heatmaps. Trained on a merged 70-class dataset (EMNIST + Google QuickDraw).",
+        desc: "CNN from scratch in C99, no ML frameworks, no BLAS. Hand-coded backpropagation through conv, pooling, and dense layers with <span class='highlight'>Adam optimizer</span> and OpenMP parallelism. Real-time Raylib visualization with activation heatmaps. Trained on a merged 70-class dataset (EMNIST + Google QuickDraw).",
         tags: ["C", "ML", "Raylib"],
         terminal: {
             name: "cnn-visualizer",
@@ -145,7 +179,7 @@ Conv(16)→Pool → Conv(32)→Pool → Conv(64)→Pool → Dense(256) → 70-cl
         title: "Slime Mold Simulation",
         image: "assets/slime.png",
         link: `https://github.com/${config.github}/slimesim`,
-        desc: "Real-time <span class='highlight'>Physarum polycephalum</span> simulation with 200,000 autonomous agents exhibiting emergent network-formation behavior. Agents deposit and sense chemical trails (<span class='highlight'>stigmergy</span>), producing organic branching patterns. Diffusion via box blur, tunable parameters, and 6 color schemes.",
+        desc: "Real-time <span class='highlight'>Physarum polycephalum</span> simulation with 200,000 agents. Agents deposit and sense chemical trails (<span class='highlight'>stigmergy</span>) to form branching networks. Diffusion via box blur, tunable parameters, and 6 color schemes.",
         tags: ["Zig", "SDL2", "Simulation"],
         terminal: {
             name: "slimemold",
@@ -180,7 +214,7 @@ Conv(16)→Pool → Conv(32)→Pool → Conv(64)→Pool → Dense(256) → 70-cl
         title: "Path Tracer (Haskell)",
         image: "assets/haskell_ray_tracer.png",
         link: `https://github.com/${config.github}/haskell-ray-tracer`,
-        desc: "Monte Carlo path tracer in Haskell based on <span class='highlight'>Ray Tracing in One Weekend</span>. Lambertian, metal, and dielectric materials with recursive ray bouncing. <span class='highlight'>BVH acceleration</span>, defocus blur, configurable anti-aliasing, and parallel rendering via Haskell's strategic chunking.",
+        desc: "Monte Carlo path tracer in Haskell based on <span class='highlight'>Ray Tracing in One Weekend</span>. Lambertian, metal, and dielectric materials with recursive ray bouncing, <span class='highlight'>BVH acceleration</span>, defocus blur, and parallel rendering via Haskell's parListChunk.",
         tags: ["Haskell", "Graphics", "Parallel"],
         terminal: {
             name: "hs-pathtracer",
@@ -206,82 +240,11 @@ Monte Carlo path tracer. Functional rendering pipeline.
         }
     },
     {
-        id: "hypercube",
-        title: "Hypercube Network Simulator",
-        image: null,
-        link: `https://github.com/${config.github}/hypercube`,
-        desc: "Packet routing simulator for <span class='highlight'>n-dimensional hypercube</span> networks in Rust. Compares bit-fixing and <span class='highlight'>Valiant's randomized routing</span> across adversarial traffic patterns (bit-reversal, complement, transpose, butterfly, shuffle). Includes fault-tolerant routing around failed nodes/links and sweep mode for batch parameter studies with CSV export.",
-        tags: ["Rust", "Networking", "Simulation"],
-        terminal: {
-            name: "hypercube",
-            date: "Mar 23",
-            size: "~4K",
-            content: `
-<span class="primary bold">PROJECT: Hypercube Network Simulator</span>
-=======================================
-Packet routing on n-dimensional hypercube topologies.
-
-<span class="highlight bold">>> ROUTING STRATEGIES</span>
-<span class="dim">-</span> <span class="bold">Bit-fixing:</span>  Greedy — flip mismatched bits left to right
-<span class="dim">-</span> <span class="bold">Valiant:</span>     Randomized two-phase — route via random intermediate
-<span class="dim">-</span> <span class="bold">Fault-aware:</span> Route around failed nodes and links
-
-<span class="highlight bold">>> TRAFFIC PATTERNS</span>
-<span class="primary">*</span> Bit-reversal · complement · transpose · butterfly · shuffle · random
-
-<span class="highlight bold">>> SWEEP MODE</span>
-Batch runs across dimensions 3-16, all patterns, both strategies.
-CSV export with congestion, latency, and per-dimension load stats.
-
-<span class="ls-exec">cargo run --release -- --dim 10 --strategy valiant --traffic bit-reversal</span>
-<span class="ls-exec">cargo run --release -- sweep --dims 3-14 --runs 3 -o results.csv</span>
-`
-        }
-    },
-    {
-        id: "maxcut-sdp",
-        title: "Max-Cut SDP Solver",
-        image: null,
-        link: `https://github.com/${config.github}/maxcut-sdp`,
-        desc: "Implementation of the <span class='highlight'>Goemans-Williamson</span> Max-Cut approximation algorithm in Rust. Solves the SDP relaxation via a primal-dual <span class='highlight'>interior point method</span> with Nesterov-Todd scaling and a scalable <span class='highlight'>Burer-Monteiro</span> low-rank solver for larger instances. All linear algebra — Cholesky, eigendecomposition, matrix square roots — written from scratch with no external BLAS/LAPACK. Tested on Gset benchmarks up to 20,000 nodes.",
-        tags: ["Rust", "Optimization", "Algorithms"],
-        terminal: {
-            name: "maxcut-sdp",
-            date: "Mar 22",
-            size: "~4K",
-            content: `
-<span class="primary bold">PROJECT: Max-Cut SDP Solver</span>
-=======================================
-Goemans-Williamson 0.878-approximation for Max-Cut.
-
-<span class="highlight bold">>> SDP SOLVERS</span>
-<span class="dim">-</span> <span class="bold">Interior point:</span> Primal-dual · Nesterov-Todd scaling · Schur complement
-<span class="dim">-</span> <span class="bold">Burer-Monteiro:</span> Low-rank X=RR^T factorization · nonlinear CG · scales to 14k+ nodes
-
-<span class="highlight bold">>> ROUNDING</span>
-<span class="primary">*</span> Random hyperplane rounding
-<span class="primary">*</span> Zwick outward rotations · iterated local search
-<span class="primary">*</span> Population-based refinement
-
-<span class="highlight bold">>> LINEAR ALGEBRA (from scratch)</span>
-Cholesky · eigendecomposition · matrix square root · no BLAS/LAPACK
-
-<span class="highlight bold">>> GSET BENCHMARKS</span>
-<span class="dim">Median gap:</span> 0.65% from best-known values
-<span class="dim">11 of 15</span>  instances within 1% of best-known
-<span class="dim">Runtime:</span>   10s (800 nodes) to 660s (20,000 nodes)
-
-<span class="ls-exec">cargo run --release -- solve graphs/G1.txt</span>
-<span class="ls-exec">cargo run --release -- solve --solver bm graphs/G22.txt</span>
-`
-        }
-    },
-    {
         id: "rs-raytracer",
         title: "Ray Tracer (Rust)",
         image: null,
         link: `https://github.com/${config.github}/rs-ray-tracer`,
-        desc: "JSON-configurable ray tracer in Rust with sphere and <span class='highlight'>triangle mesh</span> support. Includes an OBJ-to-JSON converter and a <span class='highlight'>Blender export script</span> for scene authoring. Parallel per-pixel rendering via Rayon with progress tracking.",
+        desc: "JSON-configurable ray tracer in Rust with sphere and <span class='highlight'>triangle mesh</span> support. OBJ-to-JSON converter and <span class='highlight'>Blender export script</span> for scene authoring. Parallel per-pixel rendering via Rayon.",
         tags: ["Rust", "Graphics", "Blender"],
         terminal: {
             name: "rs-raytracer",
