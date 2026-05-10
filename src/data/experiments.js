@@ -6,7 +6,7 @@ export const experiments = [
         title: "x86_64 OS Kernel",
         image: "assets/kernel.png",
         link: `https://github.com/${config.github}/Eithne`,
-        desc: "A small x86_64 OS kernel in Rust, booted via UEFI. <span class='highlight'>O(1) buddy frame allocator</span> with XOR bitmap coalescing, slab heap, 4-level paging, 256-entry IDT with hand-written assembly stubs, and a preemptive round-robin scheduler with an assembly context switch. No filesystem and no userspace — just the kernel foundation.",
+        desc: "A small x86_64 OS kernel in Rust, booted via UEFI. <span class='highlight'>O(1) buddy frame allocator</span> with XOR bitmap coalescing, slab heap, 4-level paging, 256-entry IDT with hand-written assembly stubs, and a preemptive round-robin scheduler with an assembly context switch. No filesystem and no userspace; just the kernel foundation.",
         tags: ["Rust", "Kernel", "x86_64", "UEFI"],
         terminal: {
             name: "eithne",
@@ -15,7 +15,7 @@ export const experiments = [
             content: `
 <span class="primary bold">PROJECT: x86_64 OS Kernel (Eithne)</span>
 =======================================
-Boots via UEFI. Implements the kernel foundation — no filesystem,
+Boots via UEFI. Implements the kernel foundation. No filesystem,
 no userspace.
 
 <span class="highlight bold">>> MEMORY</span>
@@ -33,7 +33,7 @@ Assembly context switch (callee-saved GPRs + RSP) · IRETQ resume
 
 <span class="ls-exec">./run.sh   # OVMF + QEMU</span>
 
-[eithne] initialization complete — entering scheduler loop.
+[eithne] initialization complete. Entering scheduler loop.
 [timer] 100 ticks  [heartbeat] still alive (500)
 `
         }
@@ -84,7 +84,7 @@ Recursive-descent compiler. C subset → RV64 assembly.
             date: "Apr 24",
             size: "~12K",
             content: `
-<span class="primary bold">PROJECT: clausal — CDCL SAT Solver</span>
+<span class="primary bold">PROJECT: clausal (CDCL SAT Solver)</span>
 =======================================
 A small CDCL SAT solver in Rust.
 
@@ -131,8 +131,8 @@ Bidirectional type checker for a small dependently-typed language.
 <span class="dim">-</span> <span class="bold">Refinement:</span> Impossible branches excluded via index mismatch
 
 <span class="highlight bold">>> IMPLEMENTATION</span>
-<span class="primary">*</span> NbE evaluator — de Bruijn indices (terms) + levels (values)
-<span class="primary">*</span> Closures for lazy evaluation — no explicit substitution
+<span class="primary">*</span> NbE evaluator: de Bruijn indices (terms) + levels (values)
+<span class="primary">*</span> Closures for lazy evaluation, no explicit substitution
 <span class="primary">*</span> Bidirectional check/infer with subtype coercion
 <span class="primary">*</span> Megaparsec parser · pretty-printed error messages
 
@@ -318,7 +318,7 @@ RTIOW-style Monte Carlo path tracer. Functional pipeline.
         title: "Ray Tracer (Rust)",
         image: null,
         link: `https://github.com/${config.github}/rs-ray-tracer`,
-        desc: "A small JSON-driven ray tracer in Rust with sphere and <span class='highlight'>triangle-mesh</span> support. <span class='highlight'>Diffuse shading</span> with point lights — nothing fancier. Rayon-parallel per-pixel rendering, OBJ import, and a Blender export script for scene authoring.",
+        desc: "A small JSON-driven ray tracer in Rust with sphere and <span class='highlight'>triangle-mesh</span> support. <span class='highlight'>Diffuse shading</span> with point lights, nothing fancier. Rayon-parallel per-pixel rendering, OBJ import, and a Blender export script for scene authoring.",
         tags: ["Rust", "Graphics", "Blender"],
         terminal: {
             name: "rs-raytracer",

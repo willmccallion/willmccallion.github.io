@@ -3,7 +3,7 @@ import { config } from '../config.js';
 export const builds = [
     {
         id: "vlsi",
-        title: "PARE — Placement and Routing",
+        title: "PARE (Placement and Routing)",
         image: "assets/routed_aes.png",
         link: `https://github.com/${config.github}/vlsi-physical-design`,
         desc: "A VLSI place-and-route tool in Rust. Global placement is Nesterov gradient descent with <span class='highlight'>FFT-based density</span> (cells as charges); Abacus legalization snaps cells to the row grid; routing is two-stage A* with Pathfinder rip-up-and-reroute. Runs on the ISPD / IBM benchmark suite up to ~313k cells.",
@@ -13,16 +13,17 @@ export const builds = [
             date: "Jan 05",
             size: "69K",
             content: `
-<span class="primary bold">PROJECT: PARE — Placement And Routing</span>
+<span class="primary bold">PROJECT: PARE (Placement And Routing)</span>
 =======================================
 Place and route flow for digital ICs.
 
 <span class="highlight bold">>> PLACEMENT</span>
-<span class="dim">-</span> <span class="bold">Density:</span>    Poisson equation via FFT (O(N log N))
-                cells as electric charges — high density = repulsion
+<span class="dim">-</span> <span class="bold">Density:</span>    Poisson equation via FFT (O(N log N)).
+                Cells act as electric charges, so high density
+                gives repulsion.
 <span class="dim">-</span> <span class="bold">Wirelength:</span> Weighted-average smooth HPWL approximation
 <span class="dim">-</span> <span class="bold">Solver:</span>     Nesterov accelerated gradient descent
-<span class="dim">-</span> <span class="bold">Legalize:</span>   Abacus — row-grid alignment, min displacement
+<span class="dim">-</span> <span class="bold">Legalize:</span>   Abacus: row-grid alignment with minimum displacement
 
 <span class="highlight bold">>> ROUTING</span>
 <span class="primary">*</span> <span class="bold">Global:</span>     Coarse A* · Pathfinder rip-up & reroute (history costs)
@@ -59,15 +60,15 @@ Place and route flow for digital ICs.
 A bare-metal packet pipeline in 64 KB of RAM.
 
 <span class="highlight bold">>> 6-STAGE PACKET PIPELINE</span>
-<span class="dim">①</span> Count-Min Sketch  — probabilistic DDoS heavy-hitter detection
-<span class="dim">②</span> Penalty Box       — 16-entry IP ban table (FIFO eviction)
-<span class="dim">③</span> Token Bucket      — global 10k pps rate cap
-<span class="dim">④</span> Flow Tracker      — 5-tuple stateful table · 74 entries
-<span class="dim">⑤</span> eBPF VM           — 16 regs · 64 instr · runtime-injected bytecode
-<span class="dim">⑥</span> DPI Engine        — Aho-Corasick · SQL injection · XSS · NOP sleds
+<span class="dim">①</span> Count-Min Sketch  : probabilistic DDoS heavy-hitter detection
+<span class="dim">②</span> Penalty Box       : 16-entry IP ban table (FIFO eviction)
+<span class="dim">③</span> Token Bucket      : global 10k pps rate cap
+<span class="dim">④</span> Flow Tracker      : 5-tuple stateful table · 74 entries
+<span class="dim">⑤</span> eBPF VM           : 16 regs · 64 instr · runtime-injected bytecode
+<span class="dim">⑥</span> DPI Engine        : Aho-Corasick · SQL injection · XSS · NOP sleds
 
 <span class="highlight bold">>> MEMORY</span>
-<span class="primary">*</span> No heap on the hot path — every structure statically allocated
+<span class="primary">*</span> No heap on the hot path. Every structure is statically allocated.
 <span class="primary">*</span> VirtIO DMA buffers tuned to the Ethernet MTU (1536 B)
 
 <span class="highlight bold">>> CONTROL PLANE (egui)</span>
@@ -101,7 +102,7 @@ time. Has to finish within qubit coherence time (~1-100 µs).
 <span class="dim">-</span> <span class="bold">SMP:</span>        Lock-free SPMC ring buffer (512 slots) · hart 0 → harts 1-3
 
 <span class="highlight bold">>> HARDWARE ACCELERATOR (SystemVerilog)</span>
-<span class="primary">*</span> <span class="bold">Module:</span>     union_find.sv — path-compression state machine
+<span class="primary">*</span> <span class="bold">Module:</span>     union_find.sv (path-compression state machine)
 <span class="primary">*</span> <span class="bold">Verify:</span>     Verilator co-sim · Rust FFI · cycle-accurate
 
 <span class="highlight bold">>> NUMBERS (QEMU, 4 harts)</span>
@@ -140,7 +141,7 @@ A UCI chess engine in Rust. ~2900 ELO. ~6,000 lines.
 <span class="primary">*</span> LMR · LMP · null-move · futility · razoring · delta pruning
 
 <span class="highlight bold">>> EVALUATION</span>
-NNUE — 41k inputs · two 32-neuron layers · SIMD dot product
+NNUE: 41k inputs · two 32-neuron layers · SIMD dot product
 Incremental accumulator: only changed pieces re-evaluated.
 Hand-tuned PST tables as a fallback when no NNUE file is loaded.
 
@@ -155,17 +156,17 @@ Hand-tuned PST tables as a fallback when no NNUE file is loaded.
     },
     {
         id: "netpath",
-        title: "netpath — Network Path Analyser",
+        title: "netpath (Network Path Analyser)",
         image: "assets/netpath.png",
         link: `https://github.com/${config.github}/netpath`,
-        desc: "A network diagnostic tool in C. Traces the path to a host and reports security-relevant observations across DNS, routing, TLS, HTTP, and anycast. DNS wire format, ICMP/UDP/TCP probing, TLS handshake, and X.509 DER decoding are <span class='highlight'>hand-written</span> over POSIX sockets. Optional OpenSSL for DNSSEC signature verification. No <span class='highlight'>malloc()</span> in the hot path — single 4 MiB static arena instead.",
+        desc: "A network diagnostic tool in C. Traces the path to a host and reports security-relevant observations across DNS, routing, TLS, HTTP, and anycast. DNS wire format, ICMP/UDP/TCP probing, TLS handshake, and X.509 DER decoding are <span class='highlight'>hand-written</span> over POSIX sockets. Optional OpenSSL for DNSSEC signature verification. No <span class='highlight'>malloc()</span> in the hot path; there's a single 4 MiB static arena instead.",
         tags: ["C", "Networking", "Security"],
         terminal: {
             name: "netpath",
             date: "Mar 15",
             size: "~8K",
             content: `
-<span class="primary bold">PROJECT: netpath — Network Path Analyser</span>
+<span class="primary bold">PROJECT: netpath (Network Path Analyser)</span>
 =======================================
 One command. Five layers. Security flags with remediation hints.
 
@@ -177,9 +178,9 @@ One command. Five layers. Security flags with remediation hints.
 <span class="dim">-</span> <span class="bold">Anycast:</span>    ECMP probe variation · TTL/cert serial/RTT divergence
 
 <span class="highlight bold">>> DESIGN</span>
-<span class="primary">*</span> <span class="bold">Hand-written:</span>   DNS, ICMP, TLS, HTTP, X.509 — no parsing libraries
+<span class="primary">*</span> <span class="bold">Hand-written:</span>   DNS, ICMP, TLS, HTTP, X.509 (no parsing libraries)
 <span class="primary">*</span> <span class="bold">Sockets:</span>        POSIX (+ optional OpenSSL for DNSSEC signature verify)
-<span class="primary">*</span> <span class="bold">No heap:</span>        4 MiB bump-pointer arena — no malloc() in the hot path
+<span class="primary">*</span> <span class="bold">No heap:</span>        4 MiB bump-pointer arena, no malloc() in the hot path
 <span class="primary">*</span> <span class="bold">Bounds checked:</span> DNS compression bitmap · ASN.1 lengths · HTTP cap
 <span class="primary">*</span> <span class="bold">Arch opts:</span>      x86_64 NASM (checksum, byte search, timestamps); C fallback elsewhere
 
@@ -213,8 +214,8 @@ One command. Five layers. Security flags with remediation hints.
 Packet routing on n-dimensional hypercube topologies.
 
 <span class="highlight bold">>> ROUTING STRATEGIES</span>
-<span class="dim">-</span> <span class="bold">Bit-fixing:</span>  Greedy — flip mismatched bits left to right
-<span class="dim">-</span> <span class="bold">Valiant:</span>     Randomized two-phase — route via random intermediate
+<span class="dim">-</span> <span class="bold">Bit-fixing:</span>  Greedy. Flip mismatched bits left to right.
+<span class="dim">-</span> <span class="bold">Valiant:</span>     Randomized two-phase. Route via a random intermediate.
 <span class="dim">-</span> <span class="bold">Fault-aware:</span> Route around failed nodes and links
 
 <span class="highlight bold">>> TRAFFIC PATTERNS</span>
@@ -234,7 +235,7 @@ CSV export with congestion, latency, and per-dimension load stats.
         title: "Max-Cut SDP Solver",
         image: null,
         link: `https://github.com/${config.github}/maxcut-sdp`,
-        desc: "A <span class='highlight'>Goemans-Williamson</span> Max-Cut approximation in Rust. Solves the SDP relaxation with a primal-dual <span class='highlight'>interior-point method</span>, plus a low-rank <span class='highlight'>Burer-Monteiro</span> solver for larger instances. The linear algebra (Cholesky, eigendecomposition, matrix square roots) is hand-written — only deps are clap, rand, rayon. Tested on Gset benchmarks up to 20,000 nodes.",
+        desc: "A <span class='highlight'>Goemans-Williamson</span> Max-Cut approximation in Rust. Solves the SDP relaxation with a primal-dual <span class='highlight'>interior-point method</span>, plus a low-rank <span class='highlight'>Burer-Monteiro</span> solver for larger instances. The linear algebra (Cholesky, eigendecomposition, matrix square roots) is hand-written; the only deps are clap, rand, and rayon. Tested on Gset benchmarks up to 20,000 nodes.",
         tags: ["Rust", "Optimization", "Algorithms"],
         terminal: {
             name: "maxcut-sdp",

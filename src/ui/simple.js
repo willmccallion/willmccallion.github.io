@@ -6,9 +6,9 @@ import { skills, coursework } from '../data/skills.js';
 let currentPage = 1;
 
 const pages = {
-    1: { data: projects, title: '01_SYSTEMS', subtitle: '// Architecture, kernels & infrastructure' },
-    2: { data: builds, title: '02_PROJECTS', subtitle: '// Applied builds' },
-    3: { data: experiments, title: '03_EXPERIMENTS', subtitle: '// Smaller explorations' }
+    1: { data: projects, title: '01_FEATURED', subtitle: '// RISC-V system simulator' },
+    2: { data: builds, title: '02_PROJECTS', subtitle: '// Other things I have built' },
+    3: { data: experiments, title: '03_EXPLORATIONS', subtitle: '// Smaller side projects' }
 };
 
 export function initSimpleUI() {
