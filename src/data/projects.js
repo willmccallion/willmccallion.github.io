@@ -6,14 +6,14 @@ export const projects = [
         title: "rvsim: RISC-V System Simulator",
         image: "assets/rvsim_stats.png",
         link: `https://github.com/${config.github}/rvsim`,
-        desc: `<div style="font-size: 14px; color: var(--text-main); line-height: 1.55;">
-<p style="margin: 0 0 16px 0;">Cycle-accurate <span class='highlight'>RISC-V system simulator</span> in Rust. Two pluggable microarchitectural backends (an out-of-order superscalar core and an in-order scalar one) sit on top of one memory hierarchy, SoC, and bootloader. The whole simulator is driven from a Python API for design-space exploration.</p>
+        desc: `<div style="color: var(--text-main); line-height: 1.6;">
+<p style="margin: 0 0 20px 0; font-size: 13px;">Cycle-accurate <span class='highlight'>RISC-V system simulator</span> in Rust. Two pluggable microarchitectural backends (an out-of-order superscalar core and an in-order scalar one) sit on top of one memory hierarchy, SoC, and bootloader. The whole simulator is driven from a Python API for design-space exploration.</p>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-top: 16px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
 
-<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
-<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">VALIDATED AGAINST THE SPEC</div>
-<ul style="margin: 0; padding-left: 18px;">
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">VALIDATED AGAINST THE SPEC</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
 <li>Passes all <b>8,576 riscv-tests</b></li>
 <li>Passes <b>RISCOF</b> and <b>riscv-vector-tests</b></li>
 <li>Boots <b>Linux 6.6</b> through OpenSBI</li>
@@ -21,53 +21,53 @@ export const projects = [
 </ul>
 </div>
 
-<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
-<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">TWO PIPELINES, ONE STACK</div>
-<ul style="margin: 0; padding-left: 18px;">
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">TWO PIPELINES, ONE STACK</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
 <li>11-stage OoO superscalar, <b>1 to 8 wide</b></li>
-<li>64-entry ROB, 32-entry CAM issue queue with broadcast wakeup</li>
-<li><b>O(1) branch recovery</b> via 32-slot checkpointing</li>
-<li>In-order scalar shares the same memory hierarchy as a baseline</li>
+<li>64-entry ROB and 32-entry CAM issue queue</li>
+<li><b>O(1) branch recovery</b> via checkpoints</li>
+<li>In-order baseline on the same memory hierarchy</li>
 </ul>
 </div>
 
-<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
-<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">REALISTIC MEMORY</div>
-<ul style="margin: 0; padding-left: 18px;">
-<li>3-level TLB with <b>Sv39 / Sv48 / Sv57</b> hardware page walker</li>
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">REALISTIC MEMORY</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
+<li>3-level TLB with <b>Sv39 / Sv48 / Sv57</b> hardware walker</li>
 <li>Non-blocking L1d with <b>MSHR request coalescing</b></li>
-<li>DRAM model with per-bank <b>row-buffer timing</b> and refresh</li>
+<li>DRAM with per-bank <b>row-buffer timing</b> and refresh</li>
 <li>Four prefetcher types per cache level</li>
 </ul>
 </div>
 
-<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
-<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">STATE-OF-THE-ART BRANCH PREDICTION</div>
-<ul style="margin: 0; padding-left: 18px;">
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">STATE-OF-THE-ART BRANCH PREDICTION</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
 <li>Five predictors: Static, GShare, Tournament, Perceptron, <b>TAGE</b></li>
-<li>TAGE: 8 banks &times; 2K, history lengths 5 to 712</li>
-<li>SC-L-TAGE variant with loop detector and <b>ITTAGE</b> for indirects</li>
+<li>TAGE: 8 banks, history lengths 5 to 712</li>
+<li>SC-L-TAGE adds loop detector and <b>ITTAGE</b></li>
 <li>64-bit checkpointed GHR, updates deferred to commit</li>
 </ul>
 </div>
 
-<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
-<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">FULL RVV 1.0 + VECTOR CRYPTO</div>
-<ul style="margin: 0; padding-left: 18px;">
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">FULL RVV 1.0 + VECTOR CRYPTO</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
 <li>Configurable <b>VLEN 128 to 2048 bits</b></li>
 <li>All SEW, LMUL, and tail / mask policies</li>
-<li>Element-wise, mask, segmented load/store, reductions, permute</li>
+<li>Element-wise, mask, segmented, reductions, permute</li>
 <li>Crypto: <b>AES, SHA-2, SM3, SM4, GHASH</b></li>
 </ul>
 </div>
 
-<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
-<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">PYTHON DESIGN-SPACE EXPLORATION</div>
-<ul style="margin: 0; padding-left: 18px;">
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">PYTHON DESIGN-SPACE EXPLORATION</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
 <li><code>pip install rvsim</code> drives the simulator from Python</li>
-<li>Superscalar width scaling (1 to 8 wide)</li>
+<li>Superscalar width scaling sweeps (1 to 8 wide)</li>
 <li>Predictor and cache sweeps, full grid search</li>
-<li><b>Top-down microarchitecture analysis</b> and stall attribution</li>
+<li><b>Top-down microarchitecture analysis</b></li>
 </ul>
 </div>
 
