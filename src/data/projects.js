@@ -7,7 +7,7 @@ export const projects = [
         image: "assets/rvsim_stats.png",
         link: `https://github.com/${config.github}/rvsim`,
         desc: `<div style="font-size: 14px; color: var(--text-main); line-height: 1.55;">
-<p style="margin: 0 0 16px 0;">Cycle-accurate <span class='highlight'>RISC-V system simulator</span> in Rust, around 54k LOC. Two pluggable microarchitectural backends (an out-of-order superscalar core and an in-order scalar one) sit on top of one memory hierarchy, SoC, and bootloader. The whole simulator is driven from a Python API for design-space exploration.</p>
+<p style="margin: 0 0 16px 0;">Cycle-accurate <span class='highlight'>RISC-V system simulator</span> in Rust. Two pluggable microarchitectural backends (an out-of-order superscalar core and an in-order scalar one) sit on top of one memory hierarchy, SoC, and bootloader. The whole simulator is driven from a Python API for design-space exploration.</p>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-top: 16px;">
 
@@ -89,7 +89,7 @@ Linux. The whole thing is driven from Python for design-space
 exploration.
 
 <span class="highlight bold">>> AT A GLANCE</span>
-<span class="dim">Code:</span>         ~54k LOC Rust core, Python analysis + bindings (PyO3)
+<span class="dim">Language:</span>     Rust core, Python analysis + bindings (PyO3)
 <span class="dim">ISA:</span>          RV64GC + RVV 1.0 + Zb* + Zfh + vector crypto
 <span class="dim">Privilege:</span>    M / S / U modes, trap delegation, PMP (16 regions)
 <span class="dim">Paging:</span>       Sv39 / Sv48 / Sv57, hardware page-table walker

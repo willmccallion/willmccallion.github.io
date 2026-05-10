@@ -128,7 +128,7 @@ time. Has to finish within qubit coherence time (~1-100 µs).
             content: `
 <span class="primary bold">PROJECT: Chess Engine</span>
 =======================================
-A UCI chess engine in Rust. ~2900 ELO. ~6,000 lines.
+A UCI chess engine in Rust. ~2900 ELO.
 
 <span class="highlight bold">>> MOVE GENERATION</span>
 <span class="dim">-</span> <span class="bold">Bitboards:</span>  Magic-number lookup for sliding-piece attacks
