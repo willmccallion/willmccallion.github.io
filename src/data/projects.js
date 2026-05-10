@@ -6,114 +6,72 @@ export const projects = [
         title: "rvsim: RISC-V System Simulator",
         image: "assets/rvsim_stats.png",
         link: `https://github.com/${config.github}/rvsim`,
-        desc: `<div style="font-size: 14.5px; color: var(--text-main); line-height: 1.55;">
-<p style="margin: 0 0 16px 0;">Cycle-accurate <span class='highlight'>RISC-V system simulator</span> in Rust, around 54,000 lines of code. Two pluggable microarchitectural backends (an out-of-order superscalar core and an in-order scalar one) sit on top of the same memory hierarchy, SoC, and bootloader. The whole simulator is driven from a Python API for design-space exploration.</p>
+        desc: `<div style="font-size: 14px; color: var(--text-main); line-height: 1.55;">
+<p style="margin: 0 0 16px 0;">Cycle-accurate <span class='highlight'>RISC-V system simulator</span> in Rust, around 54k LOC. Two pluggable microarchitectural backends (an out-of-order superscalar core and an in-order scalar one) sit on top of one memory hierarchy, SoC, and bootloader. The whole simulator is driven from a Python API for design-space exploration.</p>
 
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">VALIDATION</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li>Passes all <b>8,576 / 8,576 riscv-tests</b> across every pipeline configuration</li>
-<li>Passes <b>all riscv-vector-tests</b> at VLEN=128</li>
-<li>Passes <b>all RISCOF tests</b> against the spike reference</li>
-<li>Boots <b>Linux 6.6</b> through OpenSBI to a BusyBox shell</li>
-<li>Out-of-order and in-order backends agree bit-for-bit on architectural state</li>
-</ul>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-top: 16px;">
 
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">ISA COVERAGE</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li><b>RV64GC</b> base with full <b>RVV 1.0</b> vector extension</li>
-<li>Full vector op coverage: element-wise, mask, segmented load/store, reductions, permute</li>
-<li>Bitmanip subset: Zba, Zbb, Zbc, Zbs, Zbkb, Zbkx</li>
-<li>Half-precision FP (Zfh) and cache-block ops (Zicbom, Zicboz)</li>
-<li>Vector crypto: <b>AES</b> (Zvkned), <b>SHA-2</b> (Zvknha/b), <b>SM3</b> (Zvksh), <b>SM4</b> (Zvksed), <b>GHASH</b> (Zvkg)</li>
+<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
+<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">VALIDATED AGAINST THE SPEC</div>
+<ul style="margin: 0; padding-left: 18px;">
+<li>Passes all <b>8,576 riscv-tests</b></li>
+<li>Passes <b>RISCOF</b> and <b>riscv-vector-tests</b></li>
+<li>Boots <b>Linux 6.6</b> through OpenSBI</li>
+<li>O3 and in-order agree bit-for-bit</li>
 </ul>
+</div>
 
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">PRIVILEGED ARCHITECTURE</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li>Machine, Supervisor, and User modes with trap delegation via medeleg/mideleg</li>
-<li>Full machine and supervisor CSR sets</li>
-<li><b>PMP</b>: 16 regions, TOR / NA4 / NAPOT, R/W/X/L bits</li>
-<li>Precise traps detected at any pipeline stage, recovered via checkpoint</li>
-<li>MRET, SRET, WFI, SFENCE.VMA all implemented</li>
+<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
+<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">TWO PIPELINES, ONE STACK</div>
+<ul style="margin: 0; padding-left: 18px;">
+<li>11-stage OoO superscalar, <b>1 to 8 wide</b></li>
+<li>64-entry ROB, 32-entry CAM issue queue with broadcast wakeup</li>
+<li><b>O(1) branch recovery</b> via 32-slot checkpointing</li>
+<li>In-order scalar shares the same memory hierarchy as a baseline</li>
 </ul>
+</div>
 
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">OUT-OF-ORDER MICROARCHITECTURE</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li>11-stage pipeline, configurable <b>1 to 8 wide</b></li>
-<li><b>64-entry ROB</b>, <b>32-entry CAM-style issue queue</b> with broadcast wakeup and oldest-first arbitration</li>
-<li><b>32-entry load queue</b> with memory-ordering violation detection</li>
-<li>Physical register files: 256 GPR, 128 FPR, 64 VPR (VLEN bits each)</li>
-<li>Speculative + committed rename maps, free-list allocation</li>
-<li><b>32-slot checkpointing</b> for O(1) branch recovery</li>
-<li>Functional units: 4&times; IntALU, IntMul, IntDiv, 2&times; FpAdd, FpMul, FpFma, FpDivSqrt, Branch, 3 mem ports, 2&times; VecIntALU, VecMul/Div, VecFp/Fma/DivSqrt, VecMem, VecPermute</li>
-<li>Memory dependence prediction (Store-Set, Chrysos &amp; Emer 1998) or blind LSQ enforcement</li>
-<li>An in-order scalar backend on the same memory hierarchy serves as the IPC baseline</li>
+<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
+<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">REALISTIC MEMORY</div>
+<ul style="margin: 0; padding-left: 18px;">
+<li>3-level TLB with <b>Sv39 / Sv48 / Sv57</b> hardware page walker</li>
+<li>Non-blocking L1d with <b>MSHR request coalescing</b></li>
+<li>DRAM model with per-bank <b>row-buffer timing</b> and refresh</li>
+<li>Four prefetcher types per cache level</li>
 </ul>
+</div>
 
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">MEMORY SYSTEM</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li>Three-level TLB: 32-entry iTLB and dTLB, 512-entry 4-way shared L2 TLB</li>
-<li>Hardware page-table walker for <b>Sv39, Sv48, Sv57</b> with superpages up to 256 TiB</li>
-<li>L1i / L1d / L2 / L3 caches, all independently configurable</li>
-<li>Replacement: LRU, PLRU, FIFO, Random, MRU. Inclusion: NINE, inclusive, exclusive</li>
-<li><b>Non-blocking L1d</b> with MSHRs that coalesce requests and queue waiters per line</li>
-<li>Four prefetcher types per level: next-line, stride, stream, tagged</li>
-<li>16-entry scalar store buffer with three-way forwarding (hit, miss, partial-overlap stall)</li>
-<li>8-entry vector store buffer with byte-mask forwarding</li>
-<li><b>DRAM model</b> with per-bank row tracking; row hit costs ~tCAS, row miss costs tPRE + tRAS + tCAS; periodic refresh</li>
+<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
+<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">STATE-OF-THE-ART BRANCH PREDICTION</div>
+<ul style="margin: 0; padding-left: 18px;">
+<li>Five predictors: Static, GShare, Tournament, Perceptron, <b>TAGE</b></li>
+<li>TAGE: 8 banks &times; 2K, history lengths 5 to 712</li>
+<li>SC-L-TAGE variant with loop detector and <b>ITTAGE</b> for indirects</li>
+<li>64-bit checkpointed GHR, updates deferred to commit</li>
 </ul>
+</div>
 
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">BRANCH PREDICTION</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li>Five pluggable predictors: Static, GShare, Tournament, Perceptron, <b>TAGE</b></li>
-<li>GShare: 4K entries, 2-bit counters</li>
-<li>Tournament: 4K global + 1K local meta-predictor</li>
-<li>Perceptron: 1K entries, 32-bit history</li>
-<li>TAGE: 8 banks &times; 2K entries, history lengths 5 to 712</li>
-<li>SC-L-TAGE variant adds a loop detector, GEHL statistical corrector, and ITTAGE for indirect targets</li>
-<li>256-entry 4-way BTB; 8-entry RAS that recognises both x1 and x5 link registers</li>
-<li>64-bit checkpointed global history; predictor updates deferred to commit for precise state</li>
+<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
+<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">FULL RVV 1.0 + VECTOR CRYPTO</div>
+<ul style="margin: 0; padding-left: 18px;">
+<li>Configurable <b>VLEN 128 to 2048 bits</b></li>
+<li>All SEW, LMUL, and tail / mask policies</li>
+<li>Element-wise, mask, segmented load/store, reductions, permute</li>
+<li>Crypto: <b>AES, SHA-2, SM3, SM4, GHASH</b></li>
 </ul>
+</div>
 
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">VECTOR (RVV 1.0)</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li>Runtime-configurable <b>VLEN</b> from 128 to 2048 bits</li>
-<li>All four SEW widths (E8, E16, E32, E64)</li>
-<li>All seven LMUL values, fractional and integer (Mf8 through M8)</li>
-<li>Tail and masked-off policies: undisturbed or agnostic</li>
-<li>Full coverage of integer ALU, FPU, mask, segmented load/store, reductions, permute, and crypto</li>
+<div style="border: 1px solid var(--border-color); padding: 10px 12px;">
+<div style="color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 6px;">PYTHON DESIGN-SPACE EXPLORATION</div>
+<ul style="margin: 0; padding-left: 18px;">
+<li><code>pip install rvsim</code> drives the simulator from Python</li>
+<li>Superscalar width scaling (1 to 8 wide)</li>
+<li>Predictor and cache sweeps, full grid search</li>
+<li><b>Top-down microarchitecture analysis</b> and stall attribution</li>
 </ul>
+</div>
 
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">SoC + BOOT</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li>CLINT (timer + IPI), PLIC (platform interrupt controller)</li>
-<li>16550-compatible UART with stdin/stdout integration</li>
-<li>VirtIO block device, Goldfish RTC, SYSCON for PSCI power-off/reboot</li>
-<li>HTIF for riscv-tests pass/fail signalling</li>
-<li>Device tree blob generated automatically from the simulator config</li>
-<li>Linux boots via OpenSBI to a BusyBox userspace</li>
-</ul>
-
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">PYTHON TOOLING</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li><code>pip install rvsim</code></li>
-<li>Python API (PyO3) exposing Config, Cache, BranchPredictor, Environment, and Simulator</li>
-<li>Superscalar width scaling sweeps (1 to 8 wide)</li>
-<li>Branch-predictor accuracy comparison across all five predictors</li>
-<li>Cache size sweeps and full design-space grid search</li>
-<li>Stall-cycle attribution and top-down microarchitecture analysis</li>
-<li>O3 vs in-order comparison on identical binaries</li>
-</ul>
-
-<div style="margin: 16px 0 6px 0; color: var(--highlight-color); font-weight: 700; letter-spacing: 0.04em;">NOTABLE TECHNICAL DECISIONS</div>
-<ul style="margin: 0; padding-left: 20px;">
-<li>Speculative load wakeup with replay on cache miss</li>
-<li>CAM-style issue queue with broadcast wakeup and oldest-first arbitration</li>
-<li>Non-blocking L1d with MSHR request coalescing</li>
-<li>Store-to-load forwarding with partial-overlap stall detection</li>
-<li>Checkpoint-based O(1) branch recovery</li>
-<li>Memory dependence prediction via Store-Set (Chrysos &amp; Emer 1998)</li>
-<li>Precise trap architecture across every pipeline stage</li>
-</ul>
+</div>
 </div>`,
         tags: ["Rust", "Python", "Architecture", "Simulation"],
         terminal: {
