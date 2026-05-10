@@ -2,48 +2,124 @@ import { config } from '../config.js';
 
 export const builds = [
     {
-        id: "eithne",
-        title: "x86_64 OS Kernel",
-        image: "assets/kernel.png",
-        link: `https://github.com/${config.github}/Eithne`,
-        desc: "x86_64 OS kernel in Rust, booting via UEFI. <span class='highlight'>O(1) buddy frame allocator</span> with XOR bitmap coalescing, per-size-class slab heap, 4-level page tables, 256-entry IDT with hand-written assembly stubs, and a <span class='highlight'>preemptive round-robin scheduler</span> with assembly context switching.",
-        tags: ["Rust", "Kernel", "x86_64", "UEFI"],
+        id: "vlsi",
+        title: "PARE — Placement and Routing",
+        image: "assets/routed_aes.png",
+        link: `https://github.com/${config.github}/vlsi-physical-design`,
+        desc: "A VLSI place-and-route tool in Rust. Global placement is Nesterov gradient descent with <span class='highlight'>FFT-based density</span> (cells as charges); Abacus legalization snaps cells to the row grid; routing is two-stage A* with Pathfinder rip-up-and-reroute. Runs on the ISPD / IBM benchmark suite up to ~313k cells.",
+        tags: ["Rust", "EDA", "Algorithms"],
         terminal: {
-            name: "eithne",
-            date: "Feb 20",
-            size: "13K",
+            name: "vlsi-flow",
+            date: "Jan 05",
+            size: "69K",
             content: `
-<span class="primary bold">PROJECT: x86_64 OS Kernel (Eithne)</span>
+<span class="primary bold">PROJECT: PARE — Placement And Routing</span>
 =======================================
-Boots via UEFI. Implements the full kernel foundation from scratch.
+Place and route flow for digital ICs.
 
-<span class="highlight bold">>> MEMORY MANAGEMENT</span>
-<span class="dim">-</span> <span class="bold">Buddy alloc:</span>  O(1) · orders 0-10 (4 KiB → 2 MiB) · XOR bitmap coalesce
-<span class="dim">-</span> <span class="bold">Slab heap:</span>    9 size classes · intrusive free lists · O(1) alloc/free
-<span class="dim">-</span> <span class="bold">Paging:</span>       4-level (PML4→PDPT→PD→PT) · map/unmap/translate · INVLPG
+<span class="highlight bold">>> PLACEMENT</span>
+<span class="dim">-</span> <span class="bold">Density:</span>    Poisson equation via FFT (O(N log N))
+                cells as electric charges — high density = repulsion
+<span class="dim">-</span> <span class="bold">Wirelength:</span> Weighted-average smooth HPWL approximation
+<span class="dim">-</span> <span class="bold">Solver:</span>     Nesterov accelerated gradient descent
+<span class="dim">-</span> <span class="bold">Legalize:</span>   Abacus — row-grid alignment, min displacement
 
-<span class="highlight bold">>> INTERRUPTS</span>
-<span class="primary">*</span> 256-entry IDT · assembly stubs for all CPU exceptions
-<span class="primary">*</span> 8259 PIC remapped to vectors 32-47 · IST stacks in TSS
+<span class="highlight bold">>> ROUTING</span>
+<span class="primary">*</span> <span class="bold">Global:</span>     Coarse A* · Pathfinder rip-up & reroute (history costs)
+<span class="primary">*</span> <span class="bold">Detailed:</span>  Pattern routing + guide-constrained A* · spatial-batch parallel
+<span class="primary">*</span> <span class="bold">Formats:</span>   LEF/DEF (Nangate45) · Bookshelf (ISPD)
 
-<span class="highlight bold">>> SCHEDULER</span>
-Round-robin · cooperative + preemptive · 10-tick timeslice
-Assembly context switch (callee-saved GPRs + RSP) · IRETQ resume
+<span class="highlight bold">>> BENCHMARKS (no shorts or opens)</span>
+<span class="dim">IBM01:</span>    12,506 cells ·  11,507 nets · 85% util
+<span class="dim">AES:</span>      20,533 cells ·  51,671 nets · Nangate45 10-layer
+<span class="dim">IBM10:</span>    67,692 cells ·  64,227 nets · 49% util
+<span class="dim">IBM14:</span>   145,492 cells · 143,202 nets · 49% util
+<span class="dim">Netcard:</span> 252,978 cells · 290,354 nets · Nangate45 10-layer
+<span class="dim">Leon3mp:</span> 312,529 cells · 406,912 nets · 53% util · 29s
 
-<span class="ls-exec">./run.sh   # OVMF + QEMU</span>
+<span class="ls-exec">cargo run --release -- flow configs/ibm14.toml</span>
+<span class="ls-exec">cargo run --release -- flow configs/aes.toml</span>
+`
+        }
+    },
+    {
+        id: "unikernel",
+        title: "RISC-V Security Unikernel",
+        image: "assets/security_kernel.png",
+        link: `https://github.com/${config.github}/riscv-security-unikernel`,
+        desc: "A bare-metal network security appliance in Rust for RISC-V, running in <span class='highlight'>64 KB of RAM</span>. Stateful flow tracker, Count-Min Sketch for DDoS heavy-hitter detection, Aho-Corasick DPI, and a small <span class='highlight'>eBPF VM</span> for runtime-injected packet filters. All structures statically allocated. egui control plane for rule injection and bytecode upload.",
+        tags: ["Rust", "Kernel", "eBPF", "Security"],
+        terminal: {
+            name: "security-unikernel",
+            date: "Dec 29",
+            size: "94K",
+            content: `
+<span class="primary bold">PROJECT: RISC-V Security Unikernel</span>
+=======================================
+A bare-metal packet pipeline in 64 KB of RAM.
 
-[eithne] initialization complete — entering scheduler loop.
-[timer] 100 ticks  [heartbeat] still alive (500)
+<span class="highlight bold">>> 6-STAGE PACKET PIPELINE</span>
+<span class="dim">①</span> Count-Min Sketch  — probabilistic DDoS heavy-hitter detection
+<span class="dim">②</span> Penalty Box       — 16-entry IP ban table (FIFO eviction)
+<span class="dim">③</span> Token Bucket      — global 10k pps rate cap
+<span class="dim">④</span> Flow Tracker      — 5-tuple stateful table · 74 entries
+<span class="dim">⑤</span> eBPF VM           — 16 regs · 64 instr · runtime-injected bytecode
+<span class="dim">⑥</span> DPI Engine        — Aho-Corasick · SQL injection · XSS · NOP sleds
+
+<span class="highlight bold">>> MEMORY</span>
+<span class="primary">*</span> No heap on the hot path — every structure statically allocated
+<span class="primary">*</span> VirtIO DMA buffers tuned to the Ethernet MTU (1536 B)
+
+<span class="highlight bold">>> CONTROL PLANE (egui)</span>
+Dashboard · SDN rule injection · eBPF Studio · traffic generator
+
+<span class="ls-exec">make run   # QEMU + TAP interface</span>
+<span class="ls-exec">make gui   # egui control plane</span>
+`
+        }
+    },
+    {
+        id: "qec",
+        title: "RISC-V Quantum Control Unit",
+        image: "assets/qcu_hil.png",
+        link: `https://github.com/${config.github}/riscv-qcu`,
+        desc: "Bare-metal RISC-V firmware plus a SystemVerilog accelerator for real-time quantum error correction on the Surface Code. <span class='highlight'>Zero-allocation Union-Find decoder</span> running across 4 harts; the path-compression step is offloaded to a small hardware module verified against the firmware via Verilator co-simulation.",
+        tags: ["Rust", "SystemVerilog", "RISC-V", "Embedded"],
+        terminal: {
+            name: "qcu-firmware",
+            date: "Jan 15",
+            size: "24K",
+            content: `
+<span class="primary bold">PROJECT: RISC-V Quantum Control Unit</span>
+=======================================
+Hardware and firmware for decoding Surface Code syndromes in real
+time. Has to finish within qubit coherence time (~1-100 µs).
+
+<span class="highlight bold">>> FIRMWARE (RV64IMAC, no_std)</span>
+<span class="dim">-</span> <span class="bold">Decoder:</span>    Union-Find · path compression + halving · parity-aware
+<span class="dim">-</span> <span class="bold">Memory:</span>     Bump allocator · no dynamic allocation during decode
+<span class="dim">-</span> <span class="bold">SMP:</span>        Lock-free SPMC ring buffer (512 slots) · hart 0 → harts 1-3
+
+<span class="highlight bold">>> HARDWARE ACCELERATOR (SystemVerilog)</span>
+<span class="primary">*</span> <span class="bold">Module:</span>     union_find.sv — path-compression state machine
+<span class="primary">*</span> <span class="bold">Verify:</span>     Verilator co-sim · Rust FFI · cycle-accurate
+
+<span class="highlight bold">>> NUMBERS (QEMU, 4 harts)</span>
+<span class="dim">Latency:</span>    ~580 cycles (0.58 µs at 1 GHz)
+<span class="dim">Throughput:</span> ~55,000 shots/s
+<span class="dim">Jitter:</span>     < 50 cycles
+
+<span class="ls-exec">./scripts/run.py kernel --size 5</span>
 `
         }
     },
     {
         id: "chess",
-        title: "Chess Engine (~2900 ELO)",
+        title: "Chess Engine",
         image: "assets/chess.png",
         link: `https://github.com/${config.github}/chess`,
-        desc: "UCI-compliant chess engine in Rust, ~<span class='highlight'>2900 ELO</span>. <span class='highlight'>Magic bitboards</span> for O(1) sliding-piece move generation, PVS alpha-beta with a full pruning stack, and NNUE evaluation with SIMD-accelerated incremental accumulator updates. Only changed pieces re-evaluated per move.",
-        tags: ["Rust", "HPC", "AI"],
+        desc: "A UCI chess engine in Rust, around <span class='highlight'>2900 ELO</span>. Magic bitboards for sliding-piece move generation, PVS alpha-beta with the usual pruning stack (LMR, LMP, null-move, futility, razoring, delta), and <span class='highlight'>NNUE</span> evaluation with an incremental accumulator. Hand-tuned piece-square tables as a fallback.",
+        tags: ["Rust", "AI"],
         terminal: {
             name: "chess-engine",
             date: "Nov 01",
@@ -51,10 +127,10 @@ Assembly context switch (callee-saved GPRs + RSP) · IRETQ resume
             content: `
 <span class="primary bold">PROJECT: Chess Engine</span>
 =======================================
-UCI-compliant engine. ~2900 ELO. ~6,000 lines of Rust.
+A UCI chess engine in Rust. ~2900 ELO. ~6,000 lines.
 
 <span class="highlight bold">>> MOVE GENERATION</span>
-<span class="dim">-</span> <span class="bold">Bitboards:</span>  Magic number lookup — O(1) sliding piece attacks
+<span class="dim">-</span> <span class="bold">Bitboards:</span>  Magic-number lookup for sliding-piece attacks
 <span class="dim">-</span> <span class="bold">Ordering:</span>   TT move → captures (SEE) → killers → history heuristic
 
 <span class="highlight bold">>> SEARCH</span>
@@ -64,12 +140,13 @@ UCI-compliant engine. ~2900 ELO. ~6,000 lines of Rust.
 <span class="primary">*</span> LMR · LMP · null-move · futility · razoring · delta pruning
 
 <span class="highlight bold">>> EVALUATION</span>
-NNUE · 41k inputs · two 32-neuron layers · SIMD dot product
-Incremental accumulator — only changed pieces re-evaluated per move
+NNUE — 41k inputs · two 32-neuron layers · SIMD dot product
+Incremental accumulator: only changed pieces re-evaluated.
+Hand-tuned PST tables as a fallback when no NNUE file is loaded.
 
-<span class="highlight bold">>> BENCHMARKS</span>
-<span class="dim">Rating:</span>  ~2900 ELO (Stockfish test suite)
-<span class="dim">Opening:</span> Polyglot book (The Baron's opening repertoire)
+<span class="highlight bold">>> EXTRAS</span>
+<span class="dim">Rating:</span>  ~2900 ELO (Stockfish self-play suite)
+<span class="dim">Opening:</span> Polyglot book (The Baron's repertoire)
 
 <span class="ls-exec">cargo run --release -- perft 6</span>
 <span class="ls-exec">cargo run --release -- play-cli --time 5000</span>
@@ -81,7 +158,7 @@ Incremental accumulator — only changed pieces re-evaluated per move
         title: "netpath — Network Path Analyser",
         image: "assets/netpath.png",
         link: `https://github.com/${config.github}/netpath`,
-        desc: "Network diagnostic tool in C. Traces the full path to a host with <span class='highlight'>security-relevant observations</span> at every layer: DNS, routing, TLS, HTTP, and anycast. DNS wire format, ICMP/UDP/TCP probing, TLS handshake parsing, and X.509 DER decoding all written from scratch. <span class='highlight'>No external dependencies</span>, <span class='highlight'>zero heap allocation</span>, single 4 MiB bump-pointer arena.",
+        desc: "A network diagnostic tool in C. Traces the path to a host and reports security-relevant observations across DNS, routing, TLS, HTTP, and anycast. DNS wire format, ICMP/UDP/TCP probing, TLS handshake, and X.509 DER decoding are <span class='highlight'>hand-written</span> over POSIX sockets. Optional OpenSSL for DNSSEC signature verification. No <span class='highlight'>malloc()</span> in the hot path — single 4 MiB static arena instead.",
         tags: ["C", "Networking", "Security"],
         terminal: {
             name: "netpath",
@@ -90,20 +167,21 @@ Incremental accumulator — only changed pieces re-evaluated per move
             content: `
 <span class="primary bold">PROJECT: netpath — Network Path Analyser</span>
 =======================================
-Single command. Five layers. Security flags with remediation hints.
+One command. Five layers. Security flags with remediation hints.
 
 <span class="highlight bold">>> PHASES</span>
 <span class="dim">-</span> <span class="bold">DNS:</span>        A/AAAA resolution · CNAME chains · DNSSEC · TTL
-<span class="dim">-</span> <span class="bold">Route:</span>      ICMP/UDP/TCP traceroute · Paris (ECMP-stable) · ASN · bar chart RTT
+<span class="dim">-</span> <span class="bold">Route:</span>      ICMP/UDP/TCP traceroute · Paris (ECMP-stable) · ASN · bar-chart RTT
 <span class="dim">-</span> <span class="bold">TLS:</span>        Partial handshake · version/cipher · X.509 SANs · OCSP staple
 <span class="dim">-</span> <span class="bold">HTTP:</span>       GET · HSTS · CSP · X-Frame-Options · X-Content-Type-Options
-<span class="dim">-</span> <span class="bold">Anycast:</span>    ECMP probe variation · TTL/cert serial/RTT divergence detection
+<span class="dim">-</span> <span class="bold">Anycast:</span>    ECMP probe variation · TTL/cert serial/RTT divergence
 
 <span class="highlight bold">>> DESIGN</span>
-<span class="primary">*</span> <span class="bold">No dependencies:</span>  DNS, ICMP, TLS, HTTP, X.509 all from scratch
-<span class="primary">*</span> <span class="bold">No heap:</span>          4 MiB bump-pointer arena — zero malloc() anywhere
-<span class="primary">*</span> <span class="bold">Bounds checked:</span>   DNS compression loop bitmap · ASN.1 length validation · HTTP cap
-<span class="primary">*</span> <span class="bold">Arch opts:</span>        x86_64 NASM (checksum, byte search, timestamps) · aarch64/riscv64 C fallback
+<span class="primary">*</span> <span class="bold">Hand-written:</span>   DNS, ICMP, TLS, HTTP, X.509 — no parsing libraries
+<span class="primary">*</span> <span class="bold">Sockets:</span>        POSIX (+ optional OpenSSL for DNSSEC signature verify)
+<span class="primary">*</span> <span class="bold">No heap:</span>        4 MiB bump-pointer arena — no malloc() in the hot path
+<span class="primary">*</span> <span class="bold">Bounds checked:</span> DNS compression bitmap · ASN.1 lengths · HTTP cap
+<span class="primary">*</span> <span class="bold">Arch opts:</span>      x86_64 NASM (checksum, byte search, timestamps); C fallback elsewhere
 
 <span class="highlight bold">>> SECURITY FLAGS (35+ across all phases)</span>
 <span class="dim">DNS</span>     No DNSSEC · short TTL · CNAME depth · NXDOMAIN · SERVFAIL
@@ -119,47 +197,11 @@ Single command. Five layers. Security flags with remediation hints.
         }
     },
     {
-        id: "pbuild",
-        title: "pbuild — Parallel Build System",
-        image: "assets/pbuild.png",
-        link: `https://github.com/${config.github}/pbuild-rs`,
-        desc: "Incremental parallel build system in Rust. Rules declared in <span class='highlight'>pbuild.toml</span>, inputs SHA-256 hashed to skip unchanged work. Independent rules run in parallel on a wave-based topological scheduler over a Rayon thread pool. Depfile header tracking, named profiles, <span class='highlight'>shell completions</span>, watch mode, and Graphviz dependency graph.",
-        tags: ["Rust", "Tools", "Build Systems"],
-        terminal: {
-            name: "pbuild",
-            date: "Mar 07",
-            size: "~3K",
-            content: `
-<span class="primary bold">PROJECT: pbuild — Parallel Build System</span>
-=======================================
-Hash-based incremental builds. Wave-parallel execution.
-
-<span class="highlight bold">>> HOW IT WORKS</span>
-<span class="dim">-</span> <span class="bold">Inputs:</span>     SHA-256 hashed; rules skipped when all hashes match lock file
-<span class="dim">-</span> <span class="bold">Scheduler:</span>  Topological waves — all ready rules run in parallel (Rayon)
-<span class="dim">-</span> <span class="bold">Output:</span>     Single rule → live stream; multiple rules → atomic buffered
-
-<span class="highlight bold">>> FEATURES</span>
-<span class="primary">*</span> <span class="bold">Depfiles:</span>   Injects -MF; discovers & tracks transitive header deps
-<span class="primary">*</span> <span class="bold">Profiles:</span>   [config.profiles.ci] — switch presets with -p
-<span class="primary">*</span> <span class="bold">Watch:</span>      Rebuilds on file change (notify)
-<span class="primary">*</span> <span class="bold">Graph:</span>      ASCII tree + Graphviz DOT export
-
-<span class="highlight bold">>> CLI</span>
-<span class="ls-exec">pbuild                  # build default target</span>
-<span class="ls-exec">pbuild fmt lint test    # multi-target sequential</span>
-<span class="ls-exec">pbuild graph --dot | dot -Tsvg > graph.svg</span>
-<span class="ls-exec">pbuild --watch          # rebuild on change</span>
-<span class="ls-exec">pbuild retry            # re-run last failed target</span>
-`
-        }
-    },
-    {
         id: "hypercube",
         title: "Hypercube Network Simulator",
         image: null,
         link: `https://github.com/${config.github}/hypercube`,
-        desc: "Packet routing simulator for <span class='highlight'>n-dimensional hypercube</span> networks in Rust. Compares bit-fixing and <span class='highlight'>Valiant's randomized routing</span> across adversarial traffic patterns (bit-reversal, complement, transpose, butterfly, shuffle). Supports fault-tolerant routing around failed nodes/links and sweep mode for batch parameter studies with CSV export.",
+        desc: "A packet routing simulator for <span class='highlight'>n-dimensional hypercube</span> networks. Compares greedy bit-fixing against <span class='highlight'>Valiant's randomized routing</span> across adversarial traffic patterns (bit-reversal, complement, transpose, butterfly, shuffle). Also does fault-tolerant routing around failed nodes/links and CSV-export sweep mode for parameter studies.",
         tags: ["Rust", "Networking", "Simulation"],
         terminal: {
             name: "hypercube",
@@ -192,7 +234,7 @@ CSV export with congestion, latency, and per-dimension load stats.
         title: "Max-Cut SDP Solver",
         image: null,
         link: `https://github.com/${config.github}/maxcut-sdp`,
-        desc: "<span class='highlight'>Goemans-Williamson</span> Max-Cut approximation in Rust. Solves the SDP relaxation via a primal-dual <span class='highlight'>interior point method</span> with Nesterov-Todd scaling, plus a scalable <span class='highlight'>Burer-Monteiro</span> low-rank solver for larger instances. All linear algebra (Cholesky, eigendecomposition, matrix square roots) written from scratch with no BLAS/LAPACK. Tested on Gset benchmarks up to 20,000 nodes.",
+        desc: "A <span class='highlight'>Goemans-Williamson</span> Max-Cut approximation in Rust. Solves the SDP relaxation with a primal-dual <span class='highlight'>interior-point method</span>, plus a low-rank <span class='highlight'>Burer-Monteiro</span> solver for larger instances. The linear algebra (Cholesky, eigendecomposition, matrix square roots) is hand-written — only deps are clap, rand, rayon. Tested on Gset benchmarks up to 20,000 nodes.",
         tags: ["Rust", "Optimization", "Algorithms"],
         terminal: {
             name: "maxcut-sdp",
@@ -205,15 +247,16 @@ Goemans-Williamson 0.878-approximation for Max-Cut.
 
 <span class="highlight bold">>> SDP SOLVERS</span>
 <span class="dim">-</span> <span class="bold">Interior point:</span> Primal-dual · Nesterov-Todd scaling · Schur complement
-<span class="dim">-</span> <span class="bold">Burer-Monteiro:</span> Low-rank X=RR^T factorization · nonlinear CG · scales to 14k+ nodes
+<span class="dim">-</span> <span class="bold">Burer-Monteiro:</span> Low-rank X=RR^T · nonlinear CG · scales to 14k+ nodes
 
 <span class="highlight bold">>> ROUNDING</span>
 <span class="primary">*</span> Random hyperplane rounding
 <span class="primary">*</span> Zwick outward rotations · iterated local search
 <span class="primary">*</span> Population-based refinement
 
-<span class="highlight bold">>> LINEAR ALGEBRA (from scratch)</span>
-Cholesky · eigendecomposition · matrix square root · no BLAS/LAPACK
+<span class="highlight bold">>> LINEAR ALGEBRA</span>
+Cholesky · Jacobi eigendecomposition · matrix square root.
+No BLAS/LAPACK; just clap, rand, rayon as dependencies.
 
 <span class="highlight bold">>> GSET BENCHMARKS</span>
 <span class="dim">Median gap:</span> 0.65% from best-known values
