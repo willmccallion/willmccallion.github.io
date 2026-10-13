@@ -6,7 +6,7 @@ export const builds = [
         title: "PARE (Placement and Routing)",
         image: "assets/routed_aes.png",
         link: `https://github.com/${config.github}/vlsi-physical-design`,
-        desc: "A VLSI place-and-route tool in Rust. Global placement is Nesterov gradient descent with <span class='highlight'>FFT-based density</span> (cells as charges); Abacus legalization snaps cells to the row grid; routing is two-stage A* with Pathfinder rip-up-and-reroute. Runs on the ISPD / IBM benchmark suite up to ~313k cells.",
+        desc: "A VLSI place-and-route tool in Rust. Global placement is Nesterov gradient descent with <span class='highlight'>FFT-based density</span> (cells as charges); Abacus legalization snaps cells to the row grid; routing is two-stage A* with Pathfinder rip-up-and-reroute. Places and routes IBM benchmarks up to 145k cells, and routes OpenROAD designs up to 313k cells, with no shorts or opens.",
         tags: ["Rust", "EDA", "Algorithms"],
         terminal: {
             name: "vlsi-flow",
@@ -31,15 +31,15 @@ Place and route flow for digital ICs.
 <span class="primary">*</span> <span class="bold">Formats:</span>   LEF/DEF (Nangate45) · Bookshelf (ISPD)
 
 <span class="highlight bold">>> BENCHMARKS (no shorts or opens)</span>
-<span class="dim">IBM01:</span>    12,506 cells ·  11,507 nets · 85% util
-<span class="dim">AES:</span>      20,533 cells ·  51,671 nets · Nangate45 10-layer
-<span class="dim">IBM10:</span>    67,692 cells ·  64,227 nets · 49% util
-<span class="dim">IBM14:</span>   145,492 cells · 143,202 nets · 49% util
-<span class="dim">Netcard:</span> 252,978 cells · 290,354 nets · Nangate45 10-layer
-<span class="dim">Leon3mp:</span> 312,529 cells · 406,912 nets · 53% util · 29s
+<span class="dim">IBM01:</span>    12,036 cells ·  11,507 nets · placed + routed · 18s
+<span class="dim">AES:</span>      44,749 cells ·  45,036 nets · Nangate45 10-layer · 7s
+<span class="dim">IBM10:</span>    66,948 cells ·  64,227 nets · placed + routed · 187s
+<span class="dim">IBM14:</span>   145,492 cells · 143,202 nets · placed + routed · 460s
+<span class="dim">Netcard:</span> 274,700 cells · 290,354 nets · routed · 114s
+<span class="dim">Leon3mp:</span> 312,529 cells · 406,912 nets · routed · 33s
 
-<span class="ls-exec">cargo run --release -- flow configs/ibm14.toml</span>
-<span class="ls-exec">cargo run --release -- flow configs/aes.toml</span>
+<span class="ls-exec">cargo run --release -- flow ibm14</span>
+<span class="ls-exec">cargo run --release -- route leon3mp</span>
 `
         }
     },
@@ -48,8 +48,8 @@ Place and route flow for digital ICs.
         title: "RISC-V Security Unikernel",
         image: "assets/security_kernel.png",
         link: `https://github.com/${config.github}/riscv-security-unikernel`,
-        desc: "A bare-metal network security appliance in Rust for RISC-V, running in <span class='highlight'>64 KB of RAM</span>. Stateful flow tracker, Count-Min Sketch for DDoS heavy-hitter detection, Aho-Corasick DPI, and a small <span class='highlight'>eBPF VM</span> for runtime-injected packet filters. All structures statically allocated. egui control plane for rule injection and bytecode upload.",
-        tags: ["Rust", "Kernel", "eBPF", "Security"],
+        desc: "A bare-metal network security appliance in Rust for RISC-V, running in <span class='highlight'>64 KB of RAM</span>. Stateful flow tracker, Count-Min Sketch for DDoS heavy-hitter detection, Aho-Corasick DPI, and a small <span class='highlight'>BPF VM</span> for runtime-injected packet filters. All structures statically allocated. egui control plane for rule injection and bytecode upload.",
+        tags: ["Rust", "Kernel", "BPF", "Security"],
         terminal: {
             name: "security-unikernel",
             date: "Dec 29",
@@ -59,20 +59,28 @@ Place and route flow for digital ICs.
 =======================================
 A bare-metal packet pipeline in 64 KB of RAM.
 
-<span class="highlight bold">>> 6-STAGE PACKET PIPELINE</span>
-<span class="dim">①</span> Count-Min Sketch  : probabilistic DDoS heavy-hitter detection
-<span class="dim">②</span> Penalty Box       : 16-entry IP ban table (FIFO eviction)
-<span class="dim">③</span> Token Bucket      : global 10k pps rate cap
-<span class="dim">④</span> Flow Tracker      : 5-tuple stateful table · 74 entries
-<span class="dim">⑤</span> eBPF VM           : 16 regs · 64 instr · runtime-injected bytecode
-<span class="dim">⑥</span> DPI Engine        : Aho-Corasick · SQL injection · XSS · NOP sleds
+<span class="highlight bold">>> PACKET PIPELINE</span>
+<span class="dim">①</span> Penalty box     : bans hosts >100 pps, /24s >1k, /16s >5k, port scans
+<span class="dim">②</span> Token bucket    : global rate limit
+<span class="dim">③</span> Flow table      : 74 five-tuple entries, LRU eviction
+<span class="dim">④</span> TCP heuristics  : Xmas and null scans
+<span class="dim">⑤</span> BPF VM          : 16 regs, 64 instructions, validated on upload
+<span class="dim">⑥</span> Port firewall
+<span class="dim">⑦</span> Network stack   : ARP, ICMP echo, SYN cookies
+<span class="dim">⑧</span> Payload checks  : x86 and RISC-V NOP sleds
+<span class="dim">⑨</span> DPI             : Aho-Corasick plus runtime patterns
+
+<span class="highlight bold">>> DETECTORS</span>
+<span class="primary">*</span> Count-Min Sketches (conservative update, decay) for hosts and subnets
+<span class="primary">*</span> HyperLogLog for spoofed-source floods
+<span class="primary">*</span> Virtual HyperLogLog for port scans
 
 <span class="highlight bold">>> MEMORY</span>
-<span class="primary">*</span> No heap on the hot path. Every structure is statically allocated.
-<span class="primary">*</span> VirtIO DMA buffers tuned to the Ethernet MTU (1536 B)
+<span class="primary">*</span> 58.8 KB of the 64 KB budget, no heap, PMP W^X
+<span class="primary">*</span> Same engine runs as a Linux daemon: ~1.3 Mpps per core
 
 <span class="highlight bold">>> CONTROL PLANE (egui)</span>
-Dashboard · SDN rule injection · eBPF Studio · traffic generator
+SipHash-authenticated commands · signed reports · BPF Studio · traffic generator
 
 <span class="ls-exec">make run   # QEMU + TAP interface</span>
 <span class="ls-exec">make gui   # egui control plane</span>
@@ -148,7 +156,7 @@ Batch runs across dimensions 3-16, all patterns, both strategies.
 CSV export with congestion, latency, and per-dimension load stats.
 
 <span class="ls-exec">cargo run --release -- --dim 10 --strategy valiant --traffic bit-reversal</span>
-<span class="ls-exec">cargo run --release -- sweep --dims 3-14 --runs 3 -o results.csv</span>
+<span class="ls-exec">cargo run --release -- --sweep --dim-range 3:14 --strategy both --runs 3 -o results.csv</span>
 `
         }
     },
