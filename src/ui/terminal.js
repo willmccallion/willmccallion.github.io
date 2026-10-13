@@ -81,7 +81,7 @@ const pages = {
 =======================================
 
 I am a <span class="bold primary">Honors Computer Science Student</span> interested in chess,
-Emulation, compilers, and Computer Architecture.
+Emulation, kernels, and Computer Architecture.
 
 <span class="dim">AVAILABLE COMMANDS:</span>
   > <span class="cmd-link" onclick="exec('ls projects')">projects</span>      ::  Core systems & architecture
