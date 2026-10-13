@@ -80,41 +80,6 @@ Dashboard · SDN rule injection · eBPF Studio · traffic generator
         }
     },
     {
-        id: "qec",
-        title: "RISC-V Quantum Control Unit",
-        image: "assets/qcu_hil.png",
-        link: `https://github.com/${config.github}/riscv-qcu`,
-        desc: "Bare-metal RISC-V firmware plus a SystemVerilog accelerator for real-time quantum error correction on the Surface Code. <span class='highlight'>Zero-allocation Union-Find decoder</span> running across 4 harts; the path-compression step is offloaded to a small hardware module verified against the firmware via Verilator co-simulation.",
-        tags: ["Rust", "SystemVerilog", "RISC-V", "Embedded"],
-        terminal: {
-            name: "qcu-firmware",
-            date: "Jan 15",
-            size: "24K",
-            content: `
-<span class="primary bold">PROJECT: RISC-V Quantum Control Unit</span>
-=======================================
-Hardware and firmware for decoding Surface Code syndromes in real
-time. Has to finish within qubit coherence time (~1-100 µs).
-
-<span class="highlight bold">>> FIRMWARE (RV64IMAC, no_std)</span>
-<span class="dim">-</span> <span class="bold">Decoder:</span>    Union-Find · path compression + halving · parity-aware
-<span class="dim">-</span> <span class="bold">Memory:</span>     Bump allocator · no dynamic allocation during decode
-<span class="dim">-</span> <span class="bold">SMP:</span>        Lock-free SPMC ring buffer (512 slots) · hart 0 → harts 1-3
-
-<span class="highlight bold">>> HARDWARE ACCELERATOR (SystemVerilog)</span>
-<span class="primary">*</span> <span class="bold">Module:</span>     union_find.sv (path-compression state machine)
-<span class="primary">*</span> <span class="bold">Verify:</span>     Verilator co-sim · Rust FFI · cycle-accurate
-
-<span class="highlight bold">>> NUMBERS (QEMU, 4 harts)</span>
-<span class="dim">Latency:</span>    ~580 cycles (0.58 µs at 1 GHz)
-<span class="dim">Throughput:</span> ~55,000 shots/s
-<span class="dim">Jitter:</span>     < 50 cycles
-
-<span class="ls-exec">./scripts/run.py kernel --size 5</span>
-`
-        }
-    },
-    {
         id: "chess",
         title: "Chess Engine",
         image: "assets/chess.png",
@@ -151,49 +116,6 @@ Hand-tuned PST tables as a fallback when no NNUE file is loaded.
 
 <span class="ls-exec">cargo run --release -- perft 6</span>
 <span class="ls-exec">cargo run --release -- play-cli --time 5000</span>
-`
-        }
-    },
-    {
-        id: "netpath",
-        title: "netpath (Network Path Analyser)",
-        image: "assets/netpath.png",
-        link: `https://github.com/${config.github}/netpath`,
-        desc: "A network diagnostic tool in C. Traces the path to a host and reports security-relevant observations across DNS, routing, TLS, HTTP, and anycast. DNS wire format, ICMP/UDP/TCP probing, TLS handshake, and X.509 DER decoding are <span class='highlight'>hand-written</span> over POSIX sockets. Optional OpenSSL for DNSSEC signature verification. No <span class='highlight'>malloc()</span> in the hot path; there's a single 4 MiB static arena instead.",
-        tags: ["C", "Networking", "Security"],
-        terminal: {
-            name: "netpath",
-            date: "Mar 15",
-            size: "~8K",
-            content: `
-<span class="primary bold">PROJECT: netpath (Network Path Analyser)</span>
-=======================================
-One command. Five layers. Security flags with remediation hints.
-
-<span class="highlight bold">>> PHASES</span>
-<span class="dim">-</span> <span class="bold">DNS:</span>        A/AAAA resolution · CNAME chains · DNSSEC · TTL
-<span class="dim">-</span> <span class="bold">Route:</span>      ICMP/UDP/TCP traceroute · Paris (ECMP-stable) · ASN · bar-chart RTT
-<span class="dim">-</span> <span class="bold">TLS:</span>        Partial handshake · version/cipher · X.509 SANs · OCSP staple
-<span class="dim">-</span> <span class="bold">HTTP:</span>       GET · HSTS · CSP · X-Frame-Options · X-Content-Type-Options
-<span class="dim">-</span> <span class="bold">Anycast:</span>    ECMP probe variation · TTL/cert serial/RTT divergence
-
-<span class="highlight bold">>> DESIGN</span>
-<span class="primary">*</span> <span class="bold">Hand-written:</span>   DNS, ICMP, TLS, HTTP, X.509 (no parsing libraries)
-<span class="primary">*</span> <span class="bold">Sockets:</span>        POSIX (+ optional OpenSSL for DNSSEC signature verify)
-<span class="primary">*</span> <span class="bold">No heap:</span>        4 MiB bump-pointer arena, no malloc() in the hot path
-<span class="primary">*</span> <span class="bold">Bounds checked:</span> DNS compression bitmap · ASN.1 lengths · HTTP cap
-<span class="primary">*</span> <span class="bold">Arch opts:</span>      x86_64 NASM (checksum, byte search, timestamps); C fallback elsewhere
-
-<span class="highlight bold">>> SECURITY FLAGS (35+ across all phases)</span>
-<span class="dim">DNS</span>     No DNSSEC · short TTL · CNAME depth · NXDOMAIN · SERVFAIL
-<span class="dim">Route</span>   Routing loop · blackhole · excessive hops · private hops
-<span class="dim">TLS</span>     Weak cipher · old version · expired cert · short key · no OCSP
-<span class="dim">HTTP</span>    Missing HSTS · no CSP · insecure cookies · server version leak
-<span class="dim">Anycast</span> Detected · inconsistent PoP responses
-
-<span class="ls-exec">netpath google.com</span>
-<span class="ls-exec">netpath --json --no-http example.com | jq .dns</span>
-<span class="ls-exec">netpath -v --dnssec --show-asn 8.8.8.8</span>
 `
         }
     },
