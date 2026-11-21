@@ -1,7 +1,7 @@
 export const skills = [
     {
         category: "Languages",
-        items: "Rust, C, C++, Assembly (RISC-V), Python"
+        items: "Rust, Zig, C, C++, Assembly (RISC-V), Python"
     },
     {
         category: "Environment",
