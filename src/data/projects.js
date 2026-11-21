@@ -7,57 +7,67 @@ export const projects = [
         image: "assets/rvsim_stats.png",
         link: `https://github.com/${config.github}/rvsim`,
         desc: `<div style="color: var(--text-main); line-height: 1.6;">
-<p style="margin: 0 0 20px 0; font-size: 13px;">Cycle-accurate <span class='highlight'>RISC-V system simulator</span> in Rust. Two pluggable microarchitectural backends (an out-of-order superscalar core and an in-order scalar one) sit on top of one memory hierarchy, SoC, and bootloader. The whole simulator is driven from a Python API for design-space exploration.</p>
+<p style="margin: 0 0 20px 0; font-size: 13px;">Cycle-level <span class='highlight'>RISC-V system simulator</span> in Rust. Two pluggable microarchitectural backends (an out-of-order superscalar core and an in-order one) share one frontend, memory hierarchy and SoC. It boots Linux 6.6 on eight coherent cores, and the whole simulator is driven from a Python API for design-space exploration. Calibrated to the Cortex-A72, it runs CoreMark within 6% of a Raspberry Pi 4.</p>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
 
 <div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
 <div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">VALIDATED AGAINST THE SPEC</div>
 <ul style="margin: 0; padding-left: 16px; font-size: 13px;">
-<li>Passes all <b>8,576 riscv-tests</b></li>
-<li>Passes <b>RISCOF</b> and <b>riscv-vector-tests</b></li>
-<li>Boots <b>Linux 6.6</b> through OpenSBI</li>
-<li>O3 and in-order agree bit-for-bit</li>
+<li>Passes all <b>188 riscv-tests</b></li>
+<li>Passes the <b>riscv-vector-tests</b> suite</li>
+<li>Vector ops cross-checked against <b>spike</b></li>
+<li>Boots <b>Linux 6.6</b> through OpenSBI on both backends</li>
 </ul>
 </div>
 
 <div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
 <div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">TWO PIPELINES, ONE STACK</div>
 <ul style="margin: 0; padding-left: 16px; font-size: 13px;">
-<li>11-stage OoO superscalar, <b>1 to 8 wide</b></li>
-<li>64-entry ROB and 32-entry CAM issue queue</li>
-<li><b>O(1) branch recovery</b> via checkpoints</li>
-<li>In-order baseline on the same memory hierarchy</li>
+<li>Out-of-order superscalar with physical register files</li>
+<li>CAM issue queue, ROB, <b>branch checkpoints</b></li>
+<li><b>Store-set</b> memory-dependence prediction</li>
+<li>In-order baseline on the same frontend and memory</li>
 </ul>
 </div>
 
 <div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
 <div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">REALISTIC MEMORY</div>
 <ul style="margin: 0; padding-left: 16px; font-size: 13px;">
-<li>3-level TLB with <b>Sv39 / Sv48 / Sv57</b> hardware walker</li>
-<li>Non-blocking L1d with <b>MSHR request coalescing</b></li>
-<li>DRAM with per-bank <b>row-buffer timing</b> and refresh</li>
+<li><b>Sv39 / Sv48 / Sv57</b> with a hardware page walker</li>
+<li>Non-blocking caches at every level with <b>MSHR coalescing</b></li>
+<li>Row-buffer DRAM or a <b>JEDEC DDR5</b> controller</li>
 <li>Four prefetcher types per cache level</li>
 </ul>
 </div>
 
 <div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
-<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">STATE-OF-THE-ART BRANCH PREDICTION</div>
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">MULTI-CORE</div>
 <ul style="margin: 0; padding-left: 16px; font-size: 13px;">
-<li>Five predictors: Static, GShare, Tournament, Perceptron, <b>TAGE</b></li>
-<li>TAGE: 8 banks, history lengths 5 to 712</li>
-<li>SC-L-TAGE adds loop detector and <b>ITTAGE</b></li>
-<li>64-bit checkpointed GHR, updates deferred to commit</li>
+<li>Private caches behind a <b>MESI</b> coherence fabric</li>
+<li>Broadcast or snoop-filter home agent at the LLC</li>
+<li>Crossbar, ring, mesh, torus or hypercube interconnect</li>
+<li>Boots <b>8 SMP cores</b> over a mesh with DDR5-5600</li>
 </ul>
 </div>
 
 <div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
-<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">FULL RVV 1.0 + VECTOR CRYPTO</div>
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">BRANCH PREDICTION</div>
 <ul style="margin: 0; padding-left: 16px; font-size: 13px;">
-<li>Configurable <b>VLEN 128 to 2048 bits</b></li>
-<li>All SEW, LMUL, and tail / mask policies</li>
-<li>Element-wise, mask, segmented, reductions, permute</li>
+<li>Seven predictors, from static to <b>TAGE</b></li>
+<li><b>TAGE-SC-L</b> with ITTAGE for indirect targets</li>
+<li>Defaults to Seznec's 64 KB CBP-5 configuration</li>
+<li>RAS recognises both x1 and x5 as link registers</li>
+</ul>
+</div>
+
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">RVV 1.0 + VECTOR CRYPTO</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
+<li>Configurable VLEN (default 256), ELEN 64</li>
+<li>Zvfh half-precision, Zvbb / Zvbc bit manipulation</li>
 <li>Crypto: <b>AES, SHA-2, SM3, SM4, GHASH</b></li>
+<li>Bitmanip: Zba, Zbb, Zbc, Zbs, Zbkb, Zbkx</li>
 </ul>
 </div>
 
@@ -65,8 +75,8 @@ export const projects = [
 <div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">PYTHON DESIGN-SPACE EXPLORATION</div>
 <ul style="margin: 0; padding-left: 16px; font-size: 13px;">
 <li><code>pip install rvsim</code> drives the simulator from Python</li>
-<li>Superscalar width scaling sweeps (1 to 8 wide)</li>
-<li>Predictor and cache sweeps, full grid search</li>
+<li>Parallel sweeps over binaries and configurations</li>
+<li>Cycle-by-cycle control and pipeline snapshots</li>
 <li><b>Top-down microarchitecture analysis</b></li>
 </ul>
 </div>
@@ -76,155 +86,94 @@ export const projects = [
         tags: ["Rust", "Python", "Architecture", "Simulation"],
         terminal: {
             name: "rvsim",
-            date: "Feb 12",
+            date: "Nov 10",
             size: "224K",
             content: `
 <span class="primary bold">PROJECT: rvsim (RISC-V System Simulator)</span>
 =========================================
-Cycle-accurate RISC-V system simulator in Rust. Two pluggable
-microarchitectural backends sit on top of the same memory hierarchy,
-SoC, and bootloader: an out-of-order superscalar core and an in-order
-scalar one. Passes the standard RISC-V test suites and boots mainline
-Linux. The whole thing is driven from Python for design-space
-exploration.
+Cycle-level RISC-V system simulator in Rust. Two pluggable
+microarchitectural backends share one frontend, memory hierarchy
+and SoC: an out-of-order superscalar core and an in-order one.
+Passes the standard RISC-V test suites and boots Linux on eight
+coherent cores. The whole thing is driven from Python for
+design-space exploration.
+
+It simulates every cycle but is not cycle-accurate to any one
+machine: compute- and branch-bound kernels land within a few
+percent of gem5's O3 CPU, and a Cortex-A72 configuration runs
+CoreMark within 6% of a Raspberry Pi 4.
 
 <span class="highlight bold">>> AT A GLANCE</span>
-<span class="dim">Language:</span>     Rust core, Python analysis + bindings (PyO3)
-<span class="dim">ISA:</span>          RV64GC + RVV 1.0 + Zb* + Zfh + vector crypto
+<span class="dim">Language:</span>     Rust core, Python bindings (PyO3)
+<span class="dim">ISA:</span>          RV64IMAFDC + V (RVV 1.0) + Zb* + Zfh + vector crypto
 <span class="dim">Privilege:</span>    M / S / U modes, trap delegation, PMP (16 regions)
 <span class="dim">Paging:</span>       Sv39 / Sv48 / Sv57, hardware page-table walker
-<span class="dim">Backends:</span>     Out-of-order superscalar (1-8 wide) · in-order scalar
-<span class="dim">Caches:</span>       L1i, L1d, L2, L3 (sizes, ways, replacement all configurable)
-<span class="dim">Memory:</span>       DRAM model with row-buffer timing and refresh
-<span class="dim">Predictors:</span>   Static · GShare · Tournament · Perceptron · TAGE
-<span class="dim">SoC:</span>          CLINT · PLIC · 16550 UART · VirtIO block · Goldfish RTC
-<span class="dim">Validation:</span>   riscv-tests · riscv-vector-tests · RISCOF · Linux 6.6
-<span class="dim">Tooling:</span>      Python API, sweep + plot scripts, top-down analysis
+<span class="dim">Backends:</span>     Out-of-order superscalar · in-order
+<span class="dim">Caches:</span>       L1i, L1d, L2, L3, all configurable, non-blocking
+<span class="dim">Memory:</span>       Fixed latency · row-buffer DRAM · JEDEC DDR5
+<span class="dim">Multi-core:</span>   MESI coherence · crossbar / ring / mesh / torus / hypercube
+<span class="dim">Predictors:</span>   Static · GShare · BHT · Tournament · Perceptron · TAGE · TAGE-SC-L
+<span class="dim">SoC:</span>          CLINT · PLIC · 16550A UART · VirtIO block · Goldfish RTC
+<span class="dim">Validation:</span>   riscv-tests 188/188 · riscv-vector-tests · Linux 6.6
 
-<span class="highlight bold">>> ISA</span>
-<span class="primary">*</span> <span class="bold">Base:</span>        RV64IMAFDC
-<span class="primary">*</span> <span class="bold">Vector:</span>      RVV 1.0 with full element-wise, mask, segmented,
-                          reduction, and permute coverage. Zvbb · Zvbc · Zvfh.
-<span class="primary">*</span> <span class="bold">Vec crypto:</span>  Zvkned (AES) · Zvknha/b (SHA-2) · Zvksed (SM4) ·
-                          Zvksh (SM3) · Zvkg (GHASH)
-<span class="primary">*</span> <span class="bold">Bitmanip:</span>    Zba · Zbb · Zbc · Zbs · Zbkb · Zbkx
-<span class="primary">*</span> <span class="bold">FP:</span>          Zfh (half-precision)
-<span class="primary">*</span> <span class="bold">Cache ops:</span>   Zicbom · Zicboz
+<span class="highlight bold">>> OUT-OF-ORDER BACKEND</span>
+<span class="primary">*</span> Physical register files, speculative and committed rename maps
+<span class="primary">*</span> Branch checkpoints for recovery
+<span class="primary">*</span> CAM-style issue queue, wakeup/select, oldest-first priority
+<span class="primary">*</span> Stores issue address and data separately
+<span class="primary">*</span> Reorder buffer with precise exceptions
+<span class="primary">*</span> Load queue with store-set memory-dependence prediction
+<span class="primary">*</span> Store buffer with forwarding · configurable functional units
 
-<span class="highlight bold">>> PRIVILEGED ARCHITECTURE</span>
-<span class="dim">-</span> <span class="bold">Modes:</span>       Machine / Supervisor / User
-<span class="dim">-</span> <span class="bold">CSRs:</span>        Full machine, supervisor, FP, and vector CSR sets
-<span class="dim">-</span> <span class="bold">Delegation:</span>  medeleg / mideleg routing to S-mode
-<span class="dim">-</span> <span class="bold">PMP:</span>         16 regions · TOR / NA4 / NAPOT · R/W/X/L bits
-<span class="dim">-</span> <span class="bold">Traps:</span>       Detected at fetch / decode / execute / memory and
-                       made precise via checkpoint recovery.
-                       MRET / SRET / WFI / SFENCE.VMA all implemented.
+<span class="highlight bold">>> IN-ORDER BACKEND</span>
+Configurable width, scoreboard operand tracking, program-order
+issue onto the same functional units. Shares the frontend and the
+commit, memory and writeback stages with the O3 backend, so both
+run identical workloads and compare directly.
 
 <span class="highlight bold">>> MEMORY SYSTEM</span>
-<span class="dim">-</span> <span class="bold">TLB hierarchy:</span>
-                       iTLB 32-entry direct-mapped · dTLB 32-entry DM
-                       Shared L2 TLB 512-entry, 4-way, 4-cycle latency
-<span class="dim">-</span> <span class="bold">Page walker:</span> Hardware-managed. Superpages at 2 MiB, 1 GiB,
-                       512 GiB, and 256 TiB. A/D bits handled at commit.
-<span class="dim">-</span> <span class="bold">Caches:</span>      L1i, L1d, L2, L3, all independently configurable.
-                       Replacement: LRU · PLRU · FIFO · Random · MRU.
-                       Inclusion: NINE / inclusive / exclusive.
-<span class="dim">-</span> <span class="bold">L1d:</span>         Non-blocking. MSHRs do request coalescing with
-                       per-line waiter queues.
-<span class="dim">-</span> <span class="bold">Prefetchers:</span> Next-line · stride · stream · tagged (per level)
-<span class="dim">-</span> <span class="bold">Store buffer:</span>
-                       16-entry scalar with three-way forwarding (hit,
-                       miss, partial-overlap stall). 8-entry vector with
-                       byte-mask forwarding.
-<span class="dim">-</span> <span class="bold">DRAM:</span>        Per-bank row tracking. Row hit costs about tCAS,
-                       row miss costs tPRE + tRAS + tCAS. Periodic
-                       refresh via tREFI / tRFC.
-
-<span class="highlight bold">>> OUT-OF-ORDER PIPELINE  (11 stages, 1-8 wide)</span>
-<span class="dim">Frontend:</span>     Fetch1 → Fetch2 → Decode → Rename
-<span class="dim">Backend:</span>      Issue → Execute → Memory1 → Memory2 → Writeback → Commit
-<span class="dim">ROB:</span>          64 entries, in-order commit, precise exceptions
-<span class="dim">Issue queue:</span>  32-entry CAM, broadcast wakeup, oldest-first select
-<span class="dim">Load queue:</span>   32 entries, memory-ordering violation detection
-<span class="dim">PRF:</span>          256 GPR · 128 FPR · 64 VPR (VLEN-bit) with ready bits
-<span class="dim">Rename:</span>       Speculative + committed maps, free-list allocation
-<span class="dim">Checkpoints:</span>  32 slots, O(1) branch recovery
-<span class="dim">FUs:</span>          IntALU ×4 · IntMul · IntDiv · FpAdd ×2 · FpMul · FpFma
-              FpDivSqrt · Branch · Mem ×3 · VecIntALU ×2 · VecMul/Div
-              VecFp / Fma / DivSqrt · VecMem · VecPermute
-<span class="dim">Memory deps:</span> Blind (default), Store-Set predictor, LSQ enforcement
-
-<span class="highlight bold">>> IN-ORDER PIPELINE  (7 stages, 1 wide)</span>
-Fetch1 → Fetch2 → Decode → Rename → Issue → Execute → Memory → Writeback → Commit
-Scoreboard-blocked single issue. Shares the memory hierarchy and CSRs
-with the O3 backend. Used as a baseline for IPC and stall-breakdown
-comparisons.
+<span class="dim">-</span> <span class="bold">TLBs:</span>        Separate iTLB / dTLB, optional shared L2 TLB
+<span class="dim">-</span> <span class="bold">Walker:</span>      PTE reads go through the L1D · Svade or Svadu
+<span class="dim">-</span> <span class="bold">Caches:</span>      LRU · PLRU · FIFO · Random · MRU replacement
+<span class="dim">-</span> <span class="bold">Inclusion:</span>   Non-inclusive · inclusive · exclusive
+<span class="dim">-</span> <span class="bold">MSHRs:</span>       Request coalescing and writeback buffers at every level
+<span class="dim">-</span> <span class="bold">Prefetch:</span>    Next-line · stride · stream · tagged (per level)
+<span class="dim">-</span> <span class="bold">DRAM:</span>        Row-buffer model or DDR5 with command timing,
+               refresh and power-down
 
 <span class="highlight bold">>> BRANCH PREDICTION</span>
-<span class="primary">*</span> Static · GShare (4K, 2-bit) · Tournament (4K global, 1K local meta)
-<span class="primary">*</span> Perceptron (1K entries, 32-bit history)
-<span class="primary">*</span> TAGE (8 banks × 2K, history lengths 5 to 712)
-<span class="primary">*</span> SC-L-TAGE adds loop detector, GEHL statistical corrector, ITTAGE
-<span class="primary">*</span> BTB: 256 entries, 4-way · RAS: 8 entries (recognises x1 and x5)
-<span class="primary">*</span> GHR: 64-bit, checkpointed. Predictor updates deferred to commit.
+<span class="primary">*</span> Seven predictors sharing a BTB, RAS and global history
+<span class="primary">*</span> TAGE-SC-L: TAGE, loop predictor, statistical corrector, ITTAGE
+<span class="primary">*</span> Defaults to Seznec's 64 KB CBP-5 configuration
+<span class="primary">*</span> RAS treats x1 and x5 as link registers, with coroutine swaps
 
-<span class="highlight bold">>> VECTOR (RVV 1.0)</span>
-<span class="dim">VLEN:</span>         128 to 2048 bits, default 128, runtime-configurable
-<span class="dim">SEW:</span>          E8 / E16 / E32 / E64
-<span class="dim">LMUL:</span>         Mf8 · Mf4 · Mf2 · M1 · M2 · M4 · M8 (fractional + integer)
-<span class="dim">Policies:</span>     Tail-undisturbed / agnostic, masked-off-undisturbed / agnostic
-<span class="dim">Coverage:</span>     Integer ALU, FPU, mask ops, segmented load/store,
-              reductions, permute, crypto (AES, SHA-2, SM3, SM4, GHASH)
-
-<span class="highlight bold">>> SoC</span>
-<span class="dim">CLINT:</span>        Timer + IPI @ 0x0200_0000
-<span class="dim">PLIC:</span>         Platform-level interrupt controller
-<span class="dim">UART:</span>         16550-compatible @ 0x1000_0000, stdin/stdout integration
-<span class="dim">VirtIO blk:</span>   MMIO @ 0x9000_0000, full virtio-block spec
-<span class="dim">Goldfish RTC:</span> Real-time clock
-<span class="dim">SYSCON:</span>       PSCI power-off / reboot
-<span class="dim">HTIF:</span>         Host-target interface (riscv-tests pass/fail signalling)
-<span class="dim">DTB:</span>          Device tree generated automatically from the config
-
-<span class="highlight bold">>> VALIDATION</span>
-<span class="primary">*</span> <span class="bold">riscv-tests:</span>          8,576 / 8,576 pass across all pipeline configs
-<span class="primary">*</span> <span class="bold">riscv-vector-tests:</span>   all pass at VLEN=128
-<span class="primary">*</span> <span class="bold">RISCOF:</span>               all tests pass against the spike reference
-<span class="primary">*</span> <span class="bold">Linux:</span>                6.6 boots through OpenSBI to a BusyBox shell
-<span class="primary">*</span> <span class="bold">Cross-check:</span>          O3 and in-order backends agree bit-for-bit on
-                              architectural state
+<span class="highlight bold">>> LINUX</span>
+Boots Linux 6.6 through OpenSBI to a BusyBox shell on both
+backends. Default boot: eight out-of-order cores, 64 KB TAGE-SC-L,
+coherent private caches over a mesh, four channels of DDR5-5600.
 
 <span class="highlight bold">>> PYTHON API  (PyO3)</span>
 <span class="ls-exec">pip install rvsim</span>
 
-from rvsim import Config, Cache, BranchPredictor, Environment
+from rvsim import Config, BranchPredictor, Cache, Environment
 
 config = Config(
     width=4,
-    branch_predictor=BranchPredictor.TAGE(),
-    l1d=Cache("32KB", ways=8, mshr_count=8),
+    branch_predictor=BranchPredictor.Tage(),
+    l1d=Cache("32KB", ways=8, latency=1, mshr_count=8),
     l2=Cache("256KB", ways=8, latency=10),
 )
-result = Environment(binary="prog.elf", config=config).run()
-result.stats.query("ipc|branch|miss")
+result = Environment(binary="qsort.elf", config=config).run()
+print(result.stats.query(r"^ipc$|l1d\\.miss_rate"))
 
 <span class="highlight bold">>> ANALYSIS SCRIPTS</span>
-<span class="ls-exec">python scripts/analysis/width_scaling.py     # 1-8 wide IPC curve</span>
-<span class="ls-exec">python scripts/analysis/branch_predict.py    # predictor comparison</span>
-<span class="ls-exec">python scripts/analysis/cache_sweep.py       # L1d size vs miss rate</span>
-<span class="ls-exec">python scripts/analysis/design_space.py      # width × cache grid sweep</span>
-<span class="ls-exec">python scripts/analysis/stall_breakdown.py   # cycle attribution</span>
-<span class="ls-exec">python scripts/analysis/top_down.py          # top-down microarch analysis</span>
-<span class="ls-exec">python scripts/analysis/o3_inorder.py        # backend comparison</span>
-
-<span class="highlight bold">>> NOTABLE</span>
-<span class="primary">*</span> Speculative load wakeup with replay on cache miss
-<span class="primary">*</span> CAM-style issue queue with broadcast wakeup and oldest-first select
-<span class="primary">*</span> Non-blocking L1d with MSHR request coalescing and waiter queues
-<span class="primary">*</span> Store-to-load forwarding with partial-overlap stall detection
-<span class="primary">*</span> Checkpoint-based O(1) branch recovery
-<span class="primary">*</span> Memory dependence prediction (Store-Set, Chrysos & Emer 1998)
-<span class="primary">*</span> Precise trap architecture across every pipeline stage
+<span class="ls-exec">rvsim examples/analysis/branch_predict.py   # all seven predictors</span>
+<span class="ls-exec">rvsim examples/analysis/cache_sweep.py      # L1D size vs miss rate</span>
+<span class="ls-exec">rvsim examples/analysis/width_scaling.py    # IPC vs width</span>
+<span class="ls-exec">rvsim examples/analysis/design_space.py     # width x cache sweep</span>
+<span class="ls-exec">rvsim examples/analysis/stall_breakdown.py  # stall cycles by cause</span>
+<span class="ls-exec">rvsim examples/analysis/top_down.py         # top-down analysis</span>
+<span class="ls-exec">rvsim examples/analysis/o3_inorder.py       # backend comparison</span>
 `
         }
     },
