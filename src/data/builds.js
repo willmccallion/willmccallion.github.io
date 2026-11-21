@@ -34,7 +34,7 @@ A bare-metal packet pipeline in 64 KB of RAM.
 <span class="primary">*</span> Virtual HyperLogLog for port scans
 
 <span class="highlight bold">>> MEMORY</span>
-<span class="primary">*</span> 60.4 KB of the 64 KB budget, no heap, PMP W^X
+<span class="primary">*</span> 60.7 KB of the 64 KB budget, no heap, PMP W^X
 <span class="primary">*</span> Same engine runs as a Linux daemon: ~1.3 Mpps per core
 
 <span class="highlight bold">>> CONTROL PLANE (egui)</span>
@@ -153,7 +153,7 @@ Goemans-Williamson 0.878-approximation for Max-Cut.
 <span class="highlight bold">>> ROUNDING</span>
 <span class="primary">*</span> Random hyperplane rounding (Zwick outward rotations optional)
 <span class="primary">*</span> One-flip local search · iterated local search
-<span class="primary">*</span> Parallel population refinement under a time budget
+<span class="primary">*</span> Time-budgeted parallel local search on the 8 best cuts
 
 <span class="highlight bold">>> LINEAR ALGEBRA</span>
 Cholesky · Jacobi eigendecomposition · matrix square root.

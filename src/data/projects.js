@@ -133,7 +133,7 @@ No ISPD 2015, 2018 or 2019 design routes clean yet.
 <li>Passes all <b>188 riscv-tests</b></li>
 <li>Passes the <b>riscv-vector-tests</b> suite</li>
 <li>Vector ops cross-checked against <b>spike</b></li>
-<li>Boots <b>Linux 6.6</b> through OpenSBI on both backends</li>
+<li>Boots <b>Linux 6.6</b> through OpenSBI to a shell</li>
 </ul>
 </div>
 
@@ -264,8 +264,7 @@ run identical workloads and compare directly.
 <span class="primary">*</span> RAS treats x1 and x5 as link registers, with coroutine swaps
 
 <span class="highlight bold">>> LINUX</span>
-Boots Linux 6.6 through OpenSBI to a BusyBox shell on both
-backends. Default boot: eight out-of-order cores, 64 KB TAGE-SC-L,
+Boots Linux 6.6 through OpenSBI to a BusyBox shell. Default boot: eight out-of-order cores, 64 KB TAGE-SC-L,
 coherent private caches over a mesh, four channels of DDR5-5600.
 
 <span class="highlight bold">>> PYTHON API  (PyO3)</span>
