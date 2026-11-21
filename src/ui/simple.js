@@ -5,7 +5,7 @@ import { skills, coursework } from '../data/skills.js';
 let currentPage = 1;
 
 const pages = {
-    1: { data: projects, title: '01_FEATURED', subtitle: '// RISC-V system simulator' },
+    1: { data: projects, title: '01_FEATURED', subtitle: '// Place and route, and a RISC-V simulator' },
     2: { data: builds, title: '02_PROJECTS', subtitle: '// Other things I have built' }
 };
 

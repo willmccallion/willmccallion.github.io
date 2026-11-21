@@ -2,55 +2,6 @@ import { config } from '../config.js';
 
 export const builds = [
     {
-        id: "vlsi",
-        title: "PARE (Placement and Routing)",
-        image: "assets/bp_quad_routed.png",
-        link: `https://github.com/${config.github}/vlsi-physical-design`,
-        desc: "A placement and routing engine for digital ICs, written from scratch in Rust. Electrostatic global placement with <span class='highlight'>FFT-solved density</span>, OpenDP-style legalization, TritonCTS-style clock trees with setup and hold repair, CUGR-style global routing, TritonRoute-style detailed routing and a FlexGC-style design rule checker. Nine Nangate45 designs, up to a <span class='highlight'>1.55M-cell</span> BlackParrot quad-core, route with zero violations under OpenROAD's own <code>check_drc</code>.",
-        tags: ["Rust", "EDA", "Algorithms"],
-        terminal: {
-            name: "vlsi-flow",
-            date: "Nov 20",
-            size: "69K",
-            content: `
-<span class="primary bold">PROJECT: PARE (Placement And Routing Engine)</span>
-=======================================
-Place and route for digital ICs, from floorplan to routed DEF.
-
-<span class="highlight bold">>> PLACEMENT AND TIMING</span>
-<span class="dim">-</span> <span class="bold">Netlist:</span>    Remove synthesis buffers · buffer the ports
-<span class="dim">-</span> <span class="bold">Global:</span>     Cells as charges, density field by FFT Poisson solve,
-              Nesterov's method · timing-driven net weights
-<span class="dim">-</span> <span class="bold">Legalize:</span>   OpenDP diamond search · set matching, swaps, mirroring
-<span class="dim">-</span> <span class="bold">Clocks:</span>     TritonCTS-style trees · setup and hold repair
-<span class="dim">-</span> <span class="bold">Timing:</span>     OpenSTA-style timer with an SDC (Tcl) reader
-
-<span class="highlight bold">>> ROUTING</span>
-<span class="primary">*</span> <span class="bold">Global:</span>     CUGR · Steiner trees · 3D pattern routing · maze reroute
-<span class="primary">*</span> <span class="bold">Repair:</span>     Design and timing repair on global-route parasitics
-<span class="primary">*</span> <span class="bold">Detailed:</span>  TritonRoute · region by region, negotiated repair
-<span class="primary">*</span> <span class="bold">DRC:</span>       FlexGC-style · shorts, spacing tables, end-of-line, cuts
-
-<span class="highlight bold">>> RESULTS (0 violations, PARE and OpenROAD check_drc)</span>
-<span class="dim">gcd:</span>            676 cells ·   0.7 s
-<span class="dim">aes:</span>         16,505 cells ·    39 s
-<span class="dim">jpeg:</span>        66,214 cells · 2 min 6 s
-<span class="dim">ariane133:</span>  179,806 cells · 11 min 29 s  (132 SRAM macros)
-<span class="dim">leon3mp:</span>    312,529 cells · 18 min 21 s
-<span class="dim">bp_quad:</span>  1,545,147 cells · 3 h 26 min  (220 SRAM macros)
-
-<span class="highlight bold">>> AGAINST OPENROAD</span>
-<span class="primary">*</span> Same placements: OpenROAD's router uses 3-5% less wire,
-  PARE's is 4-7x faster
-<span class="primary">*</span> Whole flow: worst slack within 0.02 ns of OpenROAD-flow-scripts
-  on aes, ibex and jpeg, ahead on ariane133, 2.9-3.6x faster
-
-<span class="ls-exec">cargo run --release -- run aes</span>
-<span class="ls-exec">cargo run --release -- check aes --placement output/aes/routed.def</span>
-`
-        }
-    },
-    {
         id: "unikernel",
         title: "RISC-V Security Unikernel",
         image: "assets/security_kernel.png",

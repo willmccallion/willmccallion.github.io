@@ -2,6 +2,122 @@ import { config } from '../config.js';
 
 export const projects = [
     {
+        id: "vlsi",
+        title: "PARE (Placement and Routing)",
+        image: "assets/bp_quad_routed.png",
+        link: `https://github.com/${config.github}/vlsi-physical-design`,
+        desc: `<div style="color: var(--text-main); line-height: 1.6;">
+<p style="margin: 0 0 20px 0; font-size: 13px;">A placement and routing engine for digital ICs, written from scratch in Rust. From a floorplan it does what <span class='highlight'>OpenROAD-flow-scripts</span> does: netlist repair, timing-driven placement, clock trees, setup and hold repair, and global and detailed routing, then checks the result against the technology's design rules. Every routed design is also checked by OpenROAD's own <code>check_drc</code>, with a fix for one of its bugs applied.</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">CLEAN AT 1.55M CELLS</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
+<li>Nine Nangate45 designs, from gcd to <b>bp_quad</b></li>
+<li>bp_quad: BlackParrot quad-core, 220 SRAM macros</li>
+<li><b>Zero violations</b> by PARE's checker and OpenROAD's <code>check_drc</code></li>
+<li>bp_quad placed and routed in 3 h 26 min</li>
+</ul>
+</div>
+
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">AGAINST OPENROAD'S ROUTER</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
+<li>Both routers route the same placements</li>
+<li>Both leave every design clean</li>
+<li>OpenROAD uses 3 to 5% less wire</li>
+<li>PARE is <b>4 to 7 times faster</b> and uses less memory</li>
+</ul>
+</div>
+
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">AGAINST OPENROAD-FLOW-SCRIPTS</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
+<li>Both start from the same floorplan</li>
+<li>Worst slack <b>within 0.02 ns</b> on aes, ibex and jpeg</li>
+<li>Ahead on ariane133: -0.21 ns against -0.35 ns</li>
+<li><b>2.9 to 3.6 times</b> less wall time</li>
+</ul>
+</div>
+
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">PLACEMENT</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
+<li>Cells as charges: density field by an <b>FFT Poisson</b> solve</li>
+<li>Nesterov's method, as in ePlace and RePlAce</li>
+<li>Timing-driven net weights, congestion-driven inflation</li>
+<li>OpenDP-style legalization and detailed placement</li>
+</ul>
+</div>
+
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">TIMING AND CLOCKS</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
+<li>OpenSTA-style timer, SDC read by a small Tcl interpreter</li>
+<li>Buffer removal, port buffering, slew and load repair</li>
+<li><b>TritonCTS</b>-style clock trees with dummy loads</li>
+<li>Setup and hold repair, again on global-route parasitics</li>
+</ul>
+</div>
+
+<div style="border-left: 2px solid var(--highlight-color); background: rgba(255,255,255,0.02); padding: 12px 16px;">
+<div style="font-size: 10px; color: var(--text-dim); letter-spacing: 0.18em; font-weight: 600; margin-bottom: 8px;">ROUTING AND DRC</div>
+<ul style="margin: 0; padding-left: 16px; font-size: 13px;">
+<li><b>CUGR</b>-style global routing: 3D pattern routing, maze reroute</li>
+<li><b>TritonRoute</b>-style detailed routing with negotiated repair</li>
+<li>FlexGC-style checker: shorts, spacing tables, end-of-line, cuts</li>
+<li>Reads LEF/DEF and Bookshelf</li>
+</ul>
+</div>
+
+</div>
+</div>`,
+        tags: ["Rust", "EDA", "Algorithms"],
+        terminal: {
+            name: "vlsi-flow",
+            date: "Nov 20",
+            size: "69K",
+            content: `
+<span class="primary bold">PROJECT: PARE (Placement And Routing Engine)</span>
+=======================================
+Place and route for digital ICs, from floorplan to routed DEF.
+No ISPD 2015, 2018 or 2019 design routes clean yet.
+
+<span class="highlight bold">>> PLACEMENT AND TIMING</span>
+<span class="dim">-</span> <span class="bold">Netlist:</span>    Remove synthesis buffers · buffer the ports
+<span class="dim">-</span> <span class="bold">Global:</span>     Cells as charges, density field by FFT Poisson solve,
+              Nesterov's method · timing-driven net weights
+<span class="dim">-</span> <span class="bold">Legalize:</span>   OpenDP diamond search · set matching, swaps, mirroring
+<span class="dim">-</span> <span class="bold">Clocks:</span>     TritonCTS-style trees · setup and hold repair
+<span class="dim">-</span> <span class="bold">Timing:</span>     OpenSTA-style timer with an SDC (Tcl) reader
+
+<span class="highlight bold">>> ROUTING</span>
+<span class="primary">*</span> <span class="bold">Global:</span>     CUGR · Steiner trees · 3D pattern routing · maze reroute
+<span class="primary">*</span> <span class="bold">Repair:</span>     Design and timing repair on global-route parasitics
+<span class="primary">*</span> <span class="bold">Detailed:</span>  TritonRoute · region by region, negotiated repair
+<span class="primary">*</span> <span class="bold">DRC:</span>       FlexGC-style · shorts, spacing tables, end-of-line, cuts
+
+<span class="highlight bold">>> RESULTS (0 violations, PARE and OpenROAD check_drc)</span>
+<span class="dim">gcd:</span>            676 cells ·   0.7 s
+<span class="dim">aes:</span>         16,505 cells ·    39 s
+<span class="dim">jpeg:</span>        66,214 cells · 2 min 6 s
+<span class="dim">ariane133:</span>  179,806 cells · 11 min 29 s  (132 SRAM macros)
+<span class="dim">leon3mp:</span>    312,529 cells · 18 min 21 s
+<span class="dim">bp_quad:</span>  1,545,147 cells · 3 h 26 min  (220 SRAM macros)
+
+<span class="highlight bold">>> AGAINST OPENROAD</span>
+<span class="primary">*</span> Same placements: OpenROAD's router uses 3-5% less wire,
+  PARE's is 4-7x faster
+<span class="primary">*</span> Whole flow: worst slack within 0.02 ns of OpenROAD-flow-scripts
+  on aes, ibex and jpeg, ahead on ariane133, 2.9-3.6x faster
+
+<span class="ls-exec">cargo run --release -- run aes</span>
+<span class="ls-exec">cargo run --release -- check aes --placement output/aes/routed.def</span>
+`
+        }
+    },
+    {
         id: "riscv-emulator",
         title: "rvsim: RISC-V System Simulator",
         image: "assets/rvsim_stats.png",
