@@ -50,13 +50,22 @@ function renderPage(page) {
     container.innerHTML = data.map(p => `
         <div class="item-box project-card${p.image ? ' has-image' : ''}" ${p.image ? `data-image="${p.image}" data-title="${p.title}"` : ''}>
             <div class="item-head">
-                <span>${p.title}${p.image ? ' <span class="project-img-hint dim">[img]</span>' : ''}</span>
+                <span>${p.title}${p.image && !p.imageCaption ? ' <span class="project-img-hint dim">[img]</span>' : ''}</span>
                 <a class="simple-link" href="${p.link}" target="_blank">[source]</a>
             </div>
+            ${p.imageCaption ? renderFigure(p) : ''}
             <div class="item-desc">${p.desc}</div>
             <div>${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
         </div>
     `).join('');
+}
+
+function renderFigure(p) {
+    return `
+        <figure class="project-figure">
+            <img src="${p.image}" alt="${p.imageCaption}">
+            <figcaption class="dim">${p.imageCaption}</figcaption>
+        </figure>`;
 }
 
 function initLightbox() {

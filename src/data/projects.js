@@ -5,6 +5,7 @@ export const projects = [
         id: "vlsi",
         title: "PARE (Placement and Routing)",
         image: "assets/bp_quad_routed.png",
+        imageCaption: "bp_quad, placed and routed by PARE",
         link: `https://github.com/${config.github}/vlsi-physical-design`,
         desc: `<div style="color: var(--text-main); line-height: 1.6;">
 <p style="margin: 0 0 20px 0; font-size: 13px;">A placement and routing engine for digital ICs, written from scratch in Rust. From a floorplan it does what <span class='highlight'>OpenROAD-flow-scripts</span> does: netlist repair, timing-driven placement, clock trees, setup and hold repair, and global and detailed routing, then checks the result against the technology's design rules. Every routed design is also checked by OpenROAD's own <code>check_drc</code>, with a fix for one of its bugs applied.</p>

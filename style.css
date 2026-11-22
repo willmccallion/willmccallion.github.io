@@ -132,6 +132,9 @@ body {
 .has-image { cursor: pointer; }
 .has-image:hover .item-head { color: var(--highlight-color); }
 .project-img-hint { font-size: 11px; font-weight: 400; }
+.project-figure { margin: 12px 0 18px; max-width: 420px; }
+.project-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--border-color); cursor: zoom-in; }
+.project-figure figcaption { font-size: 11px; margin-top: 4px; }
 
 #img-lightbox {
     display: none;
